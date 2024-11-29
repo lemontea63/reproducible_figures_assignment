@@ -12,3 +12,7 @@ library(svglite)
 write.csv(penguins_raw, here("data","penguins_raw.csv"))
 penguins_data_raw<-read.csv(here("data","penguins_raw.csv"))
 
+#Investigating data
+head(penguins_data_raw)
+colnames(penguins_data_raw)
+
