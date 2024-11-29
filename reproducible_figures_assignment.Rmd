@@ -21,7 +21,6 @@ source(here("functions","cleaning_penguin_data.r"))
 ```
 
 # Data Preparation:
-
 ```{r}
 #Preserving and loading raw data.
 
@@ -52,3 +51,8 @@ colnames(penguins_clean)
 #writes new csv for clean penguins data. 
 write.csv(penguins_clean, here("data","penguins_clean.csv"))
 ```
+
+### QUESTION 01: Data Visualisation for Science Communication
+
+*Create a figure using the Palmer Penguin dataset that is correct but badly communicates the data. **Do not make a boxplot**.*
+```{r}
