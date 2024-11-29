@@ -8,6 +8,8 @@ library(patchwork)
 library(ragg)
 library(svglite)
 
+source(here("functions","cleaning_penguin_data.r"))
+
 #Preserving and loading raw data.
 write.csv(penguins_raw, here("data","penguins_raw.csv"))
 penguins_data_raw<-read.csv(here("data","penguins_raw.csv"))
@@ -16,3 +18,18 @@ penguins_data_raw<-read.csv(here("data","penguins_raw.csv"))
 head(penguins_data_raw)
 colnames(penguins_data_raw)
 
+#Cleaning raw data to generate a cleaner dataset.
+
+cleaning_penguin_columns <- function(raw_data){
+    clean_names() %>% 
+    shorten_species() %>% 
+      remove_empty(c("rows", "cols")) %>% 
+      select(-starts_with("delta")) %>% 
+      select(-comments)}
+      
+colnames(penguins_data_raw)
+penguins_clean<-cleaning_penguin_columns(penguins_data_raw)
+colnames(penguins_clean)
+
+#writes new csv for clean penguins data. 
+write.csv(penguins_clean, here("data","penguins_clean.csv"))
