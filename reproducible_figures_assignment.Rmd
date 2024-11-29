@@ -1,4 +1,13 @@
+---
+title: "Reproducible Figures Assignment"
+output:
+  html_document: default
+  pdf_document: default
+date: "2023-11-29"
+---
+
 #Installing and loading packages
+```{r}
 library(tidyverse)
 library(palmerpenguins)
 library(janitor)
@@ -9,14 +18,22 @@ library(ragg)
 library(svglite)
 
 source(here("functions","cleaning_penguin_data.r"))
+```
 
+# Data Preparation:
+
+```{r}
 #Preserving and loading raw data.
+
 write.csv(penguins_raw, here("data","penguins_raw.csv"))
 penguins_data_raw<-read.csv(here("data","penguins_raw.csv"))
 
+
 #Investigating data
+
 head(penguins_data_raw)
 colnames(penguins_data_raw)
+
 
 #Cleaning raw data to generate a cleaner dataset.
 
@@ -34,4 +51,4 @@ colnames(penguins_clean)
 
 #writes new csv for clean penguins data. 
 write.csv(penguins_clean, here("data","penguins_clean.csv"))
-
+```
