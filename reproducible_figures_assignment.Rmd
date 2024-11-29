@@ -7,3 +7,8 @@ library(ggplot2)
 library(patchwork)
 library(ragg)
 library(svglite)
+
+#Preserving and loading raw data.
+write.csv(penguins_raw, here("data","penguins_raw.csv"))
+penguins_data_raw<-read.csv(here("data","penguins_raw.csv"))
+
