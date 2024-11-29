@@ -1,0 +1,9 @@
+#Installing and loading packages
+library(tidyverse)
+library(palmerpenguins)
+library(janitor)
+library(here)
+library(ggplot2)
+library(patchwork)
+library(ragg)
+library(svglite)
