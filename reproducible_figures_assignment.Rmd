@@ -56,4 +56,5 @@ write.csv(penguins_data_clean, here("data","penguins_data_clean.csv"))
 
 *Create a figure using the Palmer Penguin dataset that is correct but badly communicates the data. **Do not make a boxplot**.*
 ```{r bad figure code, echo=FALSE}
-ggplot(data)
+ggplot(data=penguins_data_clean, aes(x=body_mass_g, y=culmen_length_mm)) + geom_point()
+```
