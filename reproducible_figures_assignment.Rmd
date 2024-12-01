@@ -6,7 +6,8 @@ output:
 date: "2023-11-29"
 ---
 
-#Installing and loading packages
+# Installing and loading packages
+
 ```{r}
 library(tidyverse)
 library(palmerpenguins)
@@ -21,6 +22,7 @@ source(here("functions","cleaning_penguin_data.r"))
 ```
 
 # Data Preparation:
+
 ```{r}
 #Preserving and loading raw data.
 
@@ -54,7 +56,8 @@ write.csv(penguins_data_clean, here("data","penguins_data_clean.csv"))
 
 ## QUESTION 1: Data Visualisation for Science Communication
 
-*Create a figure using the Palmer Penguin dataset that is correct but badly communicates the data. **Do not make a boxplot**.*
+### a) Create a figure using the Palmer Penguin dataset that is correct but badly communicates the data. Do not make a boxplot.
+
 ```{r bad figure code, echo=FALSE}
 bad_bargraph_island_png<-ggplot(penguins_data_clean) + geom_col(aes(x=island, y=body_mass_g))
 
@@ -92,9 +95,10 @@ agg_png("figures/bad_scatterplot_bodymass_culmenlength.png",
 print(bad_scatterplot_png)
 dev.off()
 ```
-### b) Write about how your design choices mislead the reader about the underlying data (200-300 words).
 
-My design choices mislead the reader about underlying data because my axis labels are hard to read, meaning it is hard for the reader to know what the graph represent. They also make no reference to which species each datapoint refers to, obscuring biologically relevant data which could affect inferences made about the relationships put forth by the graph. 
+### b) Write about how your design choices mislead the reader about the underlying data (200-300 words). Include references.
+
+My design choices mislead the reader about underlying data because my axis labels are hard to read, meaning it is hard for the reader to know what the graph represent. They also make no reference to which species each datapoint refers to, obscuring biologically relevant data which could affect inferences made about the relationships put forth by the graph.
 
 ## Question 2
 
@@ -125,3 +129,41 @@ My design choices mislead the reader about underlying data because my axis label
 ```
 
 ### Conclusion
+
+*You will be marked on the following:*
+
+a)  Your code for readability and functionality
+b)  Your figures for communication
+c)  Your text communication of your analysis
+
+## QUESTION 3: Open Science
+
+### a) GitHub
+
+*Upload your RProject you created for **Question 2** and any files and subfolders used to GitHub. Do not include any identifiers such as your name. Make sure your GitHub repo is public.*
+
+*GitHub link:*
+
+*You will be marked on your repo organisation and readability.*
+
+### b) Share your repo with a partner, download, and try to run their data pipeline.
+
+*Partner's GitHub link:*
+
+*You **must** provide this so I can verify there is no plagiarism between you and your partner.*
+
+### c) Reflect on your experience running their code. (300-500 words)
+
+-   *What elements of your partner's code helped you to understand their data pipeline?*
+
+-   *Did it run? Did you need to fix anything?*
+
+-   *What suggestions would you make for improving their code to make it more understandable or reproducible, and why?*
+
+-   *If you needed to alter your partner's figure using their code, do you think that would be easy or difficult, and why?*
+
+### d) Reflect on your own code based on your experience with your partner's code and their review of yours. (300-500 words)
+
+-   *What improvements did they suggest, and do you agree?*
+
+-   *What did you learn about writing code for other people?*
