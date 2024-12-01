@@ -52,7 +52,7 @@ colnames(penguins_data_clean)
 write.csv(penguins_data_clean, here("data","penguins_data_clean.csv"))
 ```
 
-### QUESTION 01: Data Visualisation for Science Communication
+## QUESTION 1: Data Visualisation for Science Communication
 
 *Create a figure using the Palmer Penguin dataset that is correct but badly communicates the data. **Do not make a boxplot**.*
 ```{r bad figure code, echo=FALSE}
@@ -95,3 +95,33 @@ dev.off()
 ### b) Write about how your design choices mislead the reader about the underlying data (200-300 words).
 
 My design choices mislead the reader about underlying data because my axis labels are hard to read, meaning it is hard for the reader to know what the graph represent. They also make no reference to which species each datapoint refers to, obscuring biologically relevant data which could affect inferences made about the relationships put forth by the graph. 
+
+## Question 2
+
+### Introduction
+
+```{r Data Exploration}
+
+# Make sure your code prints. 
+
+```
+
+### Hypothesis
+
+### Statistical Methods
+
+```{r Statistics}
+
+# Make sure your code prints. 
+
+```
+
+### Results & Discussion
+
+```{r Plotting Results}
+
+# Make sure your code prints. 
+
+```
+
+### Conclusion
