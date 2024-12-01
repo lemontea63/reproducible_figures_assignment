@@ -92,3 +92,6 @@ agg_png("figures/bad_scatterplot_bodymass_culmenlength.png",
 print(bad_scatterplot_png)
 dev.off()
 ```
+### b) Write about how your design choices mislead the reader about the underlying data (200-300 words).
+
+My design choices mislead the reader about underlying data because my axis labels are hard to read, meaning it is hard for the reader to know what the graph represent. They also make no reference to which species each datapoint refers to, obscuring biologically relevant data which could affect inferences made about the relationships put forth by the graph. 
