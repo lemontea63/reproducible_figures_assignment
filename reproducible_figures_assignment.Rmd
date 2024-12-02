@@ -8,7 +8,7 @@ date: "2023-11-29"
 
 # Installing and loading packages
 
-```{r}
+```{r echo=FALSE}
 library(tidyverse)
 library(palmerpenguins)
 library(janitor)
@@ -23,7 +23,7 @@ source(here("functions","cleaning_penguin_data.r"))
 
 # Data Preparation:
 
-```{r}
+```{r echo=FALSE}
 #Preserving and loading raw data.
 
 write.csv(penguins_raw, here("data","penguins_raw.csv"))
@@ -105,8 +105,35 @@ My design choices mislead the reader about underlying data because my axis label
 ### Introduction
 
 ```{r Data Exploration}
+library(palmerpenguins)
 
-# Make sure your code prints. 
+write.csv(penguins_raw, here("data","penguins_raw.csv"))
+penguins_data_raw<-read.csv(here("data","penguins_raw.csv"))
+
+
+#Investigating data
+
+head(penguins_data_raw)
+colnames(penguins_data_raw)
+
+
+#Cleaning raw data to generate a cleaner dataset.
+
+cleaning_penguin_columns <- function(raw_data){
+    raw_data %>% 
+    clean_names() %>% 
+    shorten_species() %>% 
+      remove_empty(c("rows", "cols")) %>% 
+      select(-starts_with("delta")) %>% 
+      select(-comments)}
+      
+colnames(penguins_data_raw)
+penguins_data_clean<-cleaning_penguin_columns(penguins_data_raw)
+colnames(penguins_data_clean)
+
+#writes new csv for clean penguins data. 
+write.csv(penguins_data_clean, here("data","penguins_data_clean.csv"))
+```
 
 ```
 
