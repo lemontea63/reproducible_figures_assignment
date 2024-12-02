@@ -61,6 +61,8 @@ write.csv(penguins_data_clean, here("data","penguins_data_clean.csv"))
 ```{r bad figure code, echo=FALSE}
 bad_bargraph_island_png<-ggplot(penguins_data_clean) + geom_col(aes(x=island, y=body_mass_g))
 
+ggplot(penguins_data_clean) + geom_col(aes(x=island, y=body_mass_g))
+
 agg_png("figures/bad_bargraph_island_bodymass.png", 
         width = 20,
         height = 20,
@@ -94,11 +96,23 @@ agg_png("figures/bad_scatterplot_bodymass_culmenlength.png",
 
 print(bad_scatterplot_png)
 dev.off()
+
+ggplot(penguins_data_clean) + geom_col(aes(x=island, y=body_mass_g, color=species))
+
+island_bm_anova <- aov(body_mass_g ~ island + species, data=penguins_data_clean)
+summary(island_bm_anova)
 ```
 
 ### b) Write about how your design choices mislead the reader about the underlying data (200-300 words). Include references.
 
-My design choices mislead the reader about underlying data because my axis labels are hard to read, meaning it is hard for the reader to know what the graph represent. They also make no reference to which species each datapoint refers to, obscuring biologically relevant data which could affect inferences made about the relationships put forth by the graph.
+My graph is correct but misleads the reader in a few ways. 
+
+To start with, there is no information about any confounding variables which could better explain a supposed relationship between island and body mass. For example, the 3 penguin species included in the Palmer Penguins dataset (Adelie, Gentoo and Chinstrap) appear to inhabit different islands. This means that although there could be a statistically significant relationship between island and body mass, the effect of different species found on each island has not been accounted for. 
+
+No measures of statistical significance (such as asterisks signifying significant results) have been shown on this graph either, meaning that confounding variables aside, it is unclear to the reader whether there is a significant difference in penguin body mass between islands studied or not.
+
+Moreover, my graph is hard to read. On this graph, the axes labels are very small, so it is difficult for a reader to pick out the explanatory and response variables and therefore the results the graph is trying to communicate. The labels themselves are also subpar, and do not adequately explain the contents of the graph; the y-axis label only states it is measuring “body_mass_g”, but the information contained in the graphs current form is the maximum body mass recorded on each island. Each bar on the bar graph is the same colour, which makes it harder to differentiate the categories and so makes this graph even more unclear. 
+
 
 ## Question 2
 
