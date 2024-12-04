@@ -105,20 +105,22 @@ summary(island_bm_anova)
 
 ### b) Write about how your design choices mislead the reader about the underlying data (200-300 words). Include references.
 
-My graph is correct but misleads the reader in a few ways. 
+My graph is correct but some design choices mislead the reader.
 
-To start with, there is no information about any confounding variables which could better explain a supposed relationship between island and body mass. For example, the 3 penguin species included in the Palmer Penguins dataset (Adelie, Gentoo and Chinstrap) appear to inhabit different islands. This means that although there could be a statistically significant relationship between island and body mass, the effect of different species found on each island has not been accounted for. 
+To start with, there is no information about each data point, such as the species of penguin each sample is a member of. This is misleading as species of penguin is likely to be a confounding variable which impacts both size of penguin and the island it inhabits, as different species have different ranges. This therefore may mislead a reader as the effects of different species are not shown, and so a misleading correlation may be represented on my graph. 
 
-No measures of statistical significance (such as asterisks signifying significant results) have been shown on this graph either, meaning that confounding variables aside, it is unclear to the reader whether there is a significant difference in penguin body mass between islands studied or not.
+Also, the axis labels are subpar, failing to properly explain the contents of the graph. For example, the y-axis label only states “body_mass_g”, but the information contained in this graph is actually the maximum body mass recorded on each island. 
 
-Moreover, my graph is hard to read. On this graph, the axes labels are very small, so it is difficult for a reader to pick out the explanatory and response variables and therefore the results the graph is trying to communicate. The labels themselves are also subpar, and do not adequately explain the contents of the graph; the y-axis label only states it is measuring “body_mass_g”, but the information contained in the graphs current form is the maximum body mass recorded on each island. Each bar on the bar graph is the same colour, which makes it harder to differentiate the categories and so makes this graph even more unclear. 
+Moreover, axis labels are also very small, which makes it hard for a reader to understand what is being shown by the graph. Readers will have to look very closely at the axis labels to see the variables being compared. This can be argued as misleading because by not clearly showing your axis labels and any units associated with them, readers are made more likely to miss key details about exactly what is being compared or what relationship is being suggested by a graph between two variables, which may cause them to believe a correlation is present which may actually not be.
+
+The lack of error bars may also be considered misleading as it is unclear to a reader how much measurements for a certain treatment (in this case each island) vary and so precise and accurate the data are. It is unclear whether the samples taken from each island are representative of the population on each island or whether there is wide variation and improper sampling.
 
 
 ## Question 2
 
 ### Introduction
 
-```{r Data Exploration}
+```{r Data Exploration- taken from lesson materials provided by Lydia France, University of Oxford, 2024}
 library(palmerpenguins)
 
 write.csv(penguins_raw, here("data","penguins_raw.csv"))
@@ -147,6 +149,8 @@ colnames(penguins_data_clean)
 
 #writes new csv for clean penguins data. 
 write.csv(penguins_data_clean, here("data","penguins_data_clean.csv"))
+
+
 ```
 
 ```
