@@ -1,3 +1,24 @@
+## ---------------------------
+##
+## Script name: cleaning_penguins_data.r
+##
+## Purpose of script: 
+##      # A file of functions for cleaning the Palmer Penguins dataset
+##
+## Author: Dr. Lydia France
+##
+## Date Created: 2024-10-01
+##
+##
+## ---------------------------
+##
+## Notes: (Added by Oliver Eyre, 28.11.2024) A file to go alongside the reproducible figures lessons from MT weeks 
+## 1-4, storing functions to clean up the Palmer Penguins dataset.
+## 
+##   
+##
+## ---------------------------
+
 # A function to make sure the column names are cleaned up, 
 # eg lower case and snake case
 clean_column_names <- function(penguins_data) {
@@ -36,3 +57,13 @@ remove_NA <- function(penguins_data) {
   penguins_data %>%
     na.omit()
 }
+
+#A function used to clean column names in the whole dataset, made by Lydia France and edited by Oliver Eyre
+cleaning_penguin_columns <- function(raw_data){
+  print("Cleans column names")
+  raw_data %>% 
+    clean_names() %>% 
+    shorten_species() %>% 
+    remove_empty(c("rows", "cols")) %>% 
+    select(-starts_with("delta")) %>% 
+    select(-comments)}
