@@ -160,43 +160,92 @@ penguins_data_clean <- read.csv(here("data", "penguins_data_clean.csv"))
 #Setting colour-blind friendly colour pallette to distinguish data relating to different species.
 species_colours <- c("Adelie" = "darkorange", "Chinstrap" = "purple4", "Gentoo" = "darkgreen")
 
+#Making function to create datasets only containing information on species, clutch completion, body mass and sex.
+refining_penguins_data <- function(clean_data){
+  clean_data %>% 
+  select(species, body_mass_g, clutch_completion, sex) %>% 
+  remove_NA()
+}
+
+#Making new, refined dataset
+penguins_data_refined <- refining_penguins_data(penguins_data_clean)
+write.csv(penguins_data_refined, here("data", "penguins_data_refined.csv"))
+penguins_data_refined <- read.csv(here("data","penguins_data_refined.csv"))
+
 #Filtering for body mass based on different species to ensure normal distribution in each species.
-adelie_body_mass <- penguins_data_clean %>%
+adelie_data <- penguins_data_clean %>%
   filter(species == "Adelie") %>%
-  select(species, body_mass_g) %>%
+  select(species, body_mass_g, clutch_completion) %>%
   remove_NA()
 
-chinstrap_body_mass <- penguins_data_clean %>%
+chinstrap_data <- penguins_data_clean %>%
   filter(species == "Chinstrap") %>%
-  select(species, body_mass_g) %>%
+  select(species, body_mass_g, clutch_completion) %>%
   remove_NA()
 
-gentoo_body_mass <- penguins_data_clean %>%
+gentoo_data <- penguins_data_clean %>%
   filter(species == "Gentoo") %>%
-  select(species, body_mass_g) %>%
+  select(species, body_mass_g, clutch_completion) %>%
+  remove_NA()
+
+adelie_data_male <- penguins_data_clean %>%
+  filter(species == "Adelie", sex == "MALE") %>%
+  select(species, body_mass_g, clutch_completion) %>%
+  remove_NA()
+
+chinstrap_data_male <- penguins_data_clean %>%
+  filter(species == "Chinstrap", sex == "MALE") %>%
+  select(species, body_mass_g, clutch_completion) %>%
+  remove_NA()
+
+gentoo_data_male <- penguins_data_clean %>%
+  filter(species == "Gentoo", sex == "MALE") %>%
+  select(species, body_mass_g, clutch_completion) %>%
+  remove_NA()
+
+adelie_data_female <- penguins_data_clean %>%
+  filter(species == "Adelie", sex == "FEMALE") %>%
+  select(species, body_mass_g, clutch_completion) %>%
+  remove_NA()
+
+chinstrap_data_female <- penguins_data_clean %>%
+  filter(species == "Chinstrap", sex == "FEMALE") %>%
+  select(species, body_mass_g, clutch_completion) %>%
+  remove_NA()
+
+gentoo_data_female <- penguins_data_clean %>%
+  filter(species == "Gentoo", sex == "FEMALE") %>%
+  select(species, body_mass_g, clutch_completion) %>%
   remove_NA()
 
 #Plotting histogram to ensure data follows normal distribution
 ggplot(data = penguins_data_clean, aes(x=body_mass_g)) + geom_histogram(aes(color=species))
-ggplot(data = adelie_body_mass, aes(x=body_mass_g)) + geom_histogram(aes(color=species))
-ggplot(data = chinstrap_body_mass, aes(x=body_mass_g)) + geom_histogram(aes(color=species))
-ggplot(data = gentoo_body_mass, aes(x=body_mass_g)) + geom_histogram(aes(color=species))
+ggplot(data = adelie_data, aes(x=body_mass_g)) + geom_histogram(aes(color=species))
+ggplot(data = chinstrap_data, aes(x=body_mass_g)) + geom_histogram(aes(color=species))
+ggplot(data = gentoo_data, aes(x=body_mass_g)) + geom_histogram(aes(color=species))
 
 #Transforming body mass data using log10 and square root to attempt to make data more normally distributed - unsuccessful.
-ggplot(data = adelie_body_mass, aes(x=body_mass_g)) + geom_histogram(aes(color=species))
-ggplot(data = adelie_body_mass, aes(x=body_mass_g)) + geom_histogram() + scale_x_log10()
-ggplot(data = adelie_body_mass, aes(x=body_mass_g)) + geom_histogram() + scale_x_sqrt()
+ggplot(data = adelie_data, aes(x=body_mass_g)) + geom_histogram(aes(color=species))
+ggplot(data = adelie_data, aes(x=body_mass_g)) + geom_histogram() + scale_x_log10()
+ggplot(data = adelie_data, aes(x=body_mass_g)) + geom_histogram() + scale_x_sqrt()
 
-ggplot(data = chinstrap_body_mass, aes(x=body_mass_g)) + geom_histogram(aes(color=species))
-ggplot(data = chinstrap_body_mass, aes(x=body_mass_g)) + geom_histogram() + scale_x_log10()
-ggplot(data = chinstrap_body_mass, aes(x=body_mass_g)) + geom_histogram() + scale_x_sqrt()
+ggplot(data = chinstrap_data, aes(x=body_mass_g)) + geom_histogram(aes(color=species))
+ggplot(data = chinstrap_data, aes(x=body_mass_g)) + geom_histogram() + scale_x_log10()
+ggplot(data = chinstrap_data, aes(x=body_mass_g)) + geom_histogram() + scale_x_sqrt()
 
-ggplot(data = gentoo_body_mass, aes(x=body_mass_g)) + geom_histogram(aes(color=species))
-ggplot(data = gentoo_body_mass, aes(x=body_mass_g)) + geom_histogram() + scale_x_log10()
-ggplot(data = gentoo_body_mass, aes(x=body_mass_g)) + geom_histogram() + scale_x_sqrt()
+ggplot(data = gentoo_data, aes(x=body_mass_g)) + geom_histogram(aes(color=species))
+ggplot(data = gentoo_data, aes(x=body_mass_g)) + geom_histogram() + scale_x_log10()
+ggplot(data = gentoo_data, aes(x=body_mass_g)) + geom_histogram() + scale_x_sqrt()
 
 #Plotting a violin chart to explore whether body mass can explain successful clutch completion.
 ggplot(data=penguins_data_clean, aes (x=body_mass_g, y=clutch_completion)) + geom_violin(aes(color=species)) + scale_color_manual(values = species_colours) + labs (x= "Body mass (g)", y = "Clutch completion") + theme_bw() + stat_summary(species="mean", geom="point", color="black")
+
+#Plotting violin charts for each species to explore relationship between body mass and clutch completion in each species individually.
+ggplot(data=adelie_data, aes (x=body_mass_g, y=clutch_completion)) + geom_violin(aes(color=species)) + scale_color_manual(values = species_colours) + labs (x= "Body mass (g)", y = "Clutch completion") + theme_bw() + stat_summary(species="mean", geom="pointrange", color="black")
+
+ggplot(data=chinstrap_data, aes (x=body_mass_g, y=clutch_completion)) + geom_violin(aes(color=species)) + scale_color_manual(values = species_colours) + labs (x= "Body mass (g)", y = "Clutch completion") + theme_bw() + stat_summary(species="mean", geom="pointrange", color="black")
+
+ggplot(data=gentoo_data, aes (x=body_mass_g, y=clutch_completion)) + geom_violin(aes(color=species)) + scale_color_manual(values = species_colours) + labs (x= "Body mass (g)", y = "Clutch completion") + theme_bw() + stat_summary(species="mean", geom="pointrange", color="black")
 ```
 
 ### Hypothesis
