@@ -52,6 +52,7 @@ colnames(penguins_data_clean)
 
 #writes new csv for clean penguins data. 
 write.csv(penguins_data_clean, here("data","penguins_data_clean.csv"))
+penguins_data_clean <- read.csv(here("data", "penguins_data_clean.csv"))
 ```
 
 ## QUESTION 1: Data Visualisation for Science Communication
@@ -107,33 +108,37 @@ summary(island_bm_anova)
 
 My graph is correct but some design choices mislead the reader.
 
-To start with, there is no information about each data point, such as the species of penguin each sample is a member of. This is misleading as species of penguin is likely to be a confounding variable which impacts both size of penguin and the island it inhabits, as different species have different ranges. This therefore may mislead a reader as the effects of different species are not shown, and so a misleading correlation may be represented on my graph. 
+Firstly, there is no information about each data point, such as the species of penguin each sample is a member of. This is misleading; penguin species is likely to be a confounding variable which impacts both size of penguin and the island it inhabits (different species have different ranges). This therefore may mislead a reader as the effects of different species are not explicitly shown, so a misleading correlation may be represented on my graph. 
 
-Also, the axis labels edited in the .png plot are subpar, failing to properly explain the contents of the graph. For example, the y-axis label only states “body_mass_g”, but the information contained in this graph is actually the maximum body mass recorded on each island. 
+The lack of error bars is also misleading; it is unclear to a reader how much measurements for a certain treatment (in this case each island) vary and so precise and accurate the data are. It is unclear whether the samples taken from each island are representative of the population on each island or whether there is wide variation and improper sampling.
 
-Moreover, axis labels are also very small, which makes it hard for a reader to understand what is being shown by the graph. Readers will have to look very closely at the axis labels to see the variables being compared. This can be argued as misleading because by not clearly showing your axis labels and any units associated with them, readers are made more likely to miss key details about exactly what is being compared or what relationship is being suggested by a graph between two variables, which may cause them to believe a correlation is present which may actually not be.
+On this graph, I also only show a summary of the data, in this case maximum body mass in each category (i.e on each island). This is misleading because important information may be hidden. For example the maximum body mass for each island might be an outlier. This is also represented in the axis labels, which do not state maximum body mass but instead state only "body_mass_g". 
 
-The lack of error bars may also be considered misleading as it is unclear to a reader how much measurements for a certain treatment (in this case each island) vary and so precise and accurate the data are. It is unclear whether the samples taken from each island are representative of the population on each island or whether there is wide variation and improper sampling.
+Moreover, axis labels as specified in the .png plot are also very small, which makes it hard for a reader to understand what is being shown by the graph. Readers will have to look very closely at the axis labels to see the variables being compared. This can be argued as misleading because by not clearly showing your axis labels and any units associated with them, readers are made more likely to miss key details about exactly what is being compared or what relationship is being suggested by a graph between two variables, which may cause them to believe a correlation is present which may actually not be.
 
 
 ## Question 2
 
 ### Introduction
 
+In this analysis, I am aiming to assess whether clutch completion and body mass are correlated in penguins, and whether the minimum body mass required for clutch completion differs significantly between the Adelie, Chinstrap and Gentoo penguin species.
+
 ```{r Data Exploration- taken from lesson materials provided by Lydia France, University of Oxford, 2024}
+#All packages used can be found at the top of the document.
 library(palmerpenguins)
 
+#These lines of code preserve raw data in a separate csv file so it is not lost and can be easily recovered.
 write.csv(penguins_raw, here("data","penguins_raw.csv"))
 penguins_data_raw<-read.csv(here("data","penguins_raw.csv"))
 
 
-#Investigating data
+#Investigating data- allows initial analysis of what data were collected and what values have been recorded for each.
 
 head(penguins_data_raw)
 colnames(penguins_data_raw)
 
 
-#Cleaning raw data to generate a cleaner dataset.
+#Cleaning raw data to generate a cleaner dataset- removing superfluous variables and making data more easily read by R. 
 
 cleaning_penguin_columns <- function(raw_data){
     raw_data %>% 
@@ -142,20 +147,31 @@ cleaning_penguin_columns <- function(raw_data){
       remove_empty(c("rows", "cols")) %>% 
       select(-starts_with("delta")) %>% 
       select(-comments)}
-      
+
+#Checking that the above code has worked.
 colnames(penguins_data_raw)
 penguins_data_clean<-cleaning_penguin_columns(penguins_data_raw)
 colnames(penguins_data_clean)
 
-#writes new csv for clean penguins data. 
+#Writing new .csv file for new, clean dataset to keep this safe in case any accidental changes are made or code breaks, to allow code to be easily recovered. 
 write.csv(penguins_data_clean, here("data","penguins_data_clean.csv"))
+penguins_data_clean <- read.csv(here("data", "penguins_data_clean.csv"))
 
+#Setting colour-blind friendly colour pallette to distinguish data relating to different species.
+species_colours <- c("Adelie" = "cyan3", "Chinstrap" = "purple4", "Gentoo" = "darkgreen")
 
-```
-
+#Plotting a violin chart to explore whether body mass can explain successful clutch completion.
+ggplot(data=penguins_data_clean, aes (x=body_mass_g, y=clutch_completion)) + geom_violin(aes(color=species)) + scale_color_manual(values = species_colours) + labs (x= "Body mass (g)", y = "Clutch completion") + theme_bw()
 ```
 
 ### Hypothesis
+
+My first null hypothesis is that there is no correlation between body mass and clutch completion in any penguin species.
+My second null hypothesis is that there are no significant differences between species as to whether body mass informs clutch completion. 
+
+My first alternative hypothesis is that there is a significant correlation between body mass and clutch completion in any penguin species.
+My second alternative hypothesis is that there are significant effects of species on the relationship between body mass and clutch completion.
+
 
 ### Statistical Methods
 
