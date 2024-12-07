@@ -9,6 +9,7 @@ date: "2023-11-29"
 # Installing and loading packages
 
 ```{r echo=FALSE}
+#Loading packages needed for this project, which should all be in the RENV folder. Also loading functions to clean data from Palmer Penguins dataset, found in a separate folder.
 library(tidyverse)
 library(palmerpenguins)
 library(janitor)
@@ -24,19 +25,19 @@ source(here("functions","cleaning_penguin_data.r"))
 # Data Preparation:
 
 ```{r echo=FALSE}
-#Preserving and loading raw data.
+#Preserving and loading raw data in its own .csv file.
 
 write.csv(penguins_raw, here("data","penguins_raw.csv"))
 penguins_data_raw<-read.csv(here("data","penguins_raw.csv"))
 
 
-#Investigating data
+#Investigating raw data, including seeing what column names are included.
 
 head(penguins_data_raw)
 colnames(penguins_data_raw)
 
 
-#Cleaning raw data to generate a cleaner dataset.
+#Cleaning raw data to generate a cleaner dataset, using functions sourced from Lydia France's cleaning_penguins.r file.
 
 cleaning_penguin_columns <- function(raw_data){
     raw_data %>% 
@@ -47,10 +48,10 @@ cleaning_penguin_columns <- function(raw_data){
       select(-comments)}
       
 colnames(penguins_data_raw)
-penguins_data_clean<-cleaning_penguin_columns(penguins_data_raw)
+penguins_data_clean <- cleaning_penguin_columns(penguins_data_raw)
 colnames(penguins_data_clean)
 
-#writes new csv for clean penguins data. 
+#Writing and saving new .csv file for cleaned data, which can be found in the "data" folder. 
 write.csv(penguins_data_clean, here("data","penguins_data_clean.csv"))
 penguins_data_clean <- read.csv(here("data", "penguins_data_clean.csv"))
 ```
@@ -60,9 +61,13 @@ penguins_data_clean <- read.csv(here("data", "penguins_data_clean.csv"))
 ### a) Create a figure using the Palmer Penguin dataset that is correct but badly communicates the data. Do not make a boxplot.
 
 ```{r bad figure code, echo=FALSE}
-bad_bargraph_island_png<-ggplot(penguins_data_clean) + geom_col(aes(x=island, y=body_mass_g))
+#Creating a bad bar graph showing how body mass differs between islands, to answer question 1 of assessment.
 
-ggplot(penguins_data_clean) + geom_col(aes(x=island, y=body_mass_g))
+bad_bargraph_island_png <- ggplot(penguins_data_clean) 
+   + geom_col(aes(x=island, y=body_mass_g))
+print(bad_bargraph_island_png)
+
+#Saving the misleading boxplot as a .png file in the "figures" folder.
 
 agg_png("figures/bad_bargraph_island_bodymass.png", 
         width = 20,
@@ -96,7 +101,6 @@ In this analysis, I will assess whether there is a relationship between culmen (
 
 ```{r Data Exploration- taken from lesson materials provided by Lydia France, University of Oxford, 2024}
 #All packages used can be found at the top of the document.
-library(palmerpenguins)
 
 #These lines of code preserve raw data in a separate csv file so it is not lost and can be easily recovered.
 write.csv(penguins_raw, here("data","penguins_raw.csv"))
@@ -109,7 +113,7 @@ head(penguins_data_raw)
 colnames(penguins_data_raw)
 
 
-#Cleaning raw data to generate a cleaner dataset- removing superfluous variables and making data more easily read by R. 
+#Cleaning raw data to generate a cleaner dataset- removing superfluous variables and making data more easily read by R and by humans. 
 
 cleaning_penguin_columns <- function(raw_data){
     raw_data %>% 
@@ -129,14 +133,22 @@ write.csv(penguins_data_clean, here("data","penguins_data_clean.csv"))
 penguins_data_clean <- read.csv(here("data", "penguins_data_clean.csv"))
 
 #Making a colour blind-friendly palette useful for distinguishing species on figures.
-species_colours <- c("Adelie" = "darkorange", "Chinstrap" = "magenta2", "Gentoo" = "blue")
+species_colours <- c("Adelie" = "darkorange", 
+                     "Chinstrap" = "magenta2", 
+                     "Gentoo" = "blue")
 
-#Exploratory figure looking at the relationship between beak depth and beak length, looking at how this differs between species. 
-bill_size_exploratory <- ggplot(data=penguins_data_clean, aes(x=culmen_length_mm, y=culmen_depth_mm)) + geom_point(aes(color=species)) + scale_colour_manual(values = species_colours) + xlab("Culmen Length (mm)") + ylab("Culmen Depth (mm)")
+#Creating an exploratory figure looking at the relationship between beak depth and beak length, as well as how this differs between species. 
+bill_size_exploratory <- ggplot(data=penguins_data_clean, 
+  aes(x=culmen_length_mm, 
+      y=culmen_depth_mm)) + 
+  geom_point(aes(color=species)) + 
+  scale_colour_manual(values = species_colours) + 
+  xlab("Culmen Length (mm)") + 
+  ylab("Culmen Depth (mm)")
 
 plot(bill_size_exploratory)
 
-#Saving figure as .png file
+#Saving figure as .png file in functions folder.
 agg_png("figures/bill_size_exploratory.png", 
         width = 30,
         height = 15,
@@ -146,11 +158,6 @@ agg_png("figures/bill_size_exploratory.png",
 
 print(bill_size_exploratory)
 dev.off()
-
-#saving figure as .svg file - return to as currently unsuccessful.
-
-
-
 
 ```
 
@@ -165,6 +172,10 @@ My second alternative hypothesis is that there are species specific effects on b
 
 
 ### Statistical Methods
+
+To test whether culmen length predicts culmen depth, I will conduct a linear regression. This is because the two variables I am testing are numerical values.
+
+To test whether this is affected by species I will use an ANCOVA test, which will allow me to determine the effect of covariate (species) on the association between culmen length and culmen depth.
 
 ```{r Statistics}
 
