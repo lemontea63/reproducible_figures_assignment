@@ -135,13 +135,30 @@ species_colours <- c("Adelie" = "darkorange", "Chinstrap" = "purple4", "Gentoo" 
 refining_penguins_data <- function(clean_data){
   clean_data %>% 
   select(species, body_mass_g, clutch_completion, sex) %>% 
-  remove_NA()
-}
+  remove_NA()}
+
+#Making function to allow filtering by species
+species_filter <- function(clean_data){
+  clean_data %>% 
+    filter(species) %>%
+  select(species, body_mass_g, clutch_completion) %>%
+  remove_NA()}
+
+#Making function to allow filtering by species and by sex
+species_sex_filter <- function(clean_data){
+  clean_data %>% 
+    filter(species, sex) %>%
+  select(species, body_mass_g, clutch_completion) %>%
+  remove_NA()}
+
+#Testing if new functions work - unsuccessful
+adelie_data_test1 <- species_sex_filter(penguins_data_refined)
 
 #Making new, refined dataset
 penguins_data_refined <- refining_penguins_data(penguins_data_clean)
 write.csv(penguins_data_refined, here("data", "penguins_data_refined.csv"))
 penguins_data_refined <- read.csv(here("data","penguins_data_refined.csv"))
+head(penguins_data_refined)
 ```
 
 ```{r excess code which will probably be deleted -> unsure what is and is not useful and need to sort out}
