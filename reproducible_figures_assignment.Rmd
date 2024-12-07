@@ -127,22 +127,36 @@ colnames(penguins_data_clean)
 #Writing new .csv file for new, clean dataset to keep this safe in case any accidental changes are made or code breaks, to allow code to be easily recovered. 
 write.csv(penguins_data_clean, here("data","penguins_data_clean.csv"))
 penguins_data_clean <- read.csv(here("data", "penguins_data_clean.csv"))
-```
 
-```{r}
+#Making a colour blind-friendly palette useful for distinguishing species on figures.
+species_colours <- c("Adelie" = "darkorange", "Chinstrap" = "magenta2", "Gentoo" = "blue")
+
 #Exploratory figure looking at the relationship between beak depth and beak length, looking at how this differs between species. 
-bill_size_exploratory <- ggplot(data=penguins_data_clean, aes(x=culmen_length_mm, y=culmen_depth_mm)) + geom_point(aes(color=species)) + scale_colour_manual(values = species_colours)
+bill_size_exploratory <- ggplot(data=penguins_data_clean, aes(x=culmen_length_mm, y=culmen_depth_mm)) + geom_point(aes(color=species)) + scale_colour_manual(values = species_colours) + xlab("Culmen Length (mm)") + ylab("Culmen Depth (mm)")
+
+plot(bill_size_exploratory)
+
+#Saving figure as .png file
+agg_png("figures/bill_size_exploratory.png", 
+        width = 200,
+        height = 100,
+        units = "cm",
+        res = 300,
+        scaling = 9)
+
+print(bill_size_exploratory)
+dev.off()
 
 ```
 
 
 ### Hypothesis
 
-My first null hypothesis is that there is no correlation between body mass and clutch completion in any penguin species.
-My second null hypothesis is that there are no significant differences between species as to whether body mass informs clutch completion. 
+My first null hypothesis is that there is not a correlation between culmen length and culmen depth in any penguin species.
+My second null hypothesis is that there are not a species specific effects on beak size.
 
-My first alternative hypothesis is that there is a significant correlation between body mass and clutch completion in any penguin species.
-My second alternative hypothesis is that there are significant effects of species on the relationship between body mass and clutch completion.
+My first alternative hypothesis is that there is a correlation between culmen length and culmen depth in any penguin species.
+My second alternative hypothesis is that there are species specific effects on beak size.
 
 
 ### Statistical Methods
