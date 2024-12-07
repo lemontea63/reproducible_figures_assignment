@@ -138,14 +138,19 @@ plot(bill_size_exploratory)
 
 #Saving figure as .png file
 agg_png("figures/bill_size_exploratory.png", 
-        width = 200,
-        height = 100,
+        width = 30,
+        height = 15,
         units = "cm",
         res = 300,
-        scaling = 9)
+        scaling = 1.125)
 
 print(bill_size_exploratory)
 dev.off()
+
+#saving figure as .svg file - return to as currently unsuccessful.
+
+
+
 
 ```
 
