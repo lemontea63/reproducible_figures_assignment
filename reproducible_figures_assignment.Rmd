@@ -127,9 +127,17 @@ colnames(penguins_data_clean)
 #Writing new .csv file for new, clean dataset to keep this safe in case any accidental changes are made or code breaks, to allow code to be easily recovered. 
 write.csv(penguins_data_clean, here("data","penguins_data_clean.csv"))
 penguins_data_clean <- read.csv(here("data", "penguins_data_clean.csv"))
+```
 
-#Setting colour-blind friendly colour pallette to distinguish data relating to different species.
-species_colours <- c("Adelie" = "darkorange", "Chinstrap" = "purple4", "Gentoo" = "darkgreen")
+```{r}
+ggplot(data=penguins_data_clean, aes(x=culmen_length_mm, y=flipper_length_mm)) + geom_point()
+
+```
+
+```{r possibly excess code relating to clutch completion vs body mass}
+#Setting colour-blind friendly colour palette to distinguish data relating to different species, and defining shapes for each sex.
+species_colours <- c("Adelie" = "darkorange", "Chinstrap" = "magenta2", "Gentoo" = "blue")
+sex_shapes <- c("MALE" = "+", "FEMALE" = "20")
 
 #Making function to create datasets only containing information on species, clutch completion, body mass and sex.
 refining_penguins_data <- function(clean_data){
@@ -137,76 +145,21 @@ refining_penguins_data <- function(clean_data){
   select(species, body_mass_g, clutch_completion, sex) %>% 
   remove_NA()}
 
-#Making function to allow filtering by species
-species_filter <- function(clean_data){
-  clean_data %>% 
-    filter(species) %>%
-  select(species, body_mass_g, clutch_completion) %>%
-  remove_NA()}
-
-#Making function to allow filtering by species and by sex
-species_sex_filter <- function(clean_data){
-  clean_data %>% 
-    filter(species, sex) %>%
-  select(species, body_mass_g, clutch_completion) %>%
-  remove_NA()}
-
-#Testing if new functions work - unsuccessful
-adelie_data_test1 <- species_sex_filter(penguins_data_refined)
-
-#Making new, refined dataset
+#Making new, refined dataset which only contains data on penguin species, size, sex and clutch completion.
 penguins_data_refined <- refining_penguins_data(penguins_data_clean)
 write.csv(penguins_data_refined, here("data", "penguins_data_refined.csv"))
 penguins_data_refined <- read.csv(here("data","penguins_data_refined.csv"))
 head(penguins_data_refined)
+
+#Plotting violin chart of body mass against clutch completion for all species, without accounting for sex.
+ggplot(data = penguins_data_refined, aes(x=body_mass_g, y=clutch_completion)) + geom_violin(aes(color = species, shape = sex), width = 1) + geom_jitter(aes(color = species), alpha = 0.25, width = 0.5) + scale_colour_manual(values = species_colours) + scale_shape_manual(values = sex_shapes)
+
+
 ```
 
 ```{r excess code which will probably be deleted -> unsure what is and is not useful and need to sort out}
 #Filtering for body mass based on different species to ensure normal distribution in each species.
-adelie_data <- penguins_data_clean %>%
-  filter(species == "Adelie") %>%
-  select(species, body_mass_g, clutch_completion) %>%
-  remove_NA()
 
-chinstrap_data <- penguins_data_clean %>%
-  filter(species == "Chinstrap") %>%
-  select(species, body_mass_g, clutch_completion) %>%
-  remove_NA()
-
-gentoo_data <- penguins_data_clean %>%
-  filter(species == "Gentoo") %>%
-  select(species, body_mass_g, clutch_completion) %>%
-  remove_NA()
-
-adelie_data_male <- penguins_data_clean %>%
-  filter(species == "Adelie", sex == "MALE") %>%
-  select(species, body_mass_g, clutch_completion) %>%
-  remove_NA()
-
-chinstrap_data_male <- penguins_data_clean %>%
-  filter(species == "Chinstrap", sex == "MALE") %>%
-  select(species, body_mass_g, clutch_completion) %>%
-  remove_NA()
-
-gentoo_data_male <- penguins_data_clean %>%
-  filter(species == "Gentoo", sex == "MALE") %>%
-  select(species, body_mass_g, clutch_completion) %>%
-  remove_NA()
-
-adelie_data_female <- penguins_data_clean %>%
-  filter(species == "Adelie", sex == "FEMALE") %>%
-  select(species, body_mass_g, clutch_completion) %>%
-  remove_NA()
-
-chinstrap_data_female <- penguins_data_clean %>%
-  filter(species == "Chinstrap", sex == "FEMALE") %>%
-  select(species, body_mass_g, clutch_completion) %>%
-  remove_NA()
-
-gentoo_data_female <- penguins_data_clean %>%
-  filter(species == "Gentoo", sex == "FEMALE") %>%
-  select(species, body_mass_g, clutch_completion) %>%
-  remove_NA()
 
 #Plotting histogram to ensure data follows normal distribution
 ggplot(data = penguins_data_clean, aes(x=body_mass_g)) + geom_histogram(aes(color=species))
