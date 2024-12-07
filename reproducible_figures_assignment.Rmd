@@ -40,6 +40,7 @@ colnames(penguins_data_raw)
 #Cleaning raw data to generate a cleaner dataset, using functions sourced from Lydia France's cleaning_penguins.r file.
 
 cleaning_penguin_columns <- function(raw_data){
+    print("Cleans column names")
     raw_data %>% 
     clean_names() %>% 
     shorten_species() %>% 
