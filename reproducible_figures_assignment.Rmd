@@ -58,7 +58,7 @@ bad_bargraph_island_png <- ggplot(penguins_data_clean) +
                            geom_col(aes(x=island, y=body_mass_g))
 print(bad_bargraph_island_png)
 
-#Saving the misleading boxplot as a .png file in the "figures" folder.
+#Saving the misleading plot as a .png file in the "figures" folder.
 
 agg_png("figures/bad_bargraph_island_bodymass.png", 
         width = 20,
