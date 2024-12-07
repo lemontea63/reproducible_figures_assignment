@@ -1,0 +1,54 @@
+#Transforming body mass data using log10 and square root to attempt to make data more normally distributed - unsuccessful.
+ggplot(data = adelie_data, aes(x=body_mass_g)) + geom_histogram(aes(color=species))
+ggplot(data = adelie_data, aes(x=body_mass_g)) + geom_histogram() + scale_x_log10()
+ggplot(data = adelie_data, aes(x=body_mass_g)) + geom_histogram() + scale_x_sqrt()
+
+ggplot(data = chinstrap_data, aes(x=body_mass_g)) + geom_histogram(aes(color=species))
+ggplot(data = chinstrap_data, aes(x=body_mass_g)) + geom_histogram() + scale_x_log10()
+ggplot(data = chinstrap_data, aes(x=body_mass_g)) + geom_histogram() + scale_x_sqrt()
+
+ggplot(data = gentoo_data, aes(x=body_mass_g)) + geom_histogram(aes(color=species))
+ggplot(data = gentoo_data, aes(x=body_mass_g)) + geom_histogram() + scale_x_log10()
+ggplot(data = gentoo_data, aes(x=body_mass_g)) + geom_histogram() + scale_x_sqrt()
+
+#Plotting a violin chart to explore whether body mass can explain successful clutch completion.
+ggplot(data=penguins_data_clean, aes (x=body_mass_g, y=clutch_completion)) + geom_violin(aes(color=species)) + scale_color_manual(values = species_colours) + labs (x= "Body mass (g)", y = "Clutch completion") + theme_bw() + stat_summary(species="mean", geom="point", color="black")
+
+#Plotting violin charts for each species to explore relationship between body mass and clutch completion in each species individually.
+ggplot(data=adelie_data, aes (x=body_mass_g, y=clutch_completion)) + geom_violin(aes(color=species)) + scale_color_manual(values = species_colours) + labs (x= "Body mass (g)", y = "Clutch completion") + theme_bw() + stat_summary(species="mean", geom="pointrange", color="black")
+
+ggplot(data=chinstrap_data, aes (x=body_mass_g, y=clutch_completion)) + geom_violin(aes(color=species)) + scale_color_manual(values = species_colours) + labs (x= "Body mass (g)", y = "Clutch completion") + theme_bw() + stat_summary(species="mean", geom="pointrange", color="black")
+
+ggplot(data=gentoo_data, aes (x=body_mass_g, y=clutch_completion)) + geom_violin(aes(color=species)) + scale_color_manual(values = species_colours) + labs (x= "Body mass (g)", y = "Clutch completion") + theme_bw() + stat_summary(species="mean", geom="pointrange", color="black")
+
+```{r excess code which will probably be deleted -> unsure what is and is not useful and need to sort out}
+
+
+#Filtering for body mass based on different species to ensure normal distribution in each species.
+
+
+#Plotting histogram to ensure data follows normal distribution
+ggplot(data = penguins_data_clean, aes(x=body_mass_g)) + geom_histogram(aes(color=species))
+ggplot(data = adelie_data, aes(x=body_mass_g)) + geom_histogram(aes(color=species))
+ggplot(data = chinstrap_data, aes(x=body_mass_g)) + geom_histogram(aes(color=species))
+ggplot(data = gentoo_data, aes(x=body_mass_g)) + geom_histogram(aes(color=species))
+
+```{r possibly excess code relating to clutch completion vs body mass}
+#Setting colour-blind friendly colour palette to distinguish data relating to different species, and defining shapes for each sex.
+species_colours <- c("Adelie" = "darkorange", "Chinstrap" = "magenta2", "Gentoo" = "blue")
+sex_shapes <- c("MALE" = "+", "FEMALE" = "20")
+
+#Making function to create datasets only containing information on species, clutch completion, body mass and sex.
+refining_penguins_data <- function(clean_data){
+  clean_data %>% 
+    select(species, body_mass_g, clutch_completion, sex) %>% 
+    remove_NA()}
+
+#Making new, refined dataset which only contains data on penguin species, size, sex and clutch completion.
+penguins_data_refined <- refining_penguins_data(penguins_data_clean)
+write.csv(penguins_data_refined, here("data", "penguins_data_refined.csv"))
+penguins_data_refined <- read.csv(here("data","penguins_data_refined.csv"))
+head(penguins_data_refined)
+
+#Plotting violin chart of body mass against clutch completion for all species, without accounting for sex.
+ggplot(data = penguins_data_refined, aes(x=body_mass_g, y=clutch_completion)) + geom_violin(aes(color = species, shape = sex), width = 1) + geom_jitter(aes(color = species), alpha = 0.25, width = 0.5) + scale_colour_manual(values = species_colours) + scale_shape_manual(values = sex_shapes)
