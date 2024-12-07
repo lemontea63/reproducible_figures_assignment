@@ -63,8 +63,8 @@ penguins_data_clean <- read.csv(here("data", "penguins_data_clean.csv"))
 ```{r bad figure code, echo=FALSE}
 #Creating a bad bar graph showing how body mass differs between islands, to answer question 1 of assessment.
 
-bad_bargraph_island_png <- ggplot(penguins_data_clean) 
-   + geom_col(aes(x=island, y=body_mass_g))
+bad_bargraph_island_png <- ggplot(penguins_data_clean) +
+                           geom_col(aes(x=island, y=body_mass_g))
 print(bad_bargraph_island_png)
 
 #Saving the misleading boxplot as a .png file in the "figures" folder.
@@ -139,12 +139,12 @@ species_colours <- c("Adelie" = "darkorange",
 
 #Creating an exploratory figure looking at the relationship between beak depth and beak length, as well as how this differs between species. 
 bill_size_exploratory <- ggplot(data=penguins_data_clean, 
-  aes(x=culmen_length_mm, 
-      y=culmen_depth_mm)) + 
-  geom_point(aes(color=species)) + 
-  scale_colour_manual(values = species_colours) + 
-  xlab("Culmen Length (mm)") + 
-  ylab("Culmen Depth (mm)")
+                         aes(x=culmen_length_mm, 
+                            y=culmen_depth_mm)) + 
+                         geom_point(aes(color=species)) + 
+                         scale_colour_manual(values = species_colours) + 
+                         xlab("Culmen Length (mm)") + 
+                         ylab("Culmen Depth (mm)")
 
 plot(bill_size_exploratory)
 
