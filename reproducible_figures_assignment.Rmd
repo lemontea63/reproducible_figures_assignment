@@ -109,7 +109,7 @@ My graph is correct but some design choices mislead the reader.
 
 To start with, there is no information about each data point, such as the species of penguin each sample is a member of. This is misleading as species of penguin is likely to be a confounding variable which impacts both size of penguin and the island it inhabits, as different species have different ranges. This therefore may mislead a reader as the effects of different species are not shown, and so a misleading correlation may be represented on my graph. 
 
-Also, the axis labels are subpar, failing to properly explain the contents of the graph. For example, the y-axis label only states “body_mass_g”, but the information contained in this graph is actually the maximum body mass recorded on each island. 
+Also, the axis labels edited in the .png plot are subpar, failing to properly explain the contents of the graph. For example, the y-axis label only states “body_mass_g”, but the information contained in this graph is actually the maximum body mass recorded on each island. 
 
 Moreover, axis labels are also very small, which makes it hard for a reader to understand what is being shown by the graph. Readers will have to look very closely at the axis labels to see the variables being compared. This can be argued as misleading because by not clearly showing your axis labels and any units associated with them, readers are made more likely to miss key details about exactly what is being compared or what relationship is being suggested by a graph between two variables, which may cause them to believe a correlation is present which may actually not be.
 
