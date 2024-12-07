@@ -142,7 +142,9 @@ refining_penguins_data <- function(clean_data){
 penguins_data_refined <- refining_penguins_data(penguins_data_clean)
 write.csv(penguins_data_refined, here("data", "penguins_data_refined.csv"))
 penguins_data_refined <- read.csv(here("data","penguins_data_refined.csv"))
+```
 
+```{r excess code which will probably be deleted -> unsure what is and is not useful and need to sort out}
 #Filtering for body mass based on different species to ensure normal distribution in each species.
 adelie_data <- penguins_data_clean %>%
   filter(species == "Adelie") %>%
