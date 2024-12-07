@@ -73,35 +73,6 @@ agg_png("figures/bad_bargraph_island_bodymass.png",
 
 print(bad_bargraph_island_png)
 dev.off()
-
-bad_bargraph_clutch_png<-ggplot(penguins_data_clean) + geom_col(aes(x=clutch_completion, y=body_mass_g))
-
-agg_png("figures/bad_bargraph_clutch_bodymass.png", 
-        width = 20,
-        height = 20,
-        units = "cm",
-        res = 200,
-        scaling = 0.5)
-
-print(bad_bargraph_clutch_png)
-dev.off()
-
-bad_scatterplot_png<-ggplot(penguins_data_clean, aes(x=body_mass_g, y=culmen_length_mm)) + geom_point()
-
-agg_png("figures/bad_scatterplot_bodymass_culmenlength.png", 
-        width = 20,
-        height = 20,
-        units = "cm",
-        res = 200,
-        scaling = 0.5)
-
-print(bad_scatterplot_png)
-dev.off()
-
-ggplot(penguins_data_clean) + geom_col(aes(x=island, y=body_mass_g, color=species))
-
-island_bm_anova <- aov(body_mass_g ~ island + species, data=penguins_data_clean)
-summary(island_bm_anova)
 ```
 
 ### b) Write about how your design choices mislead the reader about the underlying data (200-300 words). Include references.
