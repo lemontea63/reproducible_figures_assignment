@@ -89,7 +89,7 @@ Moreover, axis labels as specified in the .png plot are also very small, making 
 
 In this analysis, I will assess whether there is a relationship between culmen (beak) depth and culmen length.
 
-```{r Data Exploration- taken from lesson materials provided by Lydia France, University of Oxford, 2024}
+```{r Data Preparation- taken from lesson materials provided by Lydia France, University of Oxford, 2024}
 #All packages used can be found at the top of the document.
 
 #These lines of code preserve raw data in a separate csv file so it is not lost and can be easily recovered.
@@ -103,31 +103,24 @@ head(penguins_data_raw)
 colnames(penguins_data_raw)
 
 
-#Cleaning raw data to generate a cleaner dataset- removing superfluous variables and making data more easily read by R and by humans. 
-
-cleaning_penguin_columns <- function(raw_data){
-    raw_data %>% 
-    clean_names() %>% 
-    shorten_species() %>% 
-      remove_empty(c("rows", "cols")) %>% 
-      select(-starts_with("delta")) %>% 
-      select(-comments)}
-
-#Checking that the above code has worked.
-colnames(penguins_data_raw)
+#Cleaning raw data to generate a cleaner dataset- removing superfluous variables and making data more easily read by R and by humans. Code for cleaning_penguin_columns function can be found in "functions/cleaning_penguin_data.r".
 penguins_data_clean<-cleaning_penguin_columns(penguins_data_raw)
 colnames(penguins_data_clean)
 
 #Writing new .csv file for new, clean dataset to keep this safe in case any accidental changes are made or code breaks, to allow code to be easily recovered. 
 write.csv(penguins_data_clean, here("data","penguins_data_clean.csv"))
 penguins_data_clean <- read.csv(here("data", "penguins_data_clean.csv"))
+```
 
+```{r Creating an exploratory figure.}
 #Making a colour blind-friendly palette useful for distinguishing species on figures.
 species_colours <- c("Adelie" = "darkorange", 
                      "Chinstrap" = "magenta2", 
                      "Gentoo" = "blue")
 
 #Creating an exploratory figure looking at the relationship between beak depth and beak length, as well as how this differs between species. 
+#  scale_colour_manual function allows for different species to be designated the same colours    every time in a colour blind friendly palette, making the figure more acessible and more       reproducible. Also allows for more in depth exploration of initial data before statistical     analysis conducted.
+#  Plotted a scatter plot for this figure as comparing two numerical variables.
 bill_size_exploratory <- ggplot(data=penguins_data_clean, 
                          aes(x=culmen_length_mm, 
                             y=culmen_depth_mm)) + 
