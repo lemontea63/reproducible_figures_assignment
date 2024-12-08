@@ -87,7 +87,7 @@ Moreover, axis labels as specified in the .png plot are also very small, making 
 
 ### Introduction
 
-In this analysis, I will assess whether there is a relationship between culmen (beak) depth and culmen length.
+In this analysis, I will assess whether there is a relationship between culmen (beak) depth and culmen length, and whether species significantly affects this.
 
 ```{r Data Preparation- taken from lesson materials provided by Lydia France, University of Oxford, 2024}
 #All packages used can be found at the top of the document.
