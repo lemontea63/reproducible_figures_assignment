@@ -256,14 +256,24 @@ summary(log_bill_model_int)
 anova(log_bill_model_int)
 ```
 
-```{r Gentoos}
+```{r Statistics- Gentoos}
+#Creating model including interaction term.
+gentoo_log_bill_model_int <- lm(culmen_depth_mm ~ sex * gentoo_log_length, gentoo_data)
 
+#Makes plots to ensure assumptions of analysis not violated.
+plot(gentoo_log_bill_model_int, which = 2)
+plot(gentoo_log_bill_model_int, which = 1)
+
+#Checking outputs of analysis of model.
+summary(gentoo_log_bill_model_int)
+
+anova(gentoo_log_bill_model_int)
 ```
 
 ### Results & Discussion
 Having conducted an ANCOVA analysis to test the effects of species and culmen length (mm) on culmen depth (mm), it has been confirmed that while species and culmen length (mm) do both affect culmen depth (mm), there is no interaction between species and culmen length (mm)
 
-```{r Plotting Results}
+```{r Plotting Results- All species}
 
 #Making results plot, showing relationship between culmen depth, culmen length and species.
 plot_int <- ggplot(penguins_data_clean, aes(x=log_length, y=culmen_depth_mm, color = species)) + geom_point() + geom_smooth(method = "lm") + scale_colour_manual(values = species_colours) + xlab("Log culmen length (mm)") + ylab("Culmen depth (mm)") + theme_bw()
@@ -280,6 +290,13 @@ agg_png("figures/all_species_results_plot.png",
 print(plot_int)
 dev.off()
 
+```
+
+```{r}
+#Making results plot, showing relationship between culmen depth, culmen length and species.
+gentoo_plot_int <- ggplot(gentoo_data, aes(x=gentoo_log_length, y=culmen_depth_mm, color = sex)) + geom_point() + geom_smooth(method = "lm") + scale_colour_manual(values = sex_colours) + xlab("Log Culmen length (mm)") + ylab("Culmen depth (mm)") + theme_bw()
+
+gentoo_plot_int
 ```
 
 ### Conclusion
