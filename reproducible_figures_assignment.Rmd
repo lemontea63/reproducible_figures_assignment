@@ -38,7 +38,6 @@ colnames(penguins_data_raw)
 
 
 #Cleaning raw data to generate a cleaner dataset, using functions sourced from Lydia France's cleaning_penguins.r file.
-colnames(penguins_data_raw)
 penguins_data_clean <- cleaning_penguin_columns(penguins_data_raw)
 colnames(penguins_data_clean)
 
@@ -155,18 +154,20 @@ dev.off()
 
 ### Hypothesis
 
-My first null hypothesis is that there is not a correlation between culmen length and culmen depth in any penguin species.
-My second null hypothesis is that there are not a species specific effects on beak size.
+Null hypotheses:
+1: There is not a correlation between culmen length and culmen depth in any penguin species.
+2: There are not species specific effects on beak size.
+3: There is no interaction between species and culmen length or depth.
 
-My first alternative hypothesis is that there is a correlation between culmen length and culmen depth in any penguin species.
-My second alternative hypothesis is that there are species specific effects on beak size.
+Alternative hypotheses:
+1: There is a correlation between culmen length and culmen depth in any penguin species.
+2: There are species specific effects on beak size.
+3: There is an interaction between species and culmen length or depth.
 
 
 ### Statistical Methods
 
-To test whether culmen length predicts culmen depth, I will conduct a linear regression. This is because the two variables I am testing are numerical values.
-
-To test whether this is affected by species I will use an ANCOVA test, which will allow me to determine the effect of covariate (species) on the association between culmen length and culmen depth.
+To test whether culmen length can predict culmen depth, and whether this is affected by species, I will use an ANCOVA test.
 
 ```{r Statistics}
 
