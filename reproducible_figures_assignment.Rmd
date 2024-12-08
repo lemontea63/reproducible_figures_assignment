@@ -252,7 +252,9 @@ Alternative hypotheses for sex effect in Gentoos:
 
 ### Statistical Methods
 
-To test whether culmen length can predict culmen depth, and whether this is affected by species, I will use an ANCOVA test. I am conducting this analysis as I have a numerical response variable (culmen depth (mm)), a numerical explanatory variable (culmen length (mm)) and a categorical explanatory variable (species).
+In this analysis, an ANCOVA test will be conducted, allowing for testing of the relationship between culmen depth and culmen length as well as culmen depth and species, alongside testing if there is a significant interaction between culmen length and species. An ANCOVA is suitable for this analysis as there is a numerical response variable (culmen depth), a numerical explanatory variable (culmen length) and a categorical explanatory variable (species). 
+
+In Gentoo penguins only, an ANCOVA test will also be conducted, testing the relationship between culmen depth and culmen length as well as culmen depth and sex, alongside testing if there is a significant interaction between culmen length and sex.
 
 ```{r Statistics- all species}
 
@@ -263,9 +265,10 @@ log_bill_model_int <- lm(culmen_depth_mm ~ species * log_length, penguins_data_c
 plot(log_bill_model_int, which = 2)
 plot(log_bill_model_int, which = 1)
 
-#Checking outputs of analysis of model.
+#Checking outputs of analysis of model to assess adjusted R-squared and values for slope and intercept of each group.
 summary(log_bill_model_int)
 
+#Conducting an ANOVA of the above all-species model to assess what the significant effects are.
 anova(log_bill_model_int)
 ```
 
@@ -277,9 +280,10 @@ gentoo_log_bill_model_int <- lm(culmen_depth_mm ~ sex * gentoo_log_length, gento
 plot(gentoo_log_bill_model_int, which = 2)
 plot(gentoo_log_bill_model_int, which = 1)
 
-#Checking outputs of analysis of model.
+#Checking outputs of analysis of model to assess adjusted R-squared and values for slope and intercept of each group.
 summary(gentoo_log_bill_model_int)
 
+#Conducting an ANOVA of the above gentoo-specific model to assess what the significant effects are.
 anova(gentoo_log_bill_model_int)
 ```
 
