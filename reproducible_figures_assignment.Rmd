@@ -4,11 +4,12 @@ output:
   html_document: default
   pdf_document: default
 date: "2023-11-29"
+purpose: A script to analyse the Palmer Penguins dataset.
 ---
 
 # Installing and loading packages
 
-```{r echo=FALSE}
+```{r}
 #Loading packages needed for this project, which should all be in the RENV folder. Also loading functions to clean data from Palmer Penguins dataset, found in a separate folder.
 library(tidyverse)
 library(palmerpenguins)
@@ -136,7 +137,7 @@ sqrt_depth <- sqrt(penguins_data_clean$culmen_depth_mm)
 ggplot(data = penguins_data_clean, aes(x=sqrt_depth)) + geom_histogram()
 #Transformations were not effective. Will use culmen depth data as is for further analysis.
 
-#Creating an exploratory figure looking at the relationship between beak depth and beak length, as well as how this differs between species. 
+#Creating an exploratory figure looking at the relationship between culmen depth and culmen length, as well as how this differs between species. 
 #  scale_colour_manual function allows for different species to be designated the same colours    every time in a colour blind friendly palette, making the figure more acessible and more       reproducible. Also allows for more in depth exploration of initial data before statistical     analysis conducted.
 #  Plotted a scatter plot for this figure as comparing two numerical variables.
 bill_size_exploratory <- ggplot(data=penguins_data_clean, 
