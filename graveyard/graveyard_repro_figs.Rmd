@@ -1,3 +1,5 @@
+
+```{r Code relating to failed analysis on clutch completion and species.}
 #Transforming body mass data using log10 and square root to attempt to make data more normally distributed - unsuccessful.
 ggplot(data = adelie_data, aes(x=body_mass_g)) + geom_histogram(aes(color=species))
 ggplot(data = adelie_data, aes(x=body_mass_g)) + geom_histogram() + scale_x_log10()
@@ -20,13 +22,9 @@ ggplot(data=adelie_data, aes (x=body_mass_g, y=clutch_completion)) + geom_violin
 ggplot(data=chinstrap_data, aes (x=body_mass_g, y=clutch_completion)) + geom_violin(aes(color=species)) + scale_color_manual(values = species_colours) + labs (x= "Body mass (g)", y = "Clutch completion") + theme_bw() + stat_summary(species="mean", geom="pointrange", color="black")
 
 ggplot(data=gentoo_data, aes (x=body_mass_g, y=clutch_completion)) + geom_violin(aes(color=species)) + scale_color_manual(values = species_colours) + labs (x= "Body mass (g)", y = "Clutch completion") + theme_bw() + stat_summary(species="mean", geom="pointrange", color="black")
+```
 
 ```{r excess code which will probably be deleted -> unsure what is and is not useful and need to sort out}
-
-
-#Filtering for body mass based on different species to ensure normal distribution in each species.
-
-
 #Plotting histogram to ensure data follows normal distribution
 ggplot(data = penguins_data_clean, aes(x=body_mass_g)) + geom_histogram(aes(color=species))
 ggplot(data = adelie_data, aes(x=body_mass_g)) + geom_histogram(aes(color=species))
@@ -52,3 +50,15 @@ head(penguins_data_refined)
 
 #Plotting violin chart of body mass against clutch completion for all species, without accounting for sex.
 ggplot(data = penguins_data_refined, aes(x=body_mass_g, y=clutch_completion)) + geom_violin(aes(color = species, shape = sex), width = 1) + geom_jitter(aes(color = species), alpha = 0.25, width = 0.5) + scale_colour_manual(values = species_colours) + scale_shape_manual(values = sex_shapes)
+```
+
+```{r Code related to failed no interaction modelling for ANCOVA of culmen depth, length and species.}
+
+plot(log_bill_model_no_int, which=2)
+plot(log_bill_model_no_int, which=1)
+summary(log_bill_model_no_int)
+anova(log_bill_model_no_int)
+
+plot_no_int <- ggplot(penguins_data_clean, aes(x=culmen_length_mm, y=culmen_depth_mm, color = species)) + geom_point() + geom_line() + scale_colour_manual(values = species_colours) + xlab("Culmen length (mm)") + ylab("Culmen depth (mm)") + theme_bw()
+
+plot_no_int
