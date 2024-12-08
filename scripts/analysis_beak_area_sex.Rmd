@@ -1,0 +1,49 @@
+```{r}
+library(tidyverse)
+library(palmerpenguins)
+library(janitor)
+library(here)
+library(ggplot2)
+library(patchwork)
+library(ragg)
+library(svglite)
+
+source(here("functions","cleaning_penguin_data.r"))
+
+#These lines of code preserve raw data in a separate csv file so it is not lost and can be easily recovered.
+write.csv(penguins_raw, here("data","penguins_raw.csv"))
+penguins_data_raw<-read.csv(here("data","penguins_raw.csv"))
+
+
+#Investigating data- allows initial analysis of what data were collected and what values have been recorded for each.
+
+head(penguins_data_raw)
+colnames(penguins_data_raw)
+
+
+#Cleaning raw data to generate a cleaner dataset- removing superfluous variables and making data more easily read by R and by humans. Code for cleaning_penguin_columns function can be found in "functions/cleaning_penguin_data.r".
+penguins_data_clean<-cleaning_penguin_columns(penguins_data_raw)
+colnames(penguins_data_clean)
+
+#Writing new .csv file for new, clean dataset to keep this safe in case any accidental changes are made or code breaks, to allow code to be easily recovered. 
+write.csv(penguins_data_clean, here("data","penguins_data_clean.csv"))
+penguins_data_clean <- read.csv(here("data", "penguins_data_clean.csv"))
+
+gentoo_data <- penguins_data_clean %>% filter(species == "Gentoo")
+
+#Making a colour blind-friendly palette useful for distinguishing species on figures.
+species_colours <- c("Adelie" = "darkorange", 
+                     "Chinstrap" = "magenta2", 
+                     "Gentoo" = "blue")
+
+bill_size_exploratory_gentoo <- ggplot(data=gentoo_data, 
+                         aes(x=culmen_length_mm, 
+                            y=culmen_depth_mm)) + 
+                         geom_point(aes(color=species, shape=sex)) + 
+                         scale_colour_manual(values = species_colours) + 
+                         scale_shape_manual(values = c(16, 17)) +
+                         xlab("Culmen Length (mm)") + 
+                         ylab("Culmen Depth (mm)")
+
+plot(bill_size_exploratory_gentoo)
+```
