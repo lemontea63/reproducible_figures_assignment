@@ -191,7 +191,9 @@ sex_colours <- c("FEMALE" = "purple",
                  "MALE" = "darkorange")
 
 #Subsetting data to only include that on gentoo penguins
-gentoo_data <- penguins_data_clean %>% filter(species == "Gentoo")
+gentoo_data <- penguins_data_clean %>% 
+               filter(species == "Gentoo") %>% 
+               remove_NA()
 
 #Data transformations in gentoo dataset
 ggplot(data=gentoo_data, aes(x=culmen_length_mm)) + geom_histogram()
@@ -276,9 +278,9 @@ Having conducted an ANCOVA analysis to test the effects of species and culmen le
 ```{r Plotting Results- All species}
 
 #Making results plot, showing relationship between culmen depth, culmen length and species.
-plot_int <- ggplot(penguins_data_clean, aes(x=log_length, y=culmen_depth_mm, color = species)) + geom_point() + geom_smooth(method = "lm") + scale_colour_manual(values = species_colours) + xlab("Log culmen length (mm)") + ylab("Culmen depth (mm)") + theme_bw()
+all_species_plot_int <- ggplot(penguins_data_clean, aes(x=log_length, y=culmen_depth_mm, color = species)) + geom_point() + geom_smooth(method = "lm") + scale_colour_manual(values = species_colours) + xlab("Log culmen length (mm)") + ylab("Culmen depth (mm)") + theme_bw()
 
-plot_int
+all_species_plot_int
 
 agg_png("figures/all_species_results_plot.png", 
         width = 30,
@@ -287,7 +289,7 @@ agg_png("figures/all_species_results_plot.png",
         res = 300,
         scaling = 1.125)
 
-print(plot_int)
+print(all_species_plot_int)
 dev.off()
 
 ```
@@ -297,6 +299,16 @@ dev.off()
 gentoo_plot_int <- ggplot(gentoo_data, aes(x=gentoo_log_length, y=culmen_depth_mm, color = sex)) + geom_point() + geom_smooth(method = "lm") + scale_colour_manual(values = sex_colours) + xlab("Log Culmen length (mm)") + ylab("Culmen depth (mm)") + theme_bw()
 
 gentoo_plot_int
+
+agg_png("figures/gentoo_results_plot.png", 
+        width = 30,
+        height = 15,
+        units = "cm",
+        res = 300,
+        scaling = 1.125)
+
+print(gentoo_plot_int)
+dev.off()
 ```
 
 ### Conclusion
