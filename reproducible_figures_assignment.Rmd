@@ -118,6 +118,22 @@ species_colours <- c("Adelie" = "darkorange",
                      "Chinstrap" = "magenta2", 
                      "Gentoo" = "blue")
 
+#Creating histograms of culmen length to investigate data and assess distribution of data points, as well as effects of any transformations.
+ggplot(data=penguins_data_clean, aes(x=culmen_length_mm)) + geom_histogram()
+log_length <- log10(penguins_data_clean$culmen_length_mm)
+ggplot(data=penguins_data_clean, aes(x=log_length)) + geom_histogram()
+sqrt_length <- sqrt(penguins_data_clean$culmen_length_mm)
+ggplot(data = penguins_data_clean, aes(x=sqrt_length)) + geom_histogram()
+#Transformations were not that effective, although log transformation did make data slightly less right-skewed. Will consider using log_length variable for analysis.
+
+#Creating histograms of culmen depth to investigate data and assess distribution of data points, as well as effects of any transformations.
+ggplot(data=penguins_data_clean, aes(x=culmen_depth_mm)) + geom_histogram()
+log_depth <- log10(penguins_data_clean$culmen_depth_mm)
+ggplot(data=penguins_data_clean, aes(x=log_depth)) + geom_histogram()
+sqrt_depth <- sqrt(penguins_data_clean$culmen_depth_mm)
+ggplot(data = penguins_data_clean, aes(x=sqrt_depth)) + geom_histogram()
+#Transformations were not effective. Will use culmen depth data as is for further analysis.
+
 #Creating an exploratory figure looking at the relationship between beak depth and beak length, as well as how this differs between species. 
 #  scale_colour_manual function allows for different species to be designated the same colours    every time in a colour blind friendly palette, making the figure more acessible and more       reproducible. Also allows for more in depth exploration of initial data before statistical     analysis conducted.
 #  Plotted a scatter plot for this figure as comparing two numerical variables.
