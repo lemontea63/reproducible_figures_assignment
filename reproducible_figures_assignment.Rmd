@@ -255,11 +255,11 @@ Having conducted an ANCOVA analysis to test the effects of species and culmen le
 ```{r Plotting Results}
 
 #Making results plot, showing relationship between culmen depth, culmen length and species.
-plot_int <- ggplot(penguins_data_clean, aes(x=log_length, y=culmen_depth_mm, color = species)) + geom_point() + geom_smooth(method = "lm") + scale_colour_manual(values = species_colours) + xlab("Culmen length (mm)") + ylab("Culmen depth (mm)") + theme_bw()
+plot_int <- ggplot(penguins_data_clean, aes(x=log_length, y=culmen_depth_mm, color = species)) + geom_point() + geom_smooth(method = "lm") + scale_colour_manual(values = species_colours) + xlab("Log culmen length (mm)") + ylab("Culmen depth (mm)") + theme_bw()
 
 plot_int
 
-agg_png("figures/results_plot.png", 
+agg_png("figures/all_species_results_plot.png", 
         width = 30,
         height = 15,
         units = "cm",
