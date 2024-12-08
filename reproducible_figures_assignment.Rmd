@@ -149,8 +149,6 @@ bill_size_exploratory <- ggplot(data=penguins_data_clean,
 
 plot(bill_size_exploratory)
 
-plot(bill_size_sex_exploratory)
-
 #Saving figure as .png files in figures folder.
 agg_png("figures/bill_size_exploratory.png", 
         width = 30,
@@ -173,6 +171,8 @@ bill_size_sex_exploratory <- ggplot(data=penguins_data_clean,
                          scale_shape_manual(values = c(16, 17)) +
                          xlab("Culmen Length (mm)") + 
                          ylab("Culmen Depth (mm)")
+
+plot(bill_size_sex_exploratory)
 
 agg_png("figures/bill_size__sex_exploratory.png", 
         width = 30,
