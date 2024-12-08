@@ -12,7 +12,7 @@
 ##
 ## ---------------------------
 ##
-## Notes: (Added by Oliver Eyre, 28.11.2024) A file to go alongside the reproducible figures lessons from MT weeks 
+## Notes: (Added by this author, 28.11.2024) A file to go alongside the reproducible figures lessons from MT weeks 
 ## 1-4, storing functions to clean up the Palmer Penguins dataset.
 ## 
 ##   
@@ -58,12 +58,13 @@ remove_NA <- function(penguins_data) {
     na.omit()
 }
 
-#A function used to clean column names in the whole dataset, made by Lydia France and edited by Oliver Eyre
+#A function used to clean column names in the whole dataset, made by Lydia France and edited by this author.
+#   Note - does use functions listed above.
 cleaning_penguin_columns <- function(raw_data){
-  print("Cleans column names")
+  print("Cleaning column names, simplifying species names, removing empty columns and rows and removing unnecessary columns/rows")
   raw_data %>% 
     clean_names() %>% 
     shorten_species() %>% 
-    remove_empty(c("rows", "cols")) %>% 
+    remove_empty_columns_rows() %>% 
     select(-starts_with("delta")) %>% 
     select(-comments)}
