@@ -190,7 +190,15 @@ dev.off()
 sex_colours <- c("FEMALE" = "purple",
                  "MALE" = "darkorange")
 
+#Subsetting data to only include that on gentoo penguins
 gentoo_data <- penguins_data_clean %>% filter(species == "Gentoo")
+
+#Data transformations in gentoo dataset
+ggplot(data=gentoo_data, aes(x=culmen_length_mm)) + geom_histogram()
+gentoo_log_length <- log10(gentoo_data$culmen_length_mm)
+ggplot(data=gentoo_data, aes(x=gentoo_log_length)) + geom_histogram()
+gentoo_sqrt_length <- sqrt(gentoo_data$culmen_length_mm)
+ggplot(data = gentoo_data, aes(x=gentoo_sqrt_length)) + geom_histogram()
 
 bill_size_exploratory_gentoo <- ggplot(data=gentoo_data, 
                          aes(x=culmen_length_mm, 
@@ -233,7 +241,7 @@ Alternative hypotheses:
 
 To test whether culmen length can predict culmen depth, and whether this is affected by species, I will use an ANCOVA test. I am conducting this analysis as I have a numerical response variable (culmen depth (mm)), a numerical explanatory variable (culmen length (mm)) and a categorical explanatory variable (species).
 
-```{r Statistics}
+```{r Statistics- all species}
 
 #Creating model including interaction term.
 log_bill_model_int <- lm(culmen_depth_mm ~ species * log_length, penguins_data_clean)
@@ -246,6 +254,9 @@ plot(log_bill_model_int, which = 1)
 summary(log_bill_model_int)
 
 anova(log_bill_model_int)
+```
+
+```{r Gentoos}
 
 ```
 
