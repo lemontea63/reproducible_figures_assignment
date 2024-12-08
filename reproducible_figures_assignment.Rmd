@@ -162,7 +162,7 @@ print(bill_size_exploratory)
 dev.off()
 ```
 
-```{r Sexual dimporphism}
+```{r Sexual dimorphism}
 #Decided to look at effects of sexual dimorphism...
 bill_size_sex_exploratory <- ggplot(data=penguins_data_clean, 
                          aes(x=culmen_length_mm, 
