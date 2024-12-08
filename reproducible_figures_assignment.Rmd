@@ -87,7 +87,9 @@ Moreover, axis labels as specified in the .png plot are also very small, making 
 
 ### Introduction
 
-In this analysis, I will assess whether there is a relationship between culmen (beak) depth and culmen length, and whether species significantly affects this.
+In this analysis, the relationship between culmen (beak) depth and culmen length is assessed, as well as whether species significantly affects this. This is an interesting question as a longer beak is likely to be associated with a deeper beak. That said, as different penguin species are likely to inhabit different niches and therefore hunt different prey, different beak morphologies may have evolved which are suited to the preferred prey of each species, which could disrupt any potential relationship between culmen length and depth. 
+
+To study the relationship between culmen length and culmen depth, data on Adelie, Chinstrap and Gentoo penguins as been used, found in the Palmer Penguins dataset.
 
 ```{r Data Preparation- taken from lesson materials provided by Lydia France, University of Oxford, 2024}
 #All packages used can be found at the top of the document.
@@ -158,8 +160,26 @@ agg_png("figures/bill_size_exploratory.png",
 print(bill_size_exploratory)
 dev.off()
 
-```
+sex_colours <- c("FEMALE" = "purple",
+                 "MALE" = "darkorange")
 
+gentoo_data <- penguins_data_clean %>% filter(species == "Gentoo")
+
+bill_size_exploratory_gentoo <- ggplot(data=gentoo_data, 
+                         aes(x=culmen_length_mm, 
+                            y=culmen_depth_mm)) + 
+                         geom_point(aes(color=sex, shape=sex)) + 
+                         scale_colour_manual(values = sex_colours) + 
+                         scale_shape_manual(values = c(16, 17)) +
+                         xlab("Culmen Length (mm)") + 
+                         ylab("Culmen Depth (mm)")
+
+plot(bill_size_exploratory_gentoo)
+
+```
+```{r}
+
+```
 
 ### Hypothesis
 
@@ -176,41 +196,43 @@ Alternative hypotheses:
 
 ### Statistical Methods
 
-To test whether culmen length can predict culmen depth, and whether this is affected by species, I will use an ANCOVA test.
+To test whether culmen length can predict culmen depth, and whether this is affected by species, I will use an ANCOVA test. I am conducting this analysis as I have a numerical response variable (culmen depth (mm)), a numerical explanatory variable (culmen length (mm)) and a categorical explanatory variable (species).
 
 ```{r Statistics}
 
+#Creating model including interaction term.
 log_bill_model_int <- lm(culmen_depth_mm ~ species * log_length, penguins_data_clean)
 
+#Makes plots to ensure assumptions of analysis not violated.
 plot(log_bill_model_int, which = 2)
 plot(log_bill_model_int, which = 1)
 
+#Checking outputs of analysis of model.
 summary(log_bill_model_int)
 
 anova(log_bill_model_int)
 
+```
+
+### Results & Discussion
+Having conducted an ANCOVA analysis to test the effects of species and culmen length (mm) on culmen depth (mm), it has been confirmed that while species and culmen length (mm) do both affect culmen depth (mm), there is no interaction between species and culmen length (mm)
+
+```{r Plotting Results}
+
+#Making results plot, showing relationship between culmen depth, culmen length and species.
 plot_int <- ggplot(penguins_data_clean, aes(x=culmen_length_mm, y=culmen_depth_mm, color = species)) + geom_point() + geom_smooth(method = "lm") + scale_colour_manual(values = species_colours) + xlab("Culmen length (mm)") + ylab("Culmen depth (mm)") + theme_bw()
 
 plot_int
 
-log_bill_model_no_int <- lm(culmen_depth_mm ~ species + log_length, data =  penguins_data_clean)
+agg_png("figures/results_plot.png", 
+        width = 30,
+        height = 15,
+        units = "cm",
+        res = 300,
+        scaling = 1.125)
 
-plot(log_bill_model_no_int, which=2)
-plot(log_bill_model_no_int, which=1)
-summary(log_bill_model_no_int)
-anova(log_bill_model_no_int)
-
-plot_no_int <- ggplot(penguins_data_clean, aes(x=culmen_length_mm, y=culmen_depth_mm, color = species)) + geom_point() + geom_line(aes()) + scale_colour_manual(values = species_colours) + xlab("Culmen length (mm)") + ylab("Culmen depth (mm)") + theme_bw()
-
-plot_no_int
-
-```
-
-### Results & Discussion
-
-```{r Plotting Results}
-
-# Make sure your code prints. 
+print(plot_int)
+dev.off()
 
 ```
 
