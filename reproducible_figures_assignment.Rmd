@@ -149,7 +149,9 @@ bill_size_exploratory <- ggplot(data=penguins_data_clean,
 
 plot(bill_size_exploratory)
 
-#Saving figure as .png file in functions folder.
+plot(bill_size_sex_exploratory)
+
+#Saving figure as .png files in figures folder.
 agg_png("figures/bill_size_exploratory.png", 
         width = 30,
         height = 15,
@@ -159,7 +161,32 @@ agg_png("figures/bill_size_exploratory.png",
 
 print(bill_size_exploratory)
 dev.off()
+```
 
+```{r Sexual dimporphism}
+#Decided to look at effects of sexual dimorphism...
+bill_size_sex_exploratory <- ggplot(data=penguins_data_clean, 
+                         aes(x=culmen_length_mm, 
+                            y=culmen_depth_mm)) + 
+                         geom_point(aes(color=species, shape=sex)) + 
+                         scale_colour_manual(values = species_colours) + 
+                         scale_shape_manual(values = c(16, 17)) +
+                         xlab("Culmen Length (mm)") + 
+                         ylab("Culmen Depth (mm)")
+
+agg_png("figures/bill_size__sex_exploratory.png", 
+        width = 30,
+        height = 15,
+        units = "cm",
+        res = 300,
+        scaling = 1.125)
+
+print(bill_size_sex_exploratory)
+dev.off()
+```
+
+```{r Gentoo specific}
+#Making colour blind friendly palette to analyse effects of sex in one species (gentoo)
 sex_colours <- c("FEMALE" = "purple",
                  "MALE" = "darkorange")
 
@@ -176,15 +203,23 @@ bill_size_exploratory_gentoo <- ggplot(data=gentoo_data,
 
 plot(bill_size_exploratory_gentoo)
 
-```
-```{r}
+#Saving gentoo figure as .png files in figures folder.
+agg_png("figures/bill_size_gentoo_exploratory.png", 
+        width = 30,
+        height = 15,
+        units = "cm",
+        res = 300,
+        scaling = 1.125)
+
+print(bill_size_exploratory_gentoo)
+dev.off()
 
 ```
 
 ### Hypothesis
 
 Null hypotheses:
-1: There is no effect of culmen length on culmen depth. .
+1: There is no effect of culmen length on culmen depth.
 2: There is no effect of species on culmen depth.
 3: There is no interaction between species, culmen length or culmen depth.
 
@@ -220,7 +255,7 @@ Having conducted an ANCOVA analysis to test the effects of species and culmen le
 ```{r Plotting Results}
 
 #Making results plot, showing relationship between culmen depth, culmen length and species.
-plot_int <- ggplot(penguins_data_clean, aes(x=culmen_length_mm, y=culmen_depth_mm, color = species)) + geom_point() + geom_smooth(method = "lm") + scale_colour_manual(values = species_colours) + xlab("Culmen length (mm)") + ylab("Culmen depth (mm)") + theme_bw()
+plot_int <- ggplot(penguins_data_clean, aes(x=log_length, y=culmen_depth_mm, color = species)) + geom_point() + geom_smooth(method = "lm") + scale_colour_manual(values = species_colours) + xlab("Culmen length (mm)") + ylab("Culmen depth (mm)") + theme_bw()
 
 plot_int
 
