@@ -148,14 +148,14 @@ dev.off()
 ### Hypothesis
 
 Null hypotheses:
-1: There is not a correlation between culmen length and culmen depth in any penguin species.
-2: There are not species specific effects on beak size.
-3: There is no interaction between species and culmen length or depth.
+1: There is no effect of culmen length on culmen depth. .
+2: There is no effect of species on culmen depth.
+3: There is no interaction between species, culmen length or culmen depth.
 
 Alternative hypotheses:
-1: There is a correlation between culmen length and culmen depth in any penguin species.
-2: There are species specific effects on beak size.
-3: There is an interaction between species and culmen length or depth.
+1: There is a significant effect of culmen length on culmen depth. .
+2: There is a significant effect of species on culmen depth.
+3: There is a significant interaction between species, culmen length and culmen depth.
 
 
 ### Statistical Methods
