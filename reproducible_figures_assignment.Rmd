@@ -288,7 +288,19 @@ anova(gentoo_log_bill_model_int)
 ```
 
 ### Results & Discussion
-Having conducted an ANCOVA analysis to test the effects of species and culmen length (mm) on culmen depth (mm), it has been confirmed that while species and culmen length (mm) do both affect culmen depth (mm), there is no interaction between species and culmen length (mm)
+Having conducted an ANCOVA analysis to test the effects of species and log culmen length (mm) on culmen depth (mm), it has been confirmed that while species and culmen length (mm) do both affect culmen depth (mm), there is no interaction between species and culmen length (mm). Therefore, while we fail to reject the null hypothesis that there is no interaction between species and culmen length, we can reject two null hypotheses:
+    1- culmen length does not affect culmen depth.
+    2- species does not affect culmen depth.
+The adjusted R-squared value of the model lm(culmen_depth ~ species * culmen_length) was 0.7664, suggesting 76.64% of variance in the data can be explained by the model. The p-values for both effect of species and effect of log culmen length on culmen depth were both very small, and the F-values were both greater than 1 (496.1031 and 126.6277 respectively). 
+
+This aligns with what might be expected as increasing culmen length is likely to be correlated with increasing culmen depth, increasing the size of the beak overall. Moreover, as different species are different sizes and inhabit different ecological niches, they are likely to evolve different beak morphologies in response which are better suited to foods they hunt. That said, the fact there is no interaction between species and culmen length suggests...
+
+An ANCOVA analysis was also conducted on the effects of sex and log culmen length on culmen depth. This analysis confirmed that while sex and culmen length (mm) do have a statistically significant effect on culmen depth (mm), there is again no interaction between the two explanatory variables. Therefore, we fail to reject the null hypothesis that there is no interaction between sex and culmen length, suggesting that sexual dimorphism is not at play here. This is surprising, given that on the exploratory figure showing data on gentoos, sex seemed to play a role in determining culmen depth with respect to culmen length, but this is not the case. 
+
+That said, two null hypotheses can be rejected:
+    1- culmen length does not affect culmen depth in gentoo penguins.
+    2- sex does not affect culmen depth in gentoo penguins.
+The adjusted R-squared value for the model lm(gentoo_culmen_depth ~ sex * gentoo_log_culmen_length) was 0.6094, showing that 60.94% of variance recorded can be explained by the model put forward. The F-value of sex for this model was 171.592, and for log_length was 15.3785, but for the interaction an F-value of 0.2038 was recorded, which is less than 1 and therefore shows there is no significant interaction. While log_length has a statistically significant effect on culmen_depth in gentoo penguins, it has a lower F-value and p-value than sex, suggesting the relationship in this penguin species is weak.
 
 ```{r Plotting Results- All species}
 
@@ -327,6 +339,7 @@ dev.off()
 ```
 
 ### Conclusion
+
 
 *You will be marked on the following:*
 
