@@ -240,9 +240,10 @@ sex_colours <- c("FEMALE" = "purple",
                  "MALE" = "darkorange")
 
 bill_size_exploratory_gentoo <- ggplot(data=gentoo_data, 
-                         aes(x=culmen_length_mm, 
+                         aes(x=species, 
                             y=culmen_depth_mm)) + 
                          geom_point(aes(color=sex, shape=sex)) + 
+                         geom_jitter(aes(color = sex), alpha = 0.25, position =                                     position_jitter(width = 0.4, seed=0)) +
                          scale_colour_manual(values = sex_colours) + 
                          scale_shape_manual(values = c(16, 17)) +
                          xlab("Culmen Length (mm)") + 
