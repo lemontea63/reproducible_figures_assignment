@@ -47,9 +47,10 @@ write.csv(penguins_data_clean, here("data","penguins_data_clean.csv"))
 penguins_data_clean <- read.csv(here("data", "penguins_data_clean.csv"))
 ```
 
-## QUESTION 1: Data Visualisation for Science Communication
+# QUESTION 1: Data Visualisation for Science Communication
 
-### a) Create a figure using the Palmer Penguin dataset that is correct but badly communicates the data. Do not make a boxplot.
+## a) 
+Create a figure using the Palmer Penguin dataset that is correct but badly communicates the data. Do not make a boxplot.
 
 ```{r bad figure code, echo=FALSE}
 #Creating a bad bar graph showing how body mass differs between islands to answer question 1 of assessment.
@@ -71,25 +72,24 @@ print(bad_bargraph_island_png)
 dev.off()
 ```
 
-### b) Write about how your design choices mislead the reader about the underlying data (200-300 words). Include references.
+## b) 
+Write about how your design choices mislead the reader about the underlying data (200-300 words). Include references.
 
 My graph is correct, but some design choices mislead the reader.
 
-Firstly, there is no information about each data point, such as the species of penguin each sample is a member of. This is misleading; penguin species is likely a confounding variable which impacts body mass, and the island(s) inhabited. This therefore may mislead a reader as the effects of different species are not explicitly shown, so a misleading correlation may be represented on my graph. 
+Firstly, there is no information about each data point, such as the species of penguin each sample is a member of. This is misleading; penguin species is likely a confounding variable which impacts body mass, and the island(s) inhabited. This therefore may mislead a reader as the effects of different species are not explicitly shown, so a misleading correlation may be represented on my graph.
 
 The lack of error bars is also misleading as it is unclear to a reader how much measurements for a certain treatment (in this case each island) vary. Therefore, it is unclear whether the samples taken from each island are representative of the population on each island or whether there is wide variation and improper sampling, or whether the data are precise and/or accurate.
 
-On this graph, I also only show a summary of the data, in this case maximum body mass in each category (i.e on each island). This is misleading because important information may be hidden. For example, the maximum body mass for each island might be an outlier. This is also represented in the axis labels, which do not state maximum body mass but instead state only "body_mass_g". 
+On this graph, I also only show a summary of the data, in this case maximum body mass in each category (i.e on each island). This is misleading because important information may be hidden. For example, the maximum body mass for each island might be an outlier. This is also represented in the axis labels, which do not state maximum body mass but instead state only "body_mass_g".
 
 Moreover, axis labels as specified in the .png plot are also very small, making it hard for a reader to understand what the graph is showing. Readers must look very closely at the axis labels to see the variables being compared. This is misleading because by not clearly showing your axis labels and any units associated with them, readers are more likely to miss key details about exactly what is being compared or what relationship is suggested by a graph between, which may cause them to believe a false correlation is present.
 
+# QUESTION 2: Data Pipeline
 
+## Introduction
 
-## QUESTION 2: Data Pipeline
-
-### Introduction
-
-In this analysis, the relationship between culmen (beak) depth and culmen length is assessed, as well as whether species significantly affects this. This is an interesting question as a longer beak is likely to be associated with a deeper beak. That said, as different penguin species are likely to inhabit different niches and therefore hunt different prey, different beak morphologies may have evolved which are suited to the preferred prey of each species, which could disrupt any potential relationship between culmen length and depth. 
+In this analysis, the relationship between culmen (beak) depth and culmen length is assessed, as well as whether species significantly affects this. This is an interesting question as a longer beak is likely to be associated with a deeper beak. That said, as different penguin species are likely to inhabit different niches and therefore hunt different prey, different beak morphologies may have evolved which are suited to the preferred prey of each species, which could disrupt any potential relationship between culmen length and depth.
 
 To study the relationship between culmen length and culmen depth, data on Adelie, Chinstrap and Gentoo penguins as been used, found in the Palmer Penguins dataset.
 
@@ -115,31 +115,45 @@ write.csv(penguins_data_clean, here("data","penguins_data_clean.csv"))
 penguins_data_clean <- read.csv(here("data", "penguins_data_clean.csv"))
 ```
 
-```{r Creating an exploratory figure.}
-#Making a colour blind-friendly palette useful for distinguishing species on figures.
+```{r Investigating all species data.}
+
+#Creating histograms of data on culmen length in all species to investigate data and assess distribution of data points, as well as effects of any transformations.
+ggplot(data=penguins_data_clean, aes(x=culmen_length_mm)) + geom_histogram()
+
+#Log transforming culmen_length_mm using log10() function, and plotting histogram.
+log_length <- log10(penguins_data_clean$culmen_length_mm) 
+ggplot(data=penguins_data_clean, aes(x=log_length)) + geom_histogram()
+
+#Square-root transforming culmen_length_mm using sqrt() function, and plotting histogram.
+sqrt_length <- sqrt(penguins_data_clean$culmen_length_mm)
+ggplot(data = penguins_data_clean, aes(x=sqrt_length)) + geom_histogram()
+#Transformations were not that effective, although log transformation did make data slightly less right-skewed; will use log-transformed culmen length data for analysis.
+
+#Creating histograms of data on culmen depth in all species to investigate data and assess distribution of data points, as well as effects of any transformations.
+ggplot(data=penguins_data_clean, aes(x=culmen_depth_mm)) + geom_histogram()
+
+#Log transforming culmen_depth_mm using log10() function, and plotting histogram.
+log_depth <- log10(penguins_data_clean$culmen_depth_mm)
+ggplot(data=penguins_data_clean, aes(x=log_depth)) + geom_histogram()
+
+#Square-root transforming culmen_depth_mm using sqrt() function, and plotting histogram.
+sqrt_depth <- sqrt(penguins_data_clean$culmen_depth_mm)
+ggplot(data = penguins_data_clean, aes(x=sqrt_depth)) + geom_histogram()
+#Transformations were not effective. Will use untransformed culmen depth data for further analysis.
+```
+
+```{r Creating exploratory figure}
+#Creating an exploratory figure looking at the relationship between culmen depth and culmen length, as well as how this differs between species. 
+#  scale_colour_manual function allows for different species to be designated the same colours    every time in a colour blind friendly palette, making the figure more accessible and more       reproducible. 
+#     Also allows for more in depth exploration of initial data before statistical analysis          conducted.
+#  Plotted a scatter plot as comparing two numerical variables (culmen length and depth).
+
+#Making a colour blind-friendly palette useful for distinguishing species on figures. Specifying this ensures the same species are represented by the same colours on any graph where species colours are specified, making this document more accessible (colour blind friendly) and more reproducible.
 species_colours <- c("Adelie" = "darkorange", 
                      "Chinstrap" = "magenta2", 
                      "Gentoo" = "blue")
 
-#Creating histograms of culmen length to investigate data and assess distribution of data points, as well as effects of any transformations.
-ggplot(data=penguins_data_clean, aes(x=culmen_length_mm)) + geom_histogram()
-log_length <- log10(penguins_data_clean$culmen_length_mm)
-ggplot(data=penguins_data_clean, aes(x=log_length)) + geom_histogram()
-sqrt_length <- sqrt(penguins_data_clean$culmen_length_mm)
-ggplot(data = penguins_data_clean, aes(x=sqrt_length)) + geom_histogram()
-#Transformations were not that effective, although log transformation did make data slightly less right-skewed. Will consider using log_length variable for analysis.
-
-#Creating histograms of culmen depth to investigate data and assess distribution of data points, as well as effects of any transformations.
-ggplot(data=penguins_data_clean, aes(x=culmen_depth_mm)) + geom_histogram()
-log_depth <- log10(penguins_data_clean$culmen_depth_mm)
-ggplot(data=penguins_data_clean, aes(x=log_depth)) + geom_histogram()
-sqrt_depth <- sqrt(penguins_data_clean$culmen_depth_mm)
-ggplot(data = penguins_data_clean, aes(x=sqrt_depth)) + geom_histogram()
-#Transformations were not effective. Will use culmen depth data as is for further analysis.
-
-#Creating an exploratory figure looking at the relationship between culmen depth and culmen length, as well as how this differs between species. 
-#  scale_colour_manual function allows for different species to be designated the same colours    every time in a colour blind friendly palette, making the figure more acessible and more       reproducible. Also allows for more in depth exploration of initial data before statistical     analysis conducted.
-#  Plotted a scatter plot for this figure as comparing two numerical variables.
+#Encodes information for all-species exploratory graph. 
 bill_size_exploratory <- ggplot(data=penguins_data_clean, 
                          aes(x=culmen_length_mm, 
                             y=culmen_depth_mm)) + 
@@ -148,9 +162,10 @@ bill_size_exploratory <- ggplot(data=penguins_data_clean,
                          xlab("Culmen Length (mm)") + 
                          ylab("Culmen Depth (mm)")
 
+#plot() function allows graph to be outputted.
 plot(bill_size_exploratory)
 
-#Saving figure as .png files in figures folder.
+#Saving figure as .png file in figures folder.
 agg_png("figures/bill_size_exploratory.png", 
         width = 30,
         height = 15,
@@ -158,12 +173,16 @@ agg_png("figures/bill_size_exploratory.png",
         res = 300,
         scaling = 1.125)
 
+#Ensures figure saved in "figures" folder actually has graph encoded within it, as opposed to blank file.
 print(bill_size_exploratory)
 dev.off()
 ```
 
 ```{r Sexual dimorphism}
-#Decided to look at effects of sexual dimorphism...
+#Decided to look at effects of sexual dimorphism, so encoded separate graph which codes for identification of sex as well as species through different shapes.
+# scale_shape_manual allows specification of shape so different sexes can be designated the      same shapes every time making the figure more reproducible. 
+#   Also allows for more in depth exploration of initial data before statistical analysis          conducted.
+#Plotted a scatter plot as comparing two numerical variables (culmen length and depth).
 bill_size_sex_exploratory <- ggplot(data=penguins_data_clean, 
                          aes(x=culmen_length_mm, 
                             y=culmen_depth_mm)) + 
@@ -173,8 +192,10 @@ bill_size_sex_exploratory <- ggplot(data=penguins_data_clean,
                          xlab("Culmen Length (mm)") + 
                          ylab("Culmen Depth (mm)")
 
+#plot() function allows graph to be outputted.
 plot(bill_size_sex_exploratory)
 
+#Saving figure as .png file in figures folder.
 agg_png("figures/bill_size__sex_exploratory.png", 
         width = 30,
         height = 15,
@@ -182,12 +203,13 @@ agg_png("figures/bill_size__sex_exploratory.png",
         res = 300,
         scaling = 1.125)
 
+#Ensures figure saved in "figures" folder actually has graph encoded within it, as opposed to blank file.
 print(bill_size_sex_exploratory)
 dev.off()
 ```
 
 ```{r Gentoo specific}
-#Making colour blind friendly palette to analyse effects of sex in one species (gentoo)
+#Making a colour blind-friendly palette useful for distinguishing sexes on figures. Specifying this ensures each sex is represented by the same colours on any graph where sex-specific colours are specified, making this document more accessible (colour blind friendly) and more reproducible.
 sex_colours <- c("FEMALE" = "purple",
                  "MALE" = "darkorange")
 
@@ -196,12 +218,22 @@ gentoo_data <- penguins_data_clean %>%
                filter(species == "Gentoo") %>% 
                remove_NA()
 
-#Data transformations in gentoo dataset
+#Creating histograms of data on culmen length in all Gentoos to investigate data and assess distribution of data points, as well as effects of any transformations.
+#Histogram for untransformed data:
 ggplot(data=gentoo_data, aes(x=culmen_length_mm)) + geom_histogram()
+
+#Log transforming culmen_length_mm using log10() function, and plotting histogram.
 gentoo_log_length <- log10(gentoo_data$culmen_length_mm)
 ggplot(data=gentoo_data, aes(x=gentoo_log_length)) + geom_histogram()
+
+#Square-root transforming culmen_depth_mm using sqrt() function, and plotting histogram.
 gentoo_sqrt_length <- sqrt(gentoo_data$culmen_length_mm)
 ggplot(data = gentoo_data, aes(x=gentoo_sqrt_length)) + geom_histogram()
+```
+
+```{r Creating exploratory figure for gentoo penguins in particular}
+#Made exploratory figure to look more closely at one species in particular.
+#Plotted a scatter plot as comparing two numerical variables (culmen length and depth).
 
 bill_size_exploratory_gentoo <- ggplot(data=gentoo_data, 
                          aes(x=culmen_length_mm, 
@@ -227,32 +259,21 @@ dev.off()
 
 ```
 
-### Hypothesis
+## Hypotheses
 
-Null hypotheses for species effect:
-1: There is no effect of culmen length on culmen depth.
-2: There is no effect of species on culmen depth.
-3: There is no interaction between species and culmen length.
+### All species
+Null hypotheses for species effect: 1: There is no effect of culmen length on culmen depth. 2: There is no effect of species on culmen depth. 3: There is no interaction between species and culmen length.
 
-Alternative hypotheses for species effect:
-1: There is a significant effect of culmen length on culmen depth. .
-2: There is a significant effect of species on culmen depth.
-3: There is a significant interaction between species and culmen length.
+Alternative hypotheses for species effect: 1: There is a significant effect of culmen length on culmen depth. . 2: There is a significant effect of species on culmen depth. 3: There is a significant interaction between species and culmen length.
 
-Null hypotheses for sex effect in Gentoos:
-1: There is no effect of culmen length on culmen depth.
-2: There is no effect of sex on culmen depth.
-3: There is no interaction between sex and culmen length.
+###Gentoo penguins
+Null hypotheses for sex effect in Gentoos: 1: There is no effect of culmen length on culmen depth. 2: There is no effect of sex on culmen depth. 3: There is no interaction between sex and culmen length.
 
-Alternative hypotheses for sex effect in Gentoos:
-1: There is a significant effect of culmen length on culmen depth. .
-2: There is a significant effect of species on culmen depth.
-3: There is a significant interaction between species and culmen length.
+Alternative hypotheses for sex effect in Gentoos: 1: There is a significant effect of culmen length on culmen depth. . 2: There is a significant effect of species on culmen depth. 3: There is a significant interaction between species and culmen length.
 
+## Statistical Methods
 
-### Statistical Methods
-
-In this analysis, an ANCOVA test will be conducted, allowing for testing of the relationship between culmen depth and culmen length as well as culmen depth and species, alongside testing if there is a significant interaction between culmen length and species. An ANCOVA is suitable for this analysis as there is a numerical response variable (culmen depth), a numerical explanatory variable (culmen length) and a categorical explanatory variable (species). 
+In this analysis, an ANCOVA test will be conducted, allowing for testing of the relationship between culmen depth and culmen length as well as culmen depth and species, alongside testing if there is a significant interaction between culmen length and species. An ANCOVA is suitable for this analysis as there is a numerical response variable (culmen depth), a numerical explanatory variable (culmen length) and a categorical explanatory variable (species).
 
 In Gentoo penguins only, an ANCOVA test will also be conducted, testing the relationship between culmen depth and culmen length as well as culmen depth and sex, alongside testing if there is a significant interaction between culmen length and sex.
 
@@ -261,7 +282,9 @@ In Gentoo penguins only, an ANCOVA test will also be conducted, testing the rela
 #Creating model including interaction term.
 log_bill_model_int <- lm(culmen_depth_mm ~ log_length * species, penguins_data_clean)
 
-#Makes plots to ensure assumptions of analysis not violated.
+#Makes plots to ensure assumptions of normality (specified by which=2) and homoscedasticity (specified by which=1) are not violated.
+# par() function allows plotting of multi-panel figure.
+par(mfrow = c(1,2))
 plot(log_bill_model_int, which = 2)
 plot(log_bill_model_int, which = 1)
 
@@ -275,6 +298,7 @@ anova(log_bill_model_int)
 log_bill_model_noint <- lm(culmen_depth_mm ~ log_length + species, penguins_data_clean)
 
 #Making plot to ensure assumptions of analysis are not violated.
+par(mfrow = c(1,2))
 plot(log_bill_model_noint, which = 2)
 plot(log_bill_model_noint, which = 1)
 
@@ -293,6 +317,7 @@ anova(log_bill_model_int, log_bill_model_noint)
 gentoo_log_bill_model_int <- lm(culmen_depth_mm ~ gentoo_log_length * sex, gentoo_data)
 
 #Makes plots to ensure assumptions of analysis not violated.
+par(mfrow = c(1,2))
 plot(gentoo_log_bill_model_int, which = 2)
 plot(gentoo_log_bill_model_int, which = 1)
 
@@ -306,6 +331,7 @@ anova(gentoo_log_bill_model_int)
 gentoo_log_bill_model_noint <- lm(culmen_depth_mm ~ gentoo_log_length + sex, gentoo_data)
 
 #Makes plots to ensure assumptions of analysis not violated.
+par(mfrow = c(1,2))
 plot(gentoo_log_bill_model_noint, which = 2)
 plot(gentoo_log_bill_model_noint, which = 1)
 
@@ -319,20 +345,15 @@ anova(gentoo_log_bill_model_noint)
 anova(gentoo_log_bill_model_int, gentoo_log_bill_model_noint)
 ```
 
-### Results & Discussion
-Having conducted an ANCOVA analysis to test the effects of species and log culmen length (mm) on culmen depth (mm), it has been confirmed that while species and culmen length (mm) do both affect culmen depth (mm), there is no interaction between species and culmen length (mm). Therefore, while we fail to reject the null hypothesis that there is no interaction between species and culmen length, we can reject two null hypotheses:
-    1- culmen length does not affect culmen depth.
-    2- species does not affect culmen depth.
-The adjusted R-squared value of the model lm(culmen_depth ~ species * culmen_length) was 0.7664, suggesting 76.64% of variance in the data can be explained by the model. The p-values for both effect of species and effect of log culmen length on culmen depth were both very small, and the F-values were both greater than 1 (496.1031 and 126.6277 respectively). 
+## Results & Discussion
+
+Having conducted an ANCOVA analysis to test the effects of species and log culmen length (mm) on culmen depth (mm), it has been confirmed that while species and culmen length (mm) do both affect culmen depth (mm), there is no interaction between species and culmen length (mm). Therefore, while we fail to reject the null hypothesis that there is no interaction between species and culmen length, we can reject two null hypotheses: 1- culmen length does not affect culmen depth. 2- species does not affect culmen depth. The adjusted R-squared value of the model lm(culmen_depth \~ species \* culmen_length) was 0.7664, suggesting 76.64% of variance in the data can be explained by the model. The p-values for both effect of species and effect of log culmen length on culmen depth were both very small, and the F-values were both greater than 1 (496.1031 and 126.6277 respectively).
 
 This aligns with what might be expected as increasing culmen length is likely to be correlated with increasing culmen depth, increasing the size of the beak overall. Moreover, as different species are different sizes and inhabit different ecological niches, they are likely to evolve different beak morphologies in response which are better suited to foods they hunt. That said, the fact there is no interaction between species and culmen length suggests...
 
-An ANCOVA analysis was also conducted on the effects of sex and log culmen length on culmen depth. This analysis confirmed that while sex and culmen length (mm) do have a statistically significant effect on culmen depth (mm), there is again no interaction between the two explanatory variables. Therefore, we fail to reject the null hypothesis that there is no interaction between sex and culmen length, suggesting that sexual dimorphism is not at play here. This is surprising, given that on the exploratory figure showing data on gentoos, sex seemed to play a role in determining culmen depth with respect to culmen length, but this is not the case. 
+An ANCOVA analysis was also conducted on the effects of sex and log culmen length on culmen depth. This analysis confirmed that while sex and culmen length (mm) do have a statistically significant effect on culmen depth (mm), there is again no interaction between the two explanatory variables. Therefore, we fail to reject the null hypothesis that there is no interaction between sex and culmen length, suggesting that sexual dimorphism is not at play here. This is surprising, given that on the exploratory figure showing data on gentoos, sex seemed to play a role in determining culmen depth with respect to culmen length, but this is not the case.
 
-That said, two null hypotheses can be rejected:
-    1- culmen length does not affect culmen depth in gentoo penguins.
-    2- sex does not affect culmen depth in gentoo penguins.
-The adjusted R-squared value for the model lm(gentoo_culmen_depth ~ sex * gentoo_log_culmen_length) was 0.6094, showing that 60.94% of variance recorded can be explained by the model put forward. The F-value of sex for this model was 171.592, and for log_length was 15.3785, but for the interaction an F-value of 0.2038 was recorded, which is less than 1 and therefore shows there is no significant interaction. While log_length has a statistically significant effect on culmen_depth in gentoo penguins, it has a lower F-value and p-value than sex, suggesting the relationship in this penguin species is weak.
+That said, two null hypotheses can be rejected: 1- culmen length does not affect culmen depth in gentoo penguins. 2- sex does not affect culmen depth in gentoo penguins. The adjusted R-squared value for the model lm(gentoo_culmen_depth \~ sex \* gentoo_log_culmen_length) was 0.6094, showing that 60.94% of variance recorded can be explained by the model put forward. The F-value of sex for this model was 171.592, and for log_length was 15.3785, but for the interaction an F-value of 0.2038 was recorded, which is less than 1 and therefore shows there is no significant interaction. While log_length has a statistically significant effect on culmen_depth in gentoo penguins, it has a lower F-value and p-value than sex, suggesting the relationship in this penguin species is weak.
 
 ```{r Plotting Results- All species}
 
@@ -370,8 +391,7 @@ print(gentoo_plot_int)
 dev.off()
 ```
 
-### Conclusion
-
+## Conclusion
 
 *You will be marked on the following:*
 
@@ -379,9 +399,9 @@ a)  Your code for readability and functionality
 b)  Your figures for communication
 c)  Your text communication of your analysis
 
-## QUESTION 3: Open Science
+# QUESTION 3: Open Science
 
-### a) GitHub
+## a) GitHub
 
 *Upload your RProject you created for **Question 2** and any files and subfolders used to GitHub. Do not include any identifiers such as your name. Make sure your GitHub repo is public.*
 
@@ -389,13 +409,13 @@ c)  Your text communication of your analysis
 
 *You will be marked on your repo organisation and readability.*
 
-### b) Share your repo with a partner, download, and try to run their data pipeline.
+## b) Share your repo with a partner, download, and try to run their data pipeline.
 
 *Partner's GitHub link:*
 
 *You **must** provide this so I can verify there is no plagiarism between you and your partner.*
 
-### c) Reflect on your experience running their code. (300-500 words)
+## c) Reflect on your experience running their code. (300-500 words)
 
 -   *What elements of your partner's code helped you to understand their data pipeline?*
 
@@ -405,7 +425,7 @@ c)  Your text communication of your analysis
 
 -   *If you needed to alter your partner's figure using their code, do you think that would be easy or difficult, and why?*
 
-### d) Reflect on your own code based on your experience with your partner's code and their review of yours. (300-500 words)
+## d) Reflect on your own code based on your experience with your partner's code and their review of yours. (300-500 words)
 
 -   *What improvements did they suggest, and do you agree?*
 
