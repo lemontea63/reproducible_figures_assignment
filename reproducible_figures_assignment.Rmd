@@ -127,7 +127,7 @@ penguins_data_clean<-cleaning_penguin_columns(penguins_data_raw)
 colnames(penguins_data_clean)
 str(penguins_data_clean)
 
-#Factorising species as this is needed for tukey test.
+#Factorising species as this is needed for Tukey test.
 penguins_data_clean$species = as.factor(penguins_data_clean$species)
 str(penguins_data_clean)
 
@@ -237,6 +237,8 @@ dev.off()
 gentoo_data <- penguins_data_clean %>% 
                filter(species == "Gentoo") %>% 
                remove_NA()
+gentoo_data
+#Do not need to factorise sex in gentoo data as only 2 groups so no need to run Tukey post-hoc test.
 
 #Creating histograms of data on culmen length in all Gentoos to investigate data and assess distribution of data points, as well as effects of any transformations.
 #Histogram for untransformed data:
@@ -342,6 +344,10 @@ summary(log_bill_model_int)
 allspecies_int_anova <- aov(log_bill_model_int)
 summary(allspecies_int_anova)
 
+#Running post-hoc Tukey test using glht() function to assess which species have significantly different mean culmen depth
+allspecies_int_posthoc <- glht(log_bill_model_int, linfct = mcp(species = "Tukey"))
+summary(allspecies_int_posthoc)
+
 #Model without interaction term - necessary as no significant interaction found.
 log_bill_model_noint <- lm(culmen_depth_mm ~ species + log_length, penguins_data_clean)
 
@@ -356,6 +362,10 @@ summary(log_bill_model_noint)
 #Conducting an ANOVA of the above all-species model without interaction to assess what the significant effects are.
 allspecies_noint_anova <- aov(log_bill_model_noint)
 summary(allspecies_noint_anova)
+
+#Running post-hoc Tukey test using glht() function to assess which species have significantly different mean culmen depth
+allspecies_noint_posthoc <- glht(log_bill_model_noint, linfct = mcp(species = "Tukey"))
+summary(allspecies_noint_posthoc)
 
 #Conducting ANOVA to assess if there is a significant interaction between species and culmen length (mm)
 allspecies_test_fits_diff <- anova(log_bill_model_int, log_bill_model_noint)
