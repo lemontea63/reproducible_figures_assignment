@@ -148,7 +148,6 @@ ggplot(data = penguins_data_clean, aes(x=sqrt_depth)) + geom_histogram()
 #Creating an exploratory figure looking at the relationship between culmen depth and culmen length, as well as how this differs between species. 
 #  scale_colour_manual function allows for different species to be designated the same colours    every time in a colour blind friendly palette, making the figure more accessible and more       reproducible. 
 #     Also allows for more in depth exploration of initial data before statistical analysis          conducted.
-#  Plotted a scatter plot as looking at two numerical variables (culmen length and depth) and how these vary with categorical variable (species).
 
 #Making a colour blind-friendly palette useful for distinguishing species on figures. Specifying this ensures the different species are represented by the consistent colours on any graph, making this document more accessible (colour blind friendly) and more reproducible.
 species_colours <- c("Adelie" = "darkorange", 
@@ -158,9 +157,10 @@ species_colours <- c("Adelie" = "darkorange",
 #Encodes information for all-species exploratory graph.
 # scale_colour_manual() ensures each species is represented by the colours specified above in species_colours.
 bill_size_exploratory <- ggplot(data=penguins_data_clean, 
-                         aes(x=culmen_length_mm, 
+                         aes(x=species, 
                             y=culmen_depth_mm)) + 
                          geom_point(aes(color=species)) + 
+                         geom_jitter(aes(color = species), alpha = 0.25, position =                                     position_jitter(width = 0.4, seed=0)) +
                          scale_colour_manual(values = species_colours) + 
                          xlab("Culmen Length (mm)") + 
                          ylab("Culmen Depth (mm)")
@@ -187,9 +187,10 @@ dev.off()
 #   Also allows for more in depth exploration of initial data before statistical analysis          conducted.
 #Plotted a scatter plot as comparing two numerical variables (culmen length and depth).
 bill_size_sex_exploratory <- ggplot(data=penguins_data_clean, 
-                         aes(x=culmen_length_mm, 
+                         aes(x=species, 
                             y=culmen_depth_mm)) + 
                          geom_point(aes(color=species, shape=sex)) + 
+                         geom_jitter(aes(color = species), alpha = 0.25, position =                                     position_jitter(width = 0.4, seed=0)) +
                          scale_colour_manual(values = species_colours) + 
                          scale_shape_manual(values = c(16, 17)) +
                          xlab("Culmen Length (mm)") + 
