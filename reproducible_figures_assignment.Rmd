@@ -89,9 +89,11 @@ Moreover, axis labels as specified in the .png plot are also very small, making 
 
 ## Introduction
 
-In this analysis, the relationship between culmen (beak) depth and culmen length is assessed, as well as whether species significantly affects this. This is an interesting question as a longer beak is likely to be associated with a deeper beak. That said, as different penguin species are likely to inhabit different niches and therefore hunt different prey, different beak morphologies may have evolved which are suited to the preferred prey of each species, which could disrupt any potential relationship between culmen length and depth.
+Many factors can impact beak morphology in birds, including foraging and thermoregulation. It has been shown that in many bird families, different species which inhabit different niches and have different foraging behaviours tend to evolve different bill shapes, which impacts variables like culmen length and depth (Friedman, 2019; Çakar, 2024). This pattern has been observed and tested in the birds of prey, but not in penguins (Çakar, 2024). Therefore it will be interesting to investigate this in penguins and assess whether beak morphology does differ significantly between species.
 
-To study the relationship between culmen length and culmen depth, data on Adelie, Chinstrap and Gentoo penguins as been used, found in the Palmer Penguins dataset.
+Whether sex affects beak morphology is also an interesting question. It is known that species in the genus Pygoscelis display subtle sexual dimorphism in features like body mass, flipper length and bill size, with females usually being smaller than males. There is a possibility this will be reflected in the bill morphology of these penguins as well, with sex exerting impacts on bill shape as well as bill size (Gorman, 2014; Polito, et al., 2012). To study this in detail, this analysis will focus on only one penguin species (the gentoo penguin) to ensure only sex is examined, not the effect of species (Gorman, 2014).
+
+This analysis, using data from the Palmer Penguins dataset, will test the relationship between culmen depth and culmen length in the penguin genus Pygoscelis. This analysis will assess the effect of species on this relationship, as well as the effect of sexual dimorphism in one penguin species, the gentoos (Pygoscelis papua). 
 
 ```{r Data Preparation- taken from lesson materials provided by Lydia France, University of Oxford, 2024}
 #All packages used can be found at the top of the document.
@@ -293,9 +295,10 @@ plot(log_bill_model_int, which = 1)
 summary(log_bill_model_int)
 
 #Conducting an ANOVA of the above all-species model with interaction to assess what the significant effects are.
-anova(log_bill_model_int)
+allspecies_int_anova <- aov(log_bill_model_int)
+summary(allspecies_int_anova)
 
-#Model without interaction term
+#Model without interaction term - necessary as no significant interaction found.
 log_bill_model_noint <- lm(culmen_depth_mm ~ log_length + species, penguins_data_clean)
 
 #Making plot to ensure assumptions of analysis are not violated.
@@ -307,10 +310,12 @@ plot(log_bill_model_noint, which = 1)
 summary(log_bill_model_noint)
 
 #Conducting an ANOVA of the above all-species model without interaction to assess what the significant effects are.
-anova(log_bill_model_noint)
+allspecies_noint_anova <- aov(log_bill_model_noint)
+summary(allspecies_noint_anova)
 
 #Conducting ANOVA to assess if there is a significant interaction between species and culmen length (mm)
-anova(log_bill_model_int, log_bill_model_noint)
+allspecies_test_fits_diff <- anova(log_bill_model_int, log_bill_model_noint)
+allspecies_test_fits_diff
 ```
 
 ```{r Statistics- Gentoos}
@@ -326,7 +331,8 @@ plot(gentoo_log_bill_model_int, which = 1)
 summary(gentoo_log_bill_model_int)
 
 #Conducting an ANOVA of the above gentoo-specific model to assess what the significant effects are.
-anova(gentoo_log_bill_model_int)
+gentoo_int_anova <- aov(gentoo_log_bill_model_int)
+summary(gentoo_int_anova)
 
 #Creating gentoo-specific model without interaction term.
 gentoo_log_bill_model_noint <- lm(culmen_depth_mm ~ gentoo_log_length + sex, gentoo_data)
@@ -340,10 +346,12 @@ plot(gentoo_log_bill_model_noint, which = 1)
 summary(gentoo_log_bill_model_noint)
 
 #Conducting an ANOVA of the gentoo-specific model without interaction to assess what the significant effects are.
-anova(gentoo_log_bill_model_noint)
+gentoo_noint_anova <- aov(gentoo_log_bill_model_noint)
+summary(gentoo_noint_anova)
 
 #Conducting ANOVA to assess if there is a significant interaction between sex and culmen length in Gentoo penguins.
-anova(gentoo_log_bill_model_int, gentoo_log_bill_model_noint)
+gentoo_test_fit_diff <- anova(gentoo_log_bill_model_int, gentoo_log_bill_model_noint)
+gentoo_test_fit_diff
 ```
 
 ## Results & Discussion
@@ -409,6 +417,8 @@ dev.off()
 ```
 
 ## Conclusion
+
+##References
 
 *You will be marked on the following:*
 
