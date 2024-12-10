@@ -146,6 +146,8 @@ ggplot(data = penguins_data_clean, aes(x=sqrt_depth)) + geom_histogram()
 
 ```{r Creating exploratory figure}
 #Creating an exploratory figure looking at the relationship between culmen depth and culmen length, as well as how this differs between species. 
+#  geom_jitter() shows data points on the plot and also ensures they are a specified width so as to not obscure the graph.
+#  seed ensures the jitter is generated the same way every time, making the figure more reproducible.
 #  scale_colour_manual function allows for different species to be designated the same colours    every time in a colour blind friendly palette, making the figure more accessible and more       reproducible. 
 #     Also allows for more in depth exploration of initial data before statistical analysis          conducted.
 
@@ -155,7 +157,6 @@ species_colours <- c("Adelie" = "darkorange",
                      "Gentoo" = "blue")
 
 #Encodes information for all-species exploratory graph.
-# scale_colour_manual() ensures each species is represented by the colours specified above in species_colours.
 bill_size_exploratory <- ggplot(data=penguins_data_clean, 
                          aes(x=species, 
                             y=culmen_depth_mm)) + 
@@ -266,15 +267,6 @@ dev.off()
 
 ## Hypotheses
 
-### All species
-Null hypotheses for species effect: 1: There is no effect of culmen length on culmen depth. 2: There is no effect of species on culmen depth. 3: There is no interaction between species and culmen length.
-
-Alternative hypotheses for species effect: 1: There is a significant effect of culmen length on culmen depth. . 2: There is a significant effect of species on culmen depth. 3: There is a significant interaction between species and culmen length.
-
-###Gentoo penguins
-Null hypotheses for sex effect in Gentoos: 1: There is no effect of culmen length on culmen depth. 2: There is no effect of sex on culmen depth. 3: There is no interaction between sex and culmen length.
-
-Alternative hypotheses for sex effect in Gentoos: 1: There is a significant effect of culmen length on culmen depth. . 2: There is a significant effect of species on culmen depth. 3: There is a significant interaction between species and culmen length.
 
 ## Statistical Methods
 
@@ -285,7 +277,7 @@ In Gentoo penguins only, an ANCOVA test will also be conducted, testing the rela
 ```{r Statistics- all species}
 
 #Creating model including interaction term.
-log_bill_model_int <- lm(culmen_depth_mm ~ log_length * species, penguins_data_clean)
+log_bill_model_int <- lm(culmen_depth_mm ~ species * log_length, penguins_data_clean)
 
 #Makes plots to ensure assumptions of normality (specified by which=2) and homoscedasticity (specified by which=1) are not violated.
 # par() function allows plotting of multi-panel figure.
@@ -301,7 +293,7 @@ allspecies_int_anova <- aov(log_bill_model_int)
 summary(allspecies_int_anova)
 
 #Model without interaction term - necessary as no significant interaction found.
-log_bill_model_noint <- lm(culmen_depth_mm ~ log_length + species, penguins_data_clean)
+log_bill_model_noint <- lm(culmen_depth_mm ~ species + log_length, penguins_data_clean)
 
 #Making plot to ensure assumptions of analysis are not violated.
 par(mfrow = c(1,2))
@@ -322,7 +314,7 @@ allspecies_test_fits_diff
 
 ```{r Statistics- Gentoos}
 #Creating gentoo-specific model including interaction term.
-gentoo_log_bill_model_int <- lm(culmen_depth_mm ~ gentoo_log_length * sex, gentoo_data)
+gentoo_log_bill_model_int <- lm(culmen_depth_mm ~ sex * gentoo_log_length, gentoo_data)
 
 #Makes plots to ensure assumptions of analysis not violated.
 par(mfrow = c(1,2))
@@ -337,7 +329,7 @@ gentoo_int_anova <- aov(gentoo_log_bill_model_int)
 summary(gentoo_int_anova)
 
 #Creating gentoo-specific model without interaction term.
-gentoo_log_bill_model_noint <- lm(culmen_depth_mm ~ gentoo_log_length + sex, gentoo_data)
+gentoo_log_bill_model_noint <- lm(culmen_depth_mm ~ sex + gentoo_log_length, gentoo_data)
 
 #Makes plots to ensure assumptions of analysis not violated.
 par(mfrow = c(1,2))
