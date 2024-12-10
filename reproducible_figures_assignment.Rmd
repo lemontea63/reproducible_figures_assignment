@@ -56,10 +56,6 @@ penguins_data_clean <- cleaning_penguin_columns(penguins_raw)
 colnames(penguins_data_clean)
 str(penguins_data_clean)
 
-#Factorising species as need factor for tukey test.
-penguins_data_clean$species = as.factor(penguins_data_clean$species)
-str(penguins_data_clean)
-
 #Writing and saving new .csv file for cleaned data, which can be found in the "data" folder. 
 write.csv(penguins_data_clean, here("data","penguins_data_clean.csv"))
 penguins_data_clean <- read.csv(here("data", "penguins_data_clean.csv"))
@@ -130,7 +126,9 @@ colnames(penguins_data_raw)
 penguins_data_clean<-cleaning_penguin_columns(penguins_data_raw)
 colnames(penguins_data_clean)
 str(penguins_data_clean)
-as.factor(penguins_data_clean$species)
+
+#Factorising species as this is needed for tukey test.
+penguins_data_clean$species = as.factor(penguins_data_clean$species)
 str(penguins_data_clean)
 
 #Writing new .csv file for new, clean dataset to keep this safe in case any accidental changes are made or code breaks, to allow code to be easily recovered. 
