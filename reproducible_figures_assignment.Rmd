@@ -148,7 +148,7 @@ ggplot(data = penguins_data_clean, aes(x=sqrt_depth)) + geom_histogram()
 #     Also allows for more in depth exploration of initial data before statistical analysis          conducted.
 #  Plotted a scatter plot as comparing two numerical variables (culmen length and depth).
 
-#Making a colour blind-friendly palette useful for distinguishing species on figures. Specifying this ensures the same species are represented by the same colours on any graph where species colours are specified, making this document more accessible (colour blind friendly) and more reproducible.
+#Making a colour blind-friendly palette useful for distinguishing species on figures. Specifying this ensures the different species are represented by the consistent colours on any graph, making this document more accessible (colour blind friendly) and more reproducible.
 species_colours <- c("Adelie" = "darkorange", 
                      "Chinstrap" = "magenta2", 
                      "Gentoo" = "blue")
@@ -181,7 +181,7 @@ dev.off()
 
 ```{r Sexual dimorphism}
 #Decided to look at effects of sexual dimorphism, so encoded separate graph which codes for identification of sex as well as species through different shapes.
-# scale_shape_manual allows specification of shape so different sexes can be designated the      same shapes every time making the figure more reproducible. 
+# scale_shape_manual allows specification of shape so different sexes can be designated the      same shapes consistently making the figure more reproducible. 
 #   Also allows for more in depth exploration of initial data before statistical analysis          conducted.
 #Plotted a scatter plot as comparing two numerical variables (culmen length and depth).
 bill_size_sex_exploratory <- ggplot(data=penguins_data_clean, 
@@ -210,10 +210,6 @@ dev.off()
 ```
 
 ```{r Gentoo specific}
-#Making a colour blind-friendly palette useful for distinguishing sexes on figures. Specifying this ensures each sex is represented by the same colours on any graph where sex-specific colours are needed, making this document more accessible (as it is colour blind friendly) and more reproducible.
-sex_colours <- c("FEMALE" = "purple",
-                 "MALE" = "darkorange")
-
 #Subsetting data to only include that on gentoo penguins.
 gentoo_data <- penguins_data_clean %>% 
                filter(species == "Gentoo") %>% 
@@ -235,6 +231,10 @@ ggplot(data = gentoo_data, aes(x=gentoo_sqrt_length)) + geom_histogram()
 ```{r Creating exploratory figure for gentoo penguins in particular}
 #Made exploratory figure to look more closely at one species in particular.
 #Plotted a scatter plot as comparing two numerical variables (culmen length and depth).
+
+#Making a colour blind-friendly palette useful for distinguishing sexes on figures. Specifying this ensures each sex is consistently represented by the same colours on any graph where sex is shown, making this document more accessible (as it is colour blind friendly) and more reproducible.
+sex_colours <- c("FEMALE" = "purple",
+                 "MALE" = "darkorange")
 
 bill_size_exploratory_gentoo <- ggplot(data=gentoo_data, 
                          aes(x=culmen_length_mm, 
