@@ -35,20 +35,28 @@ penguins_data_raw<-read.csv(here("data","penguins_raw.csv"))
 
 head(penguins_data_raw)
 colnames(penguins_data_raw)
+```
+
+```{r}
 
 #Making function to clean column names of raw dataset.
-cleaning_penguin_columns <- function(raw_data){
+cleaning_penguin_data_columns <- function(raw_data){
   print("Cleaning column names, simplifying species names, removing empty columns and rows and removing unnecessary columns/rows")
   raw_data %>% 
-    clean_names() %>% 
-    shorten_species() %>% 
-    remove_empty_columns_rows() %>% 
-    dplyr::select(-starts_with("delta")) %>% 
-    dplyr::select(-comments)}
+    clean_names() %>% #Cleans names of dataframe to make readable by computer.
+    mutate(species = case_when(
+      species == "Adelie Penguin (Pygoscelis adeliae)" ~ "Adelie",
+      species == "Chinstrap penguin (Pygoscelis antarctica)" ~ "Chinstrap",
+      species == "Gentoo penguin (Pygoscelis papua)" ~ "Gentoo")) %>% #mutate() changes name of column.
+    remove_empty(c("rows", "cols")) %>% #removes empty rows and columns from dataframe.
+    dplyr::select(-starts_with("delta")) %>% #removes any column with name starting with delta.
+    dplyr::select(-comments)} #removes comments column.
 
 #Cleaning raw data to generate a cleaner dataset, using functions sourced from Lydia France's cleaning_penguins.r file.
 penguins_data_clean <- cleaning_penguin_columns(penguins_raw)
 colnames(penguins_data_clean)
+as.factor(penguins_data_clean$species)
+str(penguins_data_clean)
 
 #Writing and saving new .csv file for cleaned data, which can be found in the "data" folder. 
 write.csv(penguins_data_clean, here("data","penguins_data_clean.csv"))
