@@ -38,7 +38,6 @@ colnames(penguins_data_raw)
 ```
 
 ```{r}
-
 #Making function to clean column names of raw dataset.
 cleaning_penguin_data_columns <- function(raw_data){
   print("Cleaning column names, simplifying species names, removing empty columns and rows and removing unnecessary columns/rows")
@@ -52,10 +51,13 @@ cleaning_penguin_data_columns <- function(raw_data){
     dplyr::select(-starts_with("delta")) %>% #removes any column with name starting with delta.
     dplyr::select(-comments)} #removes comments column.
 
-#Cleaning raw data to generate a cleaner dataset, using functions sourced from Lydia France's cleaning_penguins.r file.
+#Cleaning raw data to generate a cleaner dataset, using function made above.
 penguins_data_clean <- cleaning_penguin_columns(penguins_raw)
 colnames(penguins_data_clean)
-as.factor(penguins_data_clean$species)
+str(penguins_data_clean)
+
+#Factorising species as need factor for tukey test.
+penguins_data_clean$species = as.factor(penguins_data_clean$species)
 str(penguins_data_clean)
 
 #Writing and saving new .csv file for cleaned data, which can be found in the "data" folder. 
