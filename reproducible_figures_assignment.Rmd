@@ -276,9 +276,34 @@ Alternative hypothesis: The mean culmen depths of each sex will be significantly
 
 ## Statistical Methods
 
-In this analysis, an ANCOVA test will be conducted, allowing for testing of the relationship between culmen depth and culmen length as well as culmen depth and species, alongside testing if there is a significant interaction between culmen length and species. An ANCOVA is suitable for this analysis as there is a numerical response variable (culmen depth), a numerical explanatory variable (culmen length) and a categorical explanatory variable (species).
+In this analysis, an ANCOVA test will be conducted, to test whether culmen length and species affect culmen depth, as well as if there is any interaction between the effects of culmen length and species. An ANCOVA is suitable for this analysis as there is a numerical response variable (culmen depth), a categorical explanatory variable (species) and a covariate which must be controlled for (culmen length). It is important to control for culmen length as this may impact the culmen depth on a beak. 
 
-In Gentoo penguins only, an ANCOVA test will also be conducted, testing the relationship between culmen depth and culmen length as well as culmen depth and sex, alongside testing if there is a significant interaction between culmen length and sex.
+### All species
+Null hypotheses for effect of species: 
+1: There is no effect of species on culmen depth. 
+2: The slope of culmen length is not different from that of culmen depth. 
+3: The effect of species on culmen depth is not dependent on the effect of culmen length.
+
+Alternative hypotheses for species effect: 
+1: There is a significant effect of species on culmen depth. 
+2: The slope of culmen length is significantly different from that of culmen depth. 
+3: The effect of species on culmen depth is dependent on the effect of culmen length.
+
+In Gentoo penguins only, an ANCOVA test will also be conducted, testing whether culmen length and species affect culmen depth, as well as if there is any interaction between the effects of culmen length and species.
+
+### Gentoo penguins
+Null hypotheses for effect of sex in Gentoos: 
+1: There is no effect of sex on culmen depth. 
+2: There is no effect of culmen length on culmen depth. 
+3: There is no interaction between sex and culmen length.
+
+Alternative hypotheses for sex effect in Gentoos: 
+1: There is a significant effect of sex on culmen depth. 
+2: There is a significant effect of culmen length on culmen depth. 
+3: There is a significant interaction between sex and culmen length.
+
+NB: The analyses presented here are not the same as in any referenced paper.
+
 
 ```{r Statistics- all species}
 
