@@ -67,4 +67,4 @@ cleaning_penguin_columns <- function(raw_data){
     shorten_species() %>% 
     remove_empty_columns_rows() %>% 
     select(-starts_with("delta")) %>% 
-    select(-"Comments")}
+    select(-comments)}
