@@ -266,7 +266,13 @@ dev.off()
 ```
 
 ## Hypotheses
+Effect of species:
+Null hypothesis: The mean culmen depth of each species will not be significantly different from that of any other species.
+Alternative hypothesis: The mean culmen depth of at least one species will be significantly different from that of at least one other species.
 
+Effect of sex:
+Null hypothesis: The mean culmen depth of each sex will not be significantly different from that of any other species.
+Alternative hypothesis: The mean culmen depths of each sex will be significantly different from each other.
 
 ## Statistical Methods
 
