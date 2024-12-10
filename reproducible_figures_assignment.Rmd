@@ -126,7 +126,7 @@ penguins_data_raw<-read.csv(here("data","penguins_raw.csv"))
 head(penguins_data_raw)
 colnames(penguins_data_raw)
 
-#Cleaning raw data to generate a cleaner dataset- removing superfluous variables and making data more easily read by R and by humans. Code for cleaning_penguin_columns function can be found in "functions/cleaning_penguin_data.r".
+#Cleaning raw data to generate a cleaner dataset- removing superfluous variables and making data more easily read by R and by humans. Code for cleaning_penguin_columns function can be found in question 1.
 penguins_data_clean<-cleaning_penguin_columns(penguins_data_raw)
 colnames(penguins_data_clean)
 str(penguins_data_clean)
@@ -343,7 +343,6 @@ summary(log_bill_model_int)
 #Conducting an ANOVA of the above all-species model with interaction to assess what the significant effects are.
 allspecies_int_anova <- aov(log_bill_model_int)
 summary(allspecies_int_anova)
-posthocs_allspecies <- glht(allspecies_int_anova, linfct = mcp(species = "Tukey"))
 
 #Model without interaction term - necessary as no significant interaction found.
 log_bill_model_noint <- lm(culmen_depth_mm ~ species + log_length, penguins_data_clean)
