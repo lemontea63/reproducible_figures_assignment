@@ -20,8 +20,6 @@ library(patchwork)
 library(ragg)
 library(svglite)
 library(multcomp)
-
-source(here("functions","cleaning_penguin_data.r"))
 ```
 
 # Data Preparation:
@@ -38,9 +36,18 @@ penguins_data_raw<-read.csv(here("data","penguins_raw.csv"))
 head(penguins_data_raw)
 colnames(penguins_data_raw)
 
+#Making function to clean column names of raw dataset.
+cleaning_penguin_columns <- function(raw_data){
+  print("Cleaning column names, simplifying species names, removing empty columns and rows and removing unnecessary columns/rows")
+  raw_data %>% 
+    clean_names() %>% 
+    shorten_species() %>% 
+    remove_empty_columns_rows() %>% 
+    dplyr::select(-starts_with("delta")) %>% 
+    dplyr::select(-comments)}
 
 #Cleaning raw data to generate a cleaner dataset, using functions sourced from Lydia France's cleaning_penguins.r file.
-penguins_data_clean <- cleaning_penguin_columns(penguins_data_raw)
+penguins_data_clean <- cleaning_penguin_columns(penguins_raw)
 colnames(penguins_data_clean)
 
 #Writing and saving new .csv file for cleaned data, which can be found in the "data" folder. 
