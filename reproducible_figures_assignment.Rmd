@@ -49,7 +49,7 @@ penguins_data_clean <- read.csv(here("data", "penguins_data_clean.csv"))
 
 # QUESTION 1: Data Visualisation for Science Communication
 
-## a) 
+## a) Creating a bad figure
 Create a figure using the Palmer Penguin dataset that is correct but badly communicates the data. Do not make a boxplot.
 
 ```{r bad figure code, echo=FALSE}
@@ -72,7 +72,7 @@ print(bad_bargraph_island_png)
 dev.off()
 ```
 
-## b) 
+## b) Why is this misleading?
 Write about how your design choices mislead the reader about the underlying data (200-300 words). Include references.
 
 My graph is correct, but some design choices mislead the reader.
@@ -153,7 +153,8 @@ species_colours <- c("Adelie" = "darkorange",
                      "Chinstrap" = "magenta2", 
                      "Gentoo" = "blue")
 
-#Encodes information for all-species exploratory graph. 
+#Encodes information for all-species exploratory graph.
+# scale_colour_manual() ensures each species is represented by the colours specified above in species_colours.
 bill_size_exploratory <- ggplot(data=penguins_data_clean, 
                          aes(x=culmen_length_mm, 
                             y=culmen_depth_mm)) + 
@@ -165,7 +166,7 @@ bill_size_exploratory <- ggplot(data=penguins_data_clean,
 #plot() function allows graph to be outputted.
 plot(bill_size_exploratory)
 
-#Saving figure as .png file in figures folder.
+#agg_png() saves figure as .png file in figures folder.
 agg_png("figures/bill_size_exploratory.png", 
         width = 30,
         height = 15,
@@ -173,7 +174,7 @@ agg_png("figures/bill_size_exploratory.png",
         res = 300,
         scaling = 1.125)
 
-#Ensures figure saved in "figures" folder actually has graph encoded within it, as opposed to blank file.
+#print() ensures figure saved in "figures" folder actually has graph encoded within it, as opposed to blank file.
 print(bill_size_exploratory)
 dev.off()
 ```
@@ -209,7 +210,7 @@ dev.off()
 ```
 
 ```{r Gentoo specific}
-#Making a colour blind-friendly palette useful for distinguishing sexes on figures. Specifying this ensures each sex is represented by the same colours on any graph where sex-specific colours are specified, making this document more accessible (colour blind friendly) and more reproducible.
+#Making a colour blind-friendly palette useful for distinguishing sexes on figures. Specifying this ensures each sex is represented by the same colours on any graph where sex-specific colours are needed, making this document more accessible (as it is colour blind friendly) and more reproducible.
 sex_colours <- c("FEMALE" = "purple",
                  "MALE" = "darkorange")
 
@@ -358,9 +359,17 @@ That said, two null hypotheses can be rejected: 1- culmen length does not affect
 ```{r Plotting Results- All species}
 
 #Making results plot, showing relationship between culmen depth, culmen length and species.
-all_species_plot_int <- ggplot(penguins_data_clean, aes(x=log_length, y=culmen_depth_mm, color = species)) + geom_point() + geom_smooth(method = "lm") + scale_colour_manual(values = species_colours) + xlab("Log culmen length (mm)") + ylab("Culmen depth (mm)") + theme_bw()
+# geom_smooth() allows plotting of regression lines on the results figure.
+all_species_plot_int <- ggplot(penguins_data_clean, 
+                               aes(x=log_length, y=culmen_depth_mm, color = species)) + 
+  geom_point() + 
+  geom_smooth(method = "lm") + 
+  scale_colour_manual(values = species_colours) + 
+  xlab("Log culmen length (mm)") + 
+  ylab("Culmen depth (mm)") + 
+  theme_bw()
 
-all_species_plot_int
+plot(all_species_plot_int)
 
 agg_png("figures/all_species_results_plot.png", 
         width = 30,
@@ -375,10 +384,18 @@ dev.off()
 ```
 
 ```{r}
-#Making results plot, showing relationship between culmen depth, culmen length and species.
-gentoo_plot_int <- ggplot(gentoo_data, aes(x=gentoo_log_length, y=culmen_depth_mm, color = sex)) + geom_point() + geom_smooth(method = "lm") + scale_colour_manual(values = sex_colours) + xlab("Log Culmen length (mm)") + ylab("Culmen depth (mm)") + theme_bw()
+#Making results plot, showing relationship between culmen depth, culmen length and sex in gentoos.
+gentoo_plot_int <- 
+ggplot(gentoo_data, 
+       aes(x=gentoo_log_length, y=culmen_depth_mm, color = sex)) + 
+  geom_point() + 
+  geom_smooth(method = "lm") + 
+  scale_colour_manual(values = sex_colours) + 
+  xlab("Log Culmen length (mm)") + 
+  ylab("Culmen depth (mm)") + 
+  theme_bw()
 
-gentoo_plot_int
+plot(gentoo_plot_int)
 
 agg_png("figures/gentoo_results_plot.png", 
         width = 30,
