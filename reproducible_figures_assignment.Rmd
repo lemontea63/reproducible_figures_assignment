@@ -52,7 +52,7 @@ cleaning_penguin_data_columns <- function(raw_data){
     dplyr::select(-comments)} #removes comments column.
 
 #Cleaning raw data to generate a cleaner dataset, using function made above.
-penguins_data_clean <- cleaning_penguin_columns(penguins_raw)
+penguins_data_clean <- cleaning_penguin_data_columns(penguins_raw)
 colnames(penguins_data_clean)
 str(penguins_data_clean)
 
@@ -103,11 +103,10 @@ Moreover, axis labels as specified in the .png plot are also very small, making 
 
 ## Introduction
 
-Many factors can impact beak morphology in birds, including foraging and thermoregulation. It has been shown that in many bird families, different species which inhabit different niches and have different foraging behaviours tend to evolve different bill shapes, which impacts variables like culmen length and depth (Friedman, 2019; Çakar, 2024). This pattern has been observed and tested in the birds of prey, but not in penguins (Çakar, 2024). Therefore it will be interesting to investigate this in penguins and assess whether beak morphology does differ significantly between species.
+Many factors can impact beak morphology in birds, including foraging and thermoregulation. It has been shown that in many bird families, different species which inhabit different niches and have different foraging behaviours tend to evolve different bill shapes, which impacts variables like culmen length and depth (Friedman, 2019; Çakar, 2024). This pattern has been observed and tested in the birds of prey, but not in penguins (Çakar, 2024). The different sexes of many bird species also often have slightly different foraging behaviours outside of the breeding season, which could cause the evolution of different bill morphologies between the different sexes as each sex adapts to its different food sources (Gorman, 2014). Whether sex affects beak morphology is therefore an interesting question. It is known that species in the genus Pygoscelis display subtle sexual dimorphism in features like body mass, flipper length and bill size, with females usually being smaller than males. There is a possibility this will be reflected in the bill morphology of these penguins (Gorman, 2014; Polito, et al., 2012). To study this in detail and simplify the analysis, this analysis will focus on only one penguin species (the chinstrap penguin- Pygoscelis antarcicus) to ensure only sex is examined, not the effect of species. The chinstrap penguin has been chosen as it has been shown that it is the most dimorphic in culmen features, so will be an interesting species to study in this analysis.
 
-Whether sex affects beak morphology is also an interesting question. It is known that species in the genus Pygoscelis display subtle sexual dimorphism in features like body mass, flipper length and bill size, with females usually being smaller than males. There is a possibility this will be reflected in the bill morphology of these penguins as well, with sex exerting impacts on bill shape as well as bill size (Gorman, 2014; Polito, et al., 2012). To study this in detail, this analysis will focus on only one penguin species (the gentoo penguin) to ensure only sex is examined, not the effect of species (Gorman, 2014).
+This analysis, using data from the Palmer Penguins dataset, will test the relationship between culmen depth and sex in the chinstrap penguin.
 
-This analysis, using data from the Palmer Penguins dataset, will test the relationship between culmen depth and culmen length in the penguin genus Pygoscelis. This analysis will assess the effect of species on this relationship, as well as the effect of sexual dimorphism in one penguin species, the gentoos (Pygoscelis papua). 
 
 ```{r Data Preparation- taken from lesson materials provided by Lydia France, University of Oxford, 2024}
 #All packages used can be found at the top of the document.
@@ -123,7 +122,7 @@ head(penguins_data_raw)
 colnames(penguins_data_raw)
 
 #Cleaning raw data to generate a cleaner dataset- removing superfluous variables and making data more easily read by R and by humans. Code for cleaning_penguin_columns function can be found in question 1.
-penguins_data_clean<-cleaning_penguin_columns(penguins_data_raw)
+penguins_data_clean<-cleaning_penguin_data_columns(penguins_data_raw)
 colnames(penguins_data_clean)
 str(penguins_data_clean)
 
@@ -177,7 +176,7 @@ species_colours <- c("Adelie" = "darkorange",
 
 #Encodes information for all-species exploratory graph.
 bill_size_exploratory <- ggplot(data=penguins_data_clean, 
-                         aes(x=species, 
+                         aes(x=log_length, 
                             y=culmen_depth_mm)) + 
                          geom_point(aes(color=species)) + 
                          geom_jitter(aes(color = species), alpha = 0.25, position =                                     position_jitter(width = 0.4, seed=0)) +
@@ -236,7 +235,7 @@ dev.off()
 #Subsetting data to only include that on gentoo penguins.
 gentoo_data <- penguins_data_clean %>% 
                filter(species == "Gentoo") %>% 
-               remove_NA()
+               na.omit()
 gentoo_data
 #Do not need to factorise sex in gentoo data as only 2 groups so no need to run Tukey post-hoc test.
 
@@ -262,7 +261,7 @@ sex_colours <- c("FEMALE" = "purple",
                  "MALE" = "darkorange")
 
 bill_size_exploratory_gentoo <- ggplot(data=gentoo_data, 
-                         aes(x=species, 
+                         aes(x=gentoo_log_length, 
                             y=culmen_depth_mm)) + 
                          geom_point(aes(color=sex, shape=sex)) + 
                          geom_jitter(aes(color = sex), alpha = 0.25, position =                                     position_jitter(width = 0.4, seed=0)) +
@@ -287,9 +286,6 @@ dev.off()
 ```
 
 ## Hypotheses
-Effect of species:
-Null hypothesis: The mean culmen depth of each species will not be significantly different from that of any other species.
-Alternative hypothesis: The mean culmen depth of at least one species will be significantly different from that of at least one other species.
 
 Effect of sex:
 Null hypothesis: The mean culmen depth of each sex will not be significantly different from that of any other species.
@@ -297,23 +293,9 @@ Alternative hypothesis: The mean culmen depths of each sex will be significantly
 
 ## Statistical Methods
 
-In this analysis, an ANCOVA test will be conducted, to test whether culmen length and species affect culmen depth, as well as if there is any interaction between the effects of culmen length and species. An ANCOVA is suitable for this analysis as there is a numerical response variable (culmen depth), a categorical explanatory variable (species) and a covariate which must be controlled for (culmen length). It is important to control for culmen length as this may impact the culmen depth on a beak. 
+In this analysis, an ANCOVA test will be conducted, to test whether sex affects culmen depth, controlling for culmen length. An ANCOVA is suitable for this analysis as there is a numerical response variable (culmen depth), a categorical explanatory variable (sex) and a couple of covariates which must be controlled for (culmen length and species). It is important to control for culmen length as this may impact the culmen depth on a beak. 
 
-### All species
-Null hypotheses for effect of species: 
-1: There is no effect of species on culmen depth. 
-2: The slope of culmen length is not different from that of culmen depth. 
-3: The effect of species on culmen depth is not dependent on the effect of culmen length.
-
-Alternative hypotheses for species effect: 
-1: There is a significant effect of species on culmen depth. 
-2: The slope of culmen length is significantly different from that of culmen depth. 
-3: The effect of species on culmen depth is dependent on the effect of culmen length.
-
-In Gentoo penguins only, an ANCOVA test will also be conducted, testing whether culmen length and species affect culmen depth, as well as if there is any interaction between the effects of culmen length and species.
-
-### Gentoo penguins
-Null hypotheses for effect of sex in Gentoos: 
+Null hypotheses for effect of sex in penguins: 
 1: There is no effect of sex on culmen depth. 
 2: There is no effect of culmen length on culmen depth. 
 3: There is no interaction between sex and culmen length.
@@ -323,54 +305,8 @@ Alternative hypotheses for sex effect in Gentoos:
 2: There is a significant effect of culmen length on culmen depth. 
 3: There is a significant interaction between sex and culmen length.
 
+
 NB: The analyses presented here are not the same as in any referenced paper.
-
-
-```{r Statistics- all species}
-
-#Creating model including interaction term.
-log_bill_model_int <- lm(culmen_depth_mm ~ species * log_length, penguins_data_clean)
-
-#Makes plots to ensure assumptions of normality (specified by which=2) and homoscedasticity (specified by which=1) are not violated.
-# par() function allows plotting of multi-panel figure.
-par(mfrow = c(1,2))
-plot(log_bill_model_int, which = 2)
-plot(log_bill_model_int, which = 1)
-
-#Checking outputs of analysis of model to assess adjusted R-squared and values for slope and intercept of each group.
-summary(log_bill_model_int)
-
-#Conducting an ANOVA of the above all-species model with interaction to assess what the significant effects are.
-allspecies_int_anova <- aov(log_bill_model_int)
-summary(allspecies_int_anova)
-
-#Running post-hoc Tukey test using glht() function to assess which species have significantly different mean culmen depth
-allspecies_int_posthoc <- glht(log_bill_model_int, linfct = mcp(species = "Tukey"))
-summary(allspecies_int_posthoc)
-
-#Model without interaction term - necessary as no significant interaction found.
-log_bill_model_noint <- lm(culmen_depth_mm ~ species + log_length, penguins_data_clean)
-
-#Making plot to ensure assumptions of analysis are not violated.
-par(mfrow = c(1,2))
-plot(log_bill_model_noint, which = 2)
-plot(log_bill_model_noint, which = 1)
-
-#Checking outputs of analysis of model to assess adjusted R-squared and values for slope and intercept of each group.
-summary(log_bill_model_noint)
-
-#Conducting an ANOVA of the above all-species model without interaction to assess what the significant effects are.
-allspecies_noint_anova <- aov(log_bill_model_noint)
-summary(allspecies_noint_anova)
-
-#Running post-hoc Tukey test using glht() function to assess which species have significantly different mean culmen depth
-allspecies_noint_posthoc <- glht(log_bill_model_noint, linfct = mcp(species = "Tukey"))
-summary(allspecies_noint_posthoc)
-
-#Conducting ANOVA to assess if there is a significant interaction between species and culmen length (mm)
-allspecies_test_fits_diff <- anova(log_bill_model_int, log_bill_model_noint)
-allspecies_test_fits_diff
-```
 
 ```{r Statistics- Gentoos}
 #Creating gentoo-specific model including interaction term.
@@ -410,40 +346,6 @@ gentoo_test_fit_diff
 
 ## Results & Discussion
 
-Having conducted an ANCOVA analysis to test the effects of species and log culmen length (mm) on culmen depth (mm), it has been confirmed that while species and culmen length (mm) do both affect culmen depth (mm), there is no interaction between species and culmen length (mm). Therefore, while we fail to reject the null hypothesis that there is no interaction between species and culmen length, we can reject two null hypotheses: 1- culmen length does not affect culmen depth. 2- species does not affect culmen depth. The adjusted R-squared value of the model lm(culmen_depth \~ species \* culmen_length) was 0.7664, suggesting 76.64% of variance in the data can be explained by the model. The p-values for both effect of species and effect of log culmen length on culmen depth were both very small, and the F-values were both greater than 1 (496.1031 and 126.6277 respectively).
-
-This aligns with what might be expected as increasing culmen length is likely to be correlated with increasing culmen depth, increasing the size of the beak overall. Moreover, as different species are different sizes and inhabit different ecological niches, they are likely to evolve different beak morphologies in response which are better suited to foods they hunt. That said, the fact there is no interaction between species and culmen length suggests...
-
-An ANCOVA analysis was also conducted on the effects of sex and log culmen length on culmen depth. This analysis confirmed that while sex and culmen length (mm) do have a statistically significant effect on culmen depth (mm), there is again no interaction between the two explanatory variables. Therefore, we fail to reject the null hypothesis that there is no interaction between sex and culmen length, suggesting that sexual dimorphism is not at play here. This is surprising, given that on the exploratory figure showing data on gentoos, sex seemed to play a role in determining culmen depth with respect to culmen length, but this is not the case.
-
-That said, two null hypotheses can be rejected: 1- culmen length does not affect culmen depth in gentoo penguins. 2- sex does not affect culmen depth in gentoo penguins. The adjusted R-squared value for the model lm(gentoo_culmen_depth \~ sex \* gentoo_log_culmen_length) was 0.6094, showing that 60.94% of variance recorded can be explained by the model put forward. The F-value of sex for this model was 171.592, and for log_length was 15.3785, but for the interaction an F-value of 0.2038 was recorded, which is less than 1 and therefore shows there is no significant interaction. While log_length has a statistically significant effect on culmen_depth in gentoo penguins, it has a lower F-value and p-value than sex, suggesting the relationship in this penguin species is weak.
-
-```{r Plotting Results- All species}
-
-#Making results plot, showing relationship between culmen depth, culmen length and species.
-# geom_smooth() allows plotting of regression lines on the results figure.
-all_species_plot_int <- ggplot(penguins_data_clean, 
-                               aes(x=log_length, y=culmen_depth_mm, color = species)) + 
-  geom_point() + 
-  geom_smooth(method = "lm") + 
-  scale_colour_manual(values = species_colours) + 
-  xlab("Log culmen length (mm)") + 
-  ylab("Culmen depth (mm)") + 
-  theme_bw()
-
-plot(all_species_plot_int)
-
-agg_png("figures/all_species_results_plot.png", 
-        width = 30,
-        height = 15,
-        units = "cm",
-        res = 300,
-        scaling = 1.125)
-
-print(all_species_plot_int)
-dev.off()
-
-```
 
 ```{r}
 #Making results plot, showing relationship between culmen depth, culmen length and sex in gentoos.
