@@ -144,6 +144,13 @@ penguins_data_clean <- read.csv(here("data", "penguins_data_clean.csv"))
 #  scale_shape_manual allows specification of shape so different sexes can be designated the      same shapes consistently making the figure more reproducible. 
 #   Also allows for more in depth exploration of initial data before statistical analysis          conducted.
 #Plotted a scatter plot as comparing two numerical variables (culmen length and depth).
+
+#Setting colour-blind friendly colour palette to distinguish data relating to different species.
+species_colours <- c("Adelie" = "darkorange", "Chinstrap" = "magenta2", "Gentoo" = "blue")
+
+#Setting shapes for each sex to make figure more reproducible.
+sex_shapes <- c("MALE" = "+", "FEMALE" = "20")
+
 bill_size_sex_exploratory <- ggplot(data=penguins_data_clean, 
                          aes(x=species, 
                             y=culmen_length_mm)) + 
