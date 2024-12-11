@@ -190,12 +190,12 @@ chinstrap_sqrt_length <- sqrt(chinstrap_data$culmen_length_mm)
 ggplot(data = chinstrap_data, aes(x=chinstrap_sqrt_length)) + geom_histogram()
 
 #No beneficial effect of transforming data, so will use untransformed data for further analysis.
-#Can see clear bimodality, indicating some other variable is affecting culmen length in chinstrap penguins.
+#Can see clear bimodality, indicating some variable is affecting culmen length in chinstrap penguins.
 ```
 
 ```{r Creating exploratory figure for chinstrap penguins in particular}
 #Made exploratory figure to look more closely at one species in particular.
-#Plotted a scatter plot as comparing two numerical variables (culmen length and depth).
+#Plotted a scatter plot.
 
 #Making a colour blind-friendly palette useful for distinguishing sexes on figures. Specifying this ensures each sex is consistently represented by the same colours on any graph where sex is shown, making this document more accessible (as it is colour blind friendly) and more reproducible.
 sex_colours <- c("FEMALE" = "purple",
@@ -213,8 +213,8 @@ bill_size_exploratory_sex <- ggplot(data=chinstrap_data,
 
 plot(bill_size_exploratory_sex)
 
-#Saving gentoo figure as .png files in figures folder.
-agg_png("figures/bill_size_sex_exploratory.png", 
+#Saving chinstrap figure as .png files in figures folder.
+agg_png("figures/bill_size_exploratory_sex.png", 
         width = 30,
         height = 15,
         units = "cm",
@@ -222,6 +222,39 @@ agg_png("figures/bill_size_sex_exploratory.png",
         scaling = 1.125)
 
 print(bill_size_exploratory_sex)
+dev.off()
+
+```
+
+```{r Creating exploratory figure for chinstrap penguins in particular}
+#Made exploratory figure to look more closely at possible effect of culmen depth on length, and how sex affects this..
+#Plotted a scatter plot as comparing two numerical variables (culmen length and depth).
+
+#Making a colour blind-friendly palette useful for distinguishing sexes on figures. Specifying this ensures each sex is consistently represented by the same colours on any graph where sex is shown, making this document more accessible (as it is colour blind friendly) and more reproducible.
+sex_colours <- c("FEMALE" = "purple",
+                 "MALE" = "darkorange")
+
+bill_size_exploratory_depth <- ggplot(data=chinstrap_data, 
+                         aes(x=culmen_depth_mm, 
+                            y=culmen_length_mm)) + 
+                         geom_point(aes(color=sex, shape=sex)) + 
+                         geom_jitter(aes(color = sex), alpha = 0.25, position =                                     position_jitter(width = 0.4, seed=0)) +
+                         scale_colour_manual(values = sex_colours) + 
+                         scale_shape_manual(values = c(16, 17)) +
+                         xlab("Culmen Length (mm)") + 
+                         ylab("Culmen Depth (mm)")
+
+plot(bill_size_exploratory_depth)
+
+#Saving chinstrap figure as .png files in figures folder.
+agg_png("figures/bill_size_exploratory_depth.png", 
+        width = 30,
+        height = 15,
+        units = "cm",
+        res = 300,
+        scaling = 1.125)
+
+print(bill_size_exploratory_depth)
 dev.off()
 
 ```
