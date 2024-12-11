@@ -233,26 +233,26 @@ dev.off()
 
 ```{r Gentoo specific}
 #Subsetting data to only include that on gentoo penguins.
-gentoo_data <- penguins_data_clean %>% 
-               filter(species == "Gentoo") %>% 
+chinstrap_data <- penguins_data_clean %>% 
+               filter(species == "Chinstrap") %>% 
                na.omit()
-gentoo_data
-#Do not need to factorise sex in gentoo data as only 2 groups so no need to run Tukey post-hoc test.
+chinstrap_data
+#Do not need to factorise sex in Chinstrap data as only 2 groups so no need to run Tukey post-hoc test.
 
 #Creating histograms of data on culmen length in all Gentoos to investigate data and assess distribution of data points, as well as effects of any transformations.
 #Histogram for untransformed data:
-ggplot(data=gentoo_data, aes(x=culmen_length_mm)) + geom_histogram()
+ggplot(data=chinstrap_data, aes(x=culmen_length_mm)) + geom_histogram()
 
 #Log transforming culmen_length_mm using log10() function, and plotting histogram.
-gentoo_log_length <- log10(gentoo_data$culmen_length_mm)
-ggplot(data=gentoo_data, aes(x=gentoo_log_length)) + geom_histogram()
+chinstrap_log_length <- log10(chinstrap_data$culmen_length_mm)
+ggplot(data=chinstrap_data, aes(x=chinstrap_log_length)) + geom_histogram()
 
 #Square-root transforming culmen_depth_mm using sqrt() function, and plotting histogram.
-gentoo_sqrt_length <- sqrt(gentoo_data$culmen_length_mm)
-ggplot(data = gentoo_data, aes(x=gentoo_sqrt_length)) + geom_histogram()
+chinstrap_sqrt_length <- sqrt(chinstrap_data$culmen_length_mm)
+ggplot(data = chinstrap_data, aes(x=chinstrap_sqrt_length)) + geom_histogram()
 ```
 
-```{r Creating exploratory figure for gentoo penguins in particular}
+```{r Creating exploratory figure for chinstrap penguins in particular}
 #Made exploratory figure to look more closely at one species in particular.
 #Plotted a scatter plot as comparing two numerical variables (culmen length and depth).
 
@@ -260,27 +260,27 @@ ggplot(data = gentoo_data, aes(x=gentoo_sqrt_length)) + geom_histogram()
 sex_colours <- c("FEMALE" = "purple",
                  "MALE" = "darkorange")
 
-bill_size_exploratory_gentoo <- ggplot(data=gentoo_data, 
-                         aes(x=gentoo_log_length, 
+bill_size_exploratory_sex <- ggplot(data=chinstrap_data, 
+                         aes(x=chinstrap_log_length, 
                             y=culmen_depth_mm)) + 
                          geom_point(aes(color=sex, shape=sex)) + 
                          geom_jitter(aes(color = sex), alpha = 0.25, position =                                     position_jitter(width = 0.4, seed=0)) +
                          scale_colour_manual(values = sex_colours) + 
                          scale_shape_manual(values = c(16, 17)) +
-                         xlab("Culmen Length (mm)") + 
+                         xlab("Log culmen Length (mm)") + 
                          ylab("Culmen Depth (mm)")
 
-plot(bill_size_exploratory_gentoo)
+plot(bill_size_exploratory_sex)
 
 #Saving gentoo figure as .png files in figures folder.
-agg_png("figures/bill_size_gentoo_exploratory.png", 
+agg_png("figures/bill_size_sex_exploratory.png", 
         width = 30,
         height = 15,
         units = "cm",
         res = 300,
         scaling = 1.125)
 
-print(bill_size_exploratory_gentoo)
+print(bill_size_exploratory_sex)
 dev.off()
 
 ```
@@ -295,12 +295,12 @@ Alternative hypothesis: The mean culmen depths of each sex will be significantly
 
 In this analysis, an ANCOVA test will be conducted, to test whether sex affects culmen depth, controlling for culmen length. An ANCOVA is suitable for this analysis as there is a numerical response variable (culmen depth), a categorical explanatory variable (sex) and a couple of covariates which must be controlled for (culmen length and species). It is important to control for culmen length as this may impact the culmen depth on a beak. 
 
-Null hypotheses for effect of sex in penguins: 
+Null hypotheses for effect of sex in *P. antarcticus*: 
 1: There is no effect of sex on culmen depth. 
 2: There is no effect of culmen length on culmen depth. 
 3: There is no interaction between sex and culmen length.
 
-Alternative hypotheses for sex effect in Gentoos: 
+Alternative hypotheses for effect of sex in *P. antarcticus*: 
 1: There is a significant effect of sex on culmen depth. 
 2: There is a significant effect of culmen length on culmen depth. 
 3: There is a significant interaction between sex and culmen length.
@@ -309,39 +309,39 @@ Alternative hypotheses for sex effect in Gentoos:
 NB: The analyses presented here are not the same as in any referenced paper.
 
 ```{r Statistics- Gentoos}
-#Creating gentoo-specific model including interaction term.
-gentoo_log_bill_model_int <- lm(culmen_depth_mm ~ sex * gentoo_log_length, gentoo_data)
+#Creating model looing at effect of sex on culmen depth in chinstraps including interaction term.
+chinstrap_log_bill_model_int <- lm(culmen_depth_mm ~ sex * chinstrap_log_length, chinstrap_data)
 
 #Makes plots to ensure assumptions of analysis not violated.
 par(mfrow = c(1,2))
-plot(gentoo_log_bill_model_int, which = 2)
-plot(gentoo_log_bill_model_int, which = 1)
+plot(chinstrap_log_bill_model_int, which = 2)
+plot(chinstrap_log_bill_model_int, which = 1)
 
 #Checking outputs of analysis of model to assess adjusted R-squared and values for slope and intercept of each group.
-summary(gentoo_log_bill_model_int)
+summary(chinstrap_log_bill_model_int)
 
 #Conducting an ANOVA of the above gentoo-specific model to assess what the significant effects are.
-gentoo_int_anova <- aov(gentoo_log_bill_model_int)
-summary(gentoo_int_anova)
+chinstrap_int_anova <- aov(chinstrap_log_bill_model_int)
+summary(chinstrap_int_anova)
 
-#Creating gentoo-specific model without interaction term.
-gentoo_log_bill_model_noint <- lm(culmen_depth_mm ~ sex + gentoo_log_length, gentoo_data)
+##Creating model looing at effect of sex on culmen depth in chinstraps without interaction term.
+chinstrap_log_bill_model_noint <- lm(culmen_depth_mm ~ sex + chinstrap_log_length, chinstrap_data)
 
 #Makes plots to ensure assumptions of analysis not violated.
 par(mfrow = c(1,2))
-plot(gentoo_log_bill_model_noint, which = 2)
-plot(gentoo_log_bill_model_noint, which = 1)
+plot(chinstrap_log_bill_model_noint, which = 2)
+plot(chinstrap_log_bill_model_noint, which = 1)
 
 #Checking outputs of analysis of model without interaction to assess adjusted R-squared and values for slope and intercept of each group.
-summary(gentoo_log_bill_model_noint)
+summary(chinstrap_log_bill_model_noint)
 
 #Conducting an ANOVA of the gentoo-specific model without interaction to assess what the significant effects are.
-gentoo_noint_anova <- aov(gentoo_log_bill_model_noint)
-summary(gentoo_noint_anova)
+chinstrap_noint_anova <- aov(chinstrap_log_bill_model_noint)
+summary(chinstrap_noint_anova)
 
 #Conducting ANOVA to assess if there is a significant interaction between sex and culmen length in Gentoo penguins.
-gentoo_test_fit_diff <- anova(gentoo_log_bill_model_int, gentoo_log_bill_model_noint)
-gentoo_test_fit_diff
+chinstrap_test_fit_diff <- anova(chinstrap_log_bill_model_int, chinstrap_log_bill_model_noint)
+chinstrap_test_fit_diff
 ```
 
 ## Results & Discussion
@@ -349,9 +349,9 @@ gentoo_test_fit_diff
 
 ```{r}
 #Making results plot, showing relationship between culmen depth, culmen length and sex in gentoos.
-gentoo_plot_int <- 
-ggplot(gentoo_data, 
-       aes(x=gentoo_log_length, y=culmen_depth_mm, color = sex)) + 
+chinstrap_plot_int <- 
+ggplot(chinstrap_data, 
+       aes(x=chinstrap_log_length, y=culmen_depth_mm, color = sex)) + 
   geom_point() + 
   geom_smooth(method = "lm") + 
   scale_colour_manual(values = sex_colours) + 
@@ -359,16 +359,16 @@ ggplot(gentoo_data,
   ylab("Culmen depth (mm)") + 
   theme_bw()
 
-plot(gentoo_plot_int)
+plot(chinstrap_plot_int)
 
-agg_png("figures/gentoo_results_plot.png", 
+agg_png("figures/chinstrap_results_plot.png", 
         width = 30,
         height = 15,
         units = "cm",
         res = 300,
         scaling = 1.125)
 
-print(gentoo_plot_int)
+print(chinstrap_plot_int)
 dev.off()
 ```
 
