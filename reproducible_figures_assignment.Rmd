@@ -26,13 +26,10 @@ library(multcomp)
 
 ```{r echo=FALSE}
 #Preserving and loading raw data in its own .csv file.
-
 write.csv(penguins_raw, here("data","penguins_raw.csv"))
 penguins_data_raw<-read.csv(here("data","penguins_raw.csv"))
 
-
 #Investigating raw data, including seeing what column names are included.
-
 head(penguins_data_raw)
 colnames(penguins_data_raw)
 ```
@@ -68,13 +65,11 @@ Create a figure using the Palmer Penguin dataset that is correct but badly commu
 
 ```{r bad figure code, echo=FALSE}
 #Creating a bad bar graph showing how body mass differs between islands to answer question 1 of assessment.
-
 bad_bargraph_island_png <- ggplot(penguins_data_clean) +
-                           geom_col(aes(x=island, y=body_mass_g))
-print(bad_bargraph_island_png)
+                           geom_col(aes(x=island, y=body_mass_g)) #geom_col specifies bar chart with chosen y-axis.
+plot(bad_bargraph_island_png)
 
-#Saving the misleading plot as a .png file in the "figures" folder.
-
+#Saving the misleading plot as a .png file in the "figures" folder using agg_png() function.
 agg_png("figures/bad_bargraph_island_bodymass.png", 
         width = 20,
         height = 20,
@@ -82,7 +77,7 @@ agg_png("figures/bad_bargraph_island_bodymass.png",
         res = 200,
         scaling = 0.5)
 
-print(bad_bargraph_island_png)
+print(bad_bargraph_island_png) #print() function ensures figure saves with graph on.
 dev.off()
 ```
 
@@ -111,60 +106,72 @@ This analysis, using data from the Palmer Penguins dataset, will test the relati
 ```{r Data Preparation- taken from lesson materials provided by Lydia France, University of Oxford, 2024}
 #All packages used can be found at the top of the document.
 
-#These lines of code preserve raw data in a separate csv file so it is not lost and can be easily recovered.
+#These lines of code preserve raw data in a separate csv file so it can be easily recovered.
 write.csv(penguins_raw, here("data","penguins_raw.csv"))
 penguins_data_raw<-read.csv(here("data","penguins_raw.csv"))
 
 
-#Investigating data- allows initial analysis of what data were collected and what values have been recorded for each.
-
+#Investigating data- allows initial analysis of what data were collected and what values have been recorded for each, as well as what the column names look like (using colnames() function).
 head(penguins_data_raw)
 colnames(penguins_data_raw)
 
-#Cleaning raw data to generate a cleaner dataset- removing superfluous variables and making data more easily read by R and by humans. Code for cleaning_penguin_columns function can be found in question 1.
+#Making function to clean column names of raw dataset.
+cleaning_penguin_data_columns <- function(raw_data){
+  print("Cleaning column names, simplifying species names, removing empty columns and rows and removing unnecessary columns/rows")
+  raw_data %>% 
+    clean_names() %>% #Cleans names of dataframe to make readable by computer.
+    mutate(species = case_when(
+      species == "Adelie Penguin (Pygoscelis adeliae)" ~ "Adelie",
+      species == "Chinstrap penguin (Pygoscelis antarctica)" ~ "Chinstrap",
+      species == "Gentoo penguin (Pygoscelis papua)" ~ "Gentoo")) %>% #mutate() changes name of column.
+    remove_empty(c("rows", "cols")) %>% #removes empty rows and columns from dataframe.
+    dplyr::select(-starts_with("delta")) %>% #removes any column with name starting with delta.
+    dplyr::select(-comments)} #removes comments column.
+
+#Cleaning raw data to generate a cleaner dataset- removing unneeded variables and making data more easily read by R and by humans. Uses the cleaning_penguin_columns() function made above.
 penguins_data_clean<-cleaning_penguin_data_columns(penguins_data_raw)
-colnames(penguins_data_clean)
-str(penguins_data_clean)
+colnames(penguins_data_clean) #Checks column names have been changed as needed.
+str(penguins_data_clean) #Checks whether each variable is listed as factor, character or numerical data.
 
-#Factorising species as this is needed for Tukey test.
-penguins_data_clean$species = as.factor(penguins_data_clean$species)
-str(penguins_data_clean)
-
-#Writing new .csv file for new, clean dataset to keep this safe in case any accidental changes are made or code breaks, to allow code to be easily recovered. 
+#Writing new .csv file for new, clean dataset (penguins_data_clean) to keep this safe in case any accidental changes are made or code breaks, to allow code to be easily recovered. 
 write.csv(penguins_data_clean, here("data","penguins_data_clean.csv"))
 penguins_data_clean <- read.csv(here("data", "penguins_data_clean.csv"))
 ```
 
 ```{r Exploratory figure looking at sexual dimorphism}
-#Decided to look at effects of sexual dimorphism, so encoded separate graph which codes for identification of sex as well as species through different shapes.
-#  geom_jitter() shows data points on the plot and also ensures they are a specified width so as to not obscure the graph.
-#  seed ensures the jitter is generated the same way every time, making the figure more reproducible.
-#  scale_colour_manual function allows for different species to be designated the same colours    every time in a colour blind friendly palette, making the figure more accessible and more       reproducible. 
-#     Also allows for more in depth exploration of initial data before statistical analysis          conducted.
-#  scale_shape_manual allows specification of shape so different sexes can be designated the      same shapes consistently making the figure more reproducible. 
-#   Also allows for more in depth exploration of initial data before statistical analysis          conducted.
-#Plotted a scatter plot as comparing two numerical variables (culmen length and depth).
+#Decided to look at effects of sexual dimorphism, so encoded graph which codes for identification of sex through different shapes as well as species using different colours.
 
-#Setting colour-blind friendly colour palette to distinguish data relating to different species.
+#S#Making a colour blind-friendly palette useful for distinguishing species on figures. Specifying this ensures each sex can be consistently represented by the same colours on any graph where sex is shown, making this document more accessible (as it is colour blind friendly) and more reproducible.
 species_colours <- c("Adelie" = "darkorange", "Chinstrap" = "magenta2", "Gentoo" = "blue")
 
 #Setting shapes for each sex to make figure more reproducible.
 sex_shapes <- c("MALE" = "+", "FEMALE" = "20")
 
+#Plotting scatter plot showing how culmen length varies with sex.
+#  geom_point() specifies plotting a scatter graph.
+#  geom_jitter() shows data points on the plot. 
+#   position_jitter() ensures they are a specified width so as to not obscure the graph and make them fit graph.
+#  seed ensures the jitter is generated the same way every time, making the figure more reproducible.
+#  scale_colour_manual function allows for different species to be designated the same colours every time in a colour blind friendly palette, making the figure more accessible and more reproducible. 
+#     Also allows for more in depth exploration of initial data before statistical analysis conducted.
+#  scale_shape_manual allows specification of shape so different sexes can be designated the same shapes consistently making the figure more reproducible. 
+#  xlab () and ylab() allow for creation of own labels for graph.
+#  theme_bw() specifies want graph with black and white background, without grey background for graph generated by default.
 bill_size_sex_exploratory <- ggplot(data=penguins_data_clean, 
                          aes(x=species, 
                             y=culmen_length_mm)) + 
                          geom_point(aes(color=species, shape=sex)) + 
-                         geom_jitter(aes(color = species), alpha = 0.25, position =                                     position_jitter(width = 0.4, seed=0)) +
+                         geom_jitter(aes(color = species), alpha = 0.25, position =                                                             position_jitter(width = 0.4, seed=0)) +
                          scale_colour_manual(values = species_colours) + 
                          scale_shape_manual(values = c(16, 17)) +
                          xlab("Culmen Length (mm)") + 
-                         ylab("Culmen Depth (mm)")
+                         ylab("Culmen Depth (mm)") +
+                         theme_bw()
 
 #plot() function allows graph to be outputted.
 plot(bill_size_sex_exploratory)
 
-#Saving figure as .png file in figures folder.
+#Saving this figure as .png file in figures folder.
 agg_png("figures/bill_size__sex_exploratory.png", 
         width = 30,
         height = 15,
@@ -178,19 +185,19 @@ dev.off()
 ```
 
 ```{r chinstrap specific dataset}
-#Subsetting data to only include that on gentoo penguins.
+#Subsetting data to only include that on chinstrap penguins.
 chinstrap_data <- penguins_data_clean %>% 
                filter(species == "Chinstrap") %>% 
                na.omit()
 
-#Writing new .csv file for chinstrap dataset to keep this safe in case any accidental changes are made or code breaks, to allow code to be easily recovered. 
+#Writing new .csv file for chinstrap dataset to keep this safe in case any accidental changes are made. 
 write.csv(chinstrap_data, here("data","chinstrap_data.csv"))
 chinstrap_data <- read.csv(here("data", "chinstrap_data.csv"))
 
 #Creating histograms of data on culmen length in all chinstraps sampled to investigate data and assess distribution of data points, as well as effects of any transformations.
+#geom_histogram() specifies want a histogram to be graphed.
 #Histogram for untransformed data:
-chinstrap_length <- ggplot(data=chinstrap_data, aes(x=culmen_length_mm)) + geom_histogram()
-chinstrap_length
+ggplot(data=chinstrap_data, aes(x=culmen_length_mm)) + geom_histogram()
 
 #Log transforming culmen_length_mm using log10() function, and plotting histogram.
 chinstrap_log_length <- log10(chinstrap_data$culmen_length_mm)
@@ -208,23 +215,27 @@ ggplot(data = chinstrap_data, aes(x=chinstrap_sqrt_length)) + geom_histogram()
 #Made exploratory figure to look more closely at one species in particular.
 #Plotted a scatter plot.
 
-#Making a colour blind-friendly palette useful for distinguishing sexes on figures. Specifying this ensures each sex is consistently represented by the same colours on any graph where sex is shown, making this document more accessible (as it is colour blind friendly) and more reproducible.
+#Making a colour blind-friendly palette useful for distinguishing sexes on figures. Specifying this ensures each sex can be consistently represented by the same colours on any graph where sex is shown, making this document more accessible (as it is colour blind friendly) and more reproducible.
 sex_colours <- c("FEMALE" = "purple",
                  "MALE" = "darkorange")
 
+#Plotting scatter plot showing how culmen length varies with sex. 
+# Details of what each line of code does can be found in lines 151-159, in chunk encoding figure exploring effect of species on culmen length. 
 bill_size_exploratory_sex <- ggplot(data=chinstrap_data, 
                          aes(x=sex, 
                             y=culmen_length_mm)) + 
                          geom_point(aes(color=sex, shape=sex)) + 
-                         geom_jitter(aes(color = sex), alpha = 0.25, position =                                     position_jitter(width = 0.4, seed=0)) +
+                         geom_jitter(aes(color = sex), alpha = 0.25, position =                                                                 position_jitter(width = 0.4, seed=0)) +
                          scale_colour_manual(values = sex_colours) + 
                          scale_shape_manual(values = c(16, 17)) +
                          xlab("Culmen Length (mm)") + 
-                         ylab("Culmen Depth (mm)")
+                         ylab("Culmen Depth (mm)") +
+                         theme_bw()
 
+#plot() function allows graph to be outputted.
 plot(bill_size_exploratory_sex)
 
-#Saving chinstrap figure as .png files in figures folder.
+#Saving chinstrap figure as .png file in figures folder.
 agg_png("figures/bill_size_exploratory_sex.png", 
         width = 30,
         height = 15,
@@ -232,6 +243,7 @@ agg_png("figures/bill_size_exploratory_sex.png",
         res = 300,
         scaling = 1.125)
 
+#Ensures figure saved in "figures" folder actually has graph encoded within it, as opposed to blank file.
 print(bill_size_exploratory_sex)
 dev.off()
 
@@ -245,19 +257,23 @@ dev.off()
 sex_colours <- c("FEMALE" = "purple",
                  "MALE" = "darkorange")
 
+#Plotting scatter plot showing effect of culmen depth on culmen length and how this differs in each sex within chinstrap penguins. 
+# Details of what each line of code does can be found in lines 151-159, in chunk encoding figure exploring effect of species on culmen length. 
 bill_size_exploratory_depth <- ggplot(data=chinstrap_data, 
                          aes(x=culmen_depth_mm, 
                             y=culmen_length_mm)) + 
                          geom_point(aes(color=sex, shape=sex)) + 
-                         geom_jitter(aes(color = sex), alpha = 0.25, position =                                     position_jitter(width = 0.4, seed=0)) +
+                         geom_jitter(aes(color = sex), alpha = 0.25, position =                                                                 position_jitter(width = 0.4, seed=0)) +
                          scale_colour_manual(values = sex_colours) + 
                          scale_shape_manual(values = c(16, 17)) +
                          xlab("Culmen Length (mm)") + 
-                         ylab("Culmen Depth (mm)")
+                         ylab("Culmen Depth (mm)") +
+                         theme_bw()
 
+#plot() function allows graph to be outputted.
 plot(bill_size_exploratory_depth)
 
-#Saving chinstrap figure as .png files in figures folder.
+#Saving this figure as .png file in figures folder.
 agg_png("figures/bill_size_exploratory_depth.png", 
         width = 30,
         height = 15,
@@ -265,6 +281,7 @@ agg_png("figures/bill_size_exploratory_depth.png",
         res = 300,
         scaling = 1.125)
 
+#Ensures figure saved in "figures" folder actually has graph encoded within it, as opposed to blank file.
 print(bill_size_exploratory_depth)
 dev.off()
 
@@ -294,37 +311,37 @@ Alternative hypotheses ANCOVA for effect of sex in *P. antarcticus*:
 NB: The analyses presented here are not the same as in any referenced paper.
 
 ```{r Statistics- Gentoos}
-#Creating model looking at effect of sex on culmen depth in chinstraps including interaction term.
+#Creating model looking at effect of sex on culmen length in chinstraps including interaction with culmen depth.
 chinstrap_log_bill_model_int <- lm(culmen_length_mm ~ sex * culmen_depth_mm, chinstrap_data)
 
 #Makes plots to ensure assumptions of analysis not violated.
-par(mfrow = c(1,2))
-plot(chinstrap_log_bill_model_int, which = 2)
-plot(chinstrap_log_bill_model_int, which = 1)
+par(mfrow = c(1,2)) #par() function allows multi-panel figure of the assumptions plots encoded below to be made, allowing assessment of normality and heteroscedascity of model.
+plot(chinstrap_log_bill_model_int, which = 2) # which=2 specifies QQ plot to compare the data in this model to a theoretical normal dataset, to verify data is normally distributed. As points mostly lie on straight line, can assume this sample is normally distributed.
+plot(chinstrap_log_bill_model_int, which = 1) # which=1 specifies graph of residual values vs fitted values, to verify population variances are equal between samples. Both groups seem to have equal distribution above and below line, so can assume assumption is not violated.
 
-#Checking outputs of analysis of model to assess adjusted R-squared and values for slope and intercept of each group.
+#Checking outputs of analysis of model to assess adjusted R-squared of model and values for slope and y-intercept for males and females, as well as if slope of regression line is different between them.
 summary(chinstrap_log_bill_model_int)
 
 #Conducting an ANOVA of the model including interaction to assess what the significant effects are.
 chinstrap_int_anova <- aov(chinstrap_log_bill_model_int)
 summary(chinstrap_int_anova)
 
-##Creating model looking at effect of sex on culmen depth in chinstraps without interaction term.
+#Creating model looking at effect of sex on culmen length in chinstraps without interaction with culmen depth.
 chinstrap_log_bill_model_noint <- lm(culmen_length_mm ~ sex + culmen_depth_mm, chinstrap_data)
 
 #Makes plots to ensure assumptions of analysis not violated.
-par(mfrow = c(1,2))
-plot(chinstrap_log_bill_model_noint, which = 2)
-plot(chinstrap_log_bill_model_noint, which = 1)
+par(mfrow = c(1,2)) #par() function allows multi-panel figure of the assumptions plots encoded below to be made, allowing assessment of normality and heteroscedascity of model.
+plot(chinstrap_log_bill_model_noint, which = 2) # which=2 specifies QQ plot to compare the data in this model to a theoretical normal dataset, to verify data is normally distributed. As points mostly lie on straight line, can assume this sample is normally distributed.
+plot(chinstrap_log_bill_model_noint, which = 1) # which=1 specifies graph of residual values vs fitted values, to verify population variances are equal between samples. Both groups seem to have equal distribution above and below line, so can assume assumption is not violated.
 
-#Checking outputs of analysis of model without interaction to assess adjusted R-squared and values for slope and intercept of each group.
+#Checking outputs of analysis of model without interaction to assess adjusted R-squared and values for slope and y-intercept of males and females.
 summary(chinstrap_log_bill_model_noint)
 
 #Conducting an ANOVA of the model without interaction to assess what the significant effects are.
 chinstrap_noint_anova <- aov(chinstrap_log_bill_model_noint)
 summary(chinstrap_noint_anova)
 
-#Conducting ANOVA to assess if there is a significant interaction between sex and culmen length in Gentoo penguins.
+#Conducting ANOVA to assess if model without interaction is a better fit than model with interaction (i.e ifthere is a significant interaction between sex and culmen length in chinstrap penguins).
 chinstrap_test_fit_diff <- anova(chinstrap_log_bill_model_int, chinstrap_log_bill_model_noint)
 chinstrap_test_fit_diff
 ```
@@ -351,6 +368,7 @@ The above can also be seen on the results figure, where the slopes of each regre
 
 ```{r}
 #Making results plot, showing relationship between culmen depth, culmen length and sex in gentoos.
+# # Details of what each line of code does can be found in lines 151-159, in chunk encoding figure exploring effect of species on culmen length. 
 chinstrap_results_plot_int <- 
 ggplot(chinstrap_data, 
        aes(x=culmen_length_mm, y=culmen_depth_mm, color = sex)) + 
@@ -385,14 +403,6 @@ Further research should be conducted to clarify why sexual dimorphism has evolve
 Friedman, N. et al., 2019. Evolution of a multifunctional trait: shared effects of foraging ecology and thermoregulation on beak morphology, with consequences for song evolution.. Proceedings of the Royal Society B, 286(1917), p. 20192474.
 Gorman, K., Williams, T. & Fraser, W., 2014. Ecological Sexual Dimorphism and Environmental Variability within a Community of Antarctic Penguins (Genus Pygoscelis). PloS one, 9(3), p. e90081.
 Polito, M., Clucas, G., Hart, T. & Trivelpiece, W., 2012. A simplified method of determining the sex of Pygoscelis penguins using bill measurements.. Marine Ornithology, Volume 40, pp. 89-94.
-
-
-
-*You will be marked on the following:*
-
-a)  Your code for readability and functionality
-b)  Your figures for communication
-c)  Your text communication of your analysis
 
 # QUESTION 3: Open Science
 
