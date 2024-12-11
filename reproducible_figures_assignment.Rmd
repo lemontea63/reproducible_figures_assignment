@@ -190,6 +190,7 @@ chinstrap_sqrt_length <- sqrt(chinstrap_data$culmen_length_mm)
 ggplot(data = chinstrap_data, aes(x=chinstrap_sqrt_length)) + geom_histogram()
 
 #No beneficial effect of transforming data, so will use untransformed data for further analysis.
+#Can see clear bimodality, indicating some other variable is affecting culmen length in chinstrap penguins.
 ```
 
 ```{r Creating exploratory figure for chinstrap penguins in particular}
@@ -228,22 +229,22 @@ dev.off()
 ## Hypotheses
 
 Effect of sex:
-Null hypothesis: The mean culmen depth of each sex will not be significantly different from that of any other species.
-Alternative hypothesis: The mean culmen depths of each sex will be significantly different from each other.
+Null hypothesis: The mean culmen length of each sex will not be significantly different from that of the other.
+Alternative hypothesis: The mean culmen depth of each sex will be significantly different from the other.
 
 ## Statistical Methods
 
-In this analysis, an ANCOVA test will be conducted, to test whether sex affects culmen depth, controlling for culmen length. An ANCOVA is suitable for this analysis as there is a numerical response variable (culmen depth), a categorical explanatory variable (sex) and a couple of covariates which must be controlled for (culmen length and species). It is important to control for culmen length as this may impact the culmen depth on a beak. 
+In this analysis, an ANCOVA test will be conducted, to test whether sex affects culmen length, controlling for culmen depth. An ANCOVA is suitable for this analysis as there is a numerical response variable (culmen depth), a categorical explanatory variable (sex) and a couple of covariates which must be controlled for (culmen length and species). It is important to control for culmen depth; the depth of a beak may affect the length of a beak by itself. 
 
 Null hypotheses for effect of sex in *P. antarcticus*: 
-1: There is no effect of sex on culmen depth. 
-2: There is no effect of culmen length on culmen depth. 
-3: There is no interaction between sex and culmen length.
+1: There is no effect of sex on culmen length. 
+2: There is no effect of culmen depth on culmen length. 
+3: There is no interaction between sex and culmen depth.
 
 Alternative hypotheses for effect of sex in *P. antarcticus*: 
-1: There is a significant effect of sex on culmen depth. 
-2: There is a significant effect of culmen length on culmen depth. 
-3: There is a significant interaction between sex and culmen length.
+1: There is a significant effect of sex on culmen length. 
+2: There is a significant effect of culmen depth on culmen length. 
+3: There is a significant interaction between sex and culmen depth.
 
 
 NB: The analyses presented here are not the same as in any referenced paper.
