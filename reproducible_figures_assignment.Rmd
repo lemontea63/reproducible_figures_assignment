@@ -251,7 +251,7 @@ NB: The analyses presented here are not the same as in any referenced paper.
 
 ```{r Statistics- Gentoos}
 #Creating model looing at effect of sex on culmen depth in chinstraps including interaction term.
-chinstrap_log_bill_model_int <- lm(culmen_depth_mm ~ sex * chinstrap_log_length, chinstrap_data)
+chinstrap_log_bill_model_int <- lm(culmen_length_mm ~ sex * culmen_depth_mm, chinstrap_data)
 
 #Makes plots to ensure assumptions of analysis not violated.
 par(mfrow = c(1,2))
@@ -266,7 +266,7 @@ chinstrap_int_anova <- aov(chinstrap_log_bill_model_int)
 summary(chinstrap_int_anova)
 
 ##Creating model looing at effect of sex on culmen depth in chinstraps without interaction term.
-chinstrap_log_bill_model_noint <- lm(culmen_depth_mm ~ sex + chinstrap_log_length, chinstrap_data)
+chinstrap_log_bill_model_noint <- lm(culmen_length_mm ~ sex + culmen_depth_mm, chinstrap_data)
 
 #Makes plots to ensure assumptions of analysis not violated.
 par(mfrow = c(1,2))
