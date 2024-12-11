@@ -135,72 +135,7 @@ write.csv(penguins_data_clean, here("data","penguins_data_clean.csv"))
 penguins_data_clean <- read.csv(here("data", "penguins_data_clean.csv"))
 ```
 
-```{r Investigating all species data.}
-
-#Creating histograms of data on culmen length in all species to investigate data and assess distribution of data points, as well as effects of any transformations.
-ggplot(data=penguins_data_clean, aes(x=culmen_length_mm)) + geom_histogram()
-
-#Log transforming culmen_length_mm using log10() function, and plotting histogram.
-log_length <- log10(penguins_data_clean$culmen_length_mm) 
-ggplot(data=penguins_data_clean, aes(x=log_length)) + geom_histogram()
-
-#Square-root transforming culmen_length_mm using sqrt() function, and plotting histogram.
-sqrt_length <- sqrt(penguins_data_clean$culmen_length_mm)
-ggplot(data = penguins_data_clean, aes(x=sqrt_length)) + geom_histogram()
-#Transformations were not that effective, although log transformation did make data slightly less right-skewed; will use log-transformed culmen length data for analysis.
-
-#Creating histograms of data on culmen depth in all species to investigate data and assess distribution of data points, as well as effects of any transformations.
-ggplot(data=penguins_data_clean, aes(x=culmen_depth_mm)) + geom_histogram()
-
-#Log transforming culmen_depth_mm using log10() function, and plotting histogram.
-log_depth <- log10(penguins_data_clean$culmen_depth_mm)
-ggplot(data=penguins_data_clean, aes(x=log_depth)) + geom_histogram()
-
-#Square-root transforming culmen_depth_mm using sqrt() function, and plotting histogram.
-sqrt_depth <- sqrt(penguins_data_clean$culmen_depth_mm)
-ggplot(data = penguins_data_clean, aes(x=sqrt_depth)) + geom_histogram()
-#Transformations were not effective. Will use untransformed culmen depth data for further analysis.
-```
-
-```{r Creating exploratory figure}
-#Creating an exploratory figure looking at the relationship between culmen depth and culmen length, as well as how this differs between species. 
-#  geom_jitter() shows data points on the plot and also ensures they are a specified width so as to not obscure the graph.
-#  seed ensures the jitter is generated the same way every time, making the figure more reproducible.
-#  scale_colour_manual function allows for different species to be designated the same colours    every time in a colour blind friendly palette, making the figure more accessible and more       reproducible. 
-#     Also allows for more in depth exploration of initial data before statistical analysis          conducted.
-
-#Making a colour blind-friendly palette useful for distinguishing species on figures. Specifying this ensures the different species are represented by the consistent colours on any graph, making this document more accessible (colour blind friendly) and more reproducible.
-species_colours <- c("Adelie" = "darkorange", 
-                     "Chinstrap" = "magenta2", 
-                     "Gentoo" = "blue")
-
-#Encodes information for all-species exploratory graph.
-bill_size_exploratory <- ggplot(data=penguins_data_clean, 
-                         aes(x=log_length, 
-                            y=culmen_depth_mm)) + 
-                         geom_point(aes(color=species)) + 
-                         geom_jitter(aes(color = species), alpha = 0.25, position =                                     position_jitter(width = 0.4, seed=0)) +
-                         scale_colour_manual(values = species_colours) + 
-                         xlab("Culmen Length (mm)") + 
-                         ylab("Culmen Depth (mm)")
-
-#plot() function allows graph to be outputted.
-plot(bill_size_exploratory)
-
-#agg_png() saves figure as .png file in figures folder.
-agg_png("figures/bill_size_exploratory.png", 
-        width = 30,
-        height = 15,
-        units = "cm",
-        res = 300,
-        scaling = 1.125)
-
-#print() ensures figure saved in "figures" folder actually has graph encoded within it, as opposed to blank file.
-print(bill_size_exploratory)
-dev.off()
-```
-
-```{r Sexual dimorphism}
+```{r Exploratory figure looking at sexual dimorphism}
 #Decided to look at effects of sexual dimorphism, so encoded separate graph which codes for identification of sex as well as species through different shapes.
 # scale_shape_manual allows specification of shape so different sexes can be designated the      same shapes consistently making the figure more reproducible. 
 #   Also allows for more in depth exploration of initial data before statistical analysis          conducted.
@@ -231,13 +166,15 @@ print(bill_size_sex_exploratory)
 dev.off()
 ```
 
-```{r Gentoo specific}
+```{r chinstrap specific dataset}
 #Subsetting data to only include that on gentoo penguins.
 chinstrap_data <- penguins_data_clean %>% 
                filter(species == "Chinstrap") %>% 
                na.omit()
-chinstrap_data
-#Do not need to factorise sex in Chinstrap data as only 2 groups so no need to run Tukey post-hoc test.
+
+#Writing new .csv file for chinstrap dataset to keep this safe in case any accidental changes are made or code breaks, to allow code to be easily recovered. 
+write.csv(chinstrap_data, here("data","chinstrap_data.csv"))
+chinstrap_data <- read.csv(here("data", "chinstrap_data.csv"))
 
 #Creating histograms of data on culmen length in all chinstraps sampled to investigate data and assess distribution of data points, as well as effects of any transformations.
 #Histogram for untransformed data:
