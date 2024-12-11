@@ -239,7 +239,7 @@ chinstrap_data <- penguins_data_clean %>%
 chinstrap_data
 #Do not need to factorise sex in Chinstrap data as only 2 groups so no need to run Tukey post-hoc test.
 
-#Creating histograms of data on culmen length in all Gentoos to investigate data and assess distribution of data points, as well as effects of any transformations.
+#Creating histograms of data on culmen length in all chinstraps sampled to investigate data and assess distribution of data points, as well as effects of any transformations.
 #Histogram for untransformed data:
 ggplot(data=chinstrap_data, aes(x=culmen_length_mm)) + geom_histogram()
 
