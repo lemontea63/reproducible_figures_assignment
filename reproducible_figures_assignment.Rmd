@@ -201,8 +201,8 @@ sex_colours <- c("FEMALE" = "purple",
                  "MALE" = "darkorange")
 
 bill_size_exploratory_sex <- ggplot(data=chinstrap_data, 
-                         aes(x=chinstrap_length, 
-                            y=culmen_depth_mm)) + 
+                         aes(x=sex, 
+                            y=culmen_length_mm)) + 
                          geom_point(aes(color=sex, shape=sex)) + 
                          geom_jitter(aes(color = sex), alpha = 0.25, position =                                     position_jitter(width = 0.4, seed=0)) +
                          scale_colour_manual(values = sex_colours) + 
