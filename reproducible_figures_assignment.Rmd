@@ -411,13 +411,12 @@ Polito, M., Clucas, G., Hart, T. & Trivelpiece, W., 2012. A simplified method of
 
 *Upload your RProject you created for **Question 2** and any files and subfolders used to GitHub. Do not include any identifiers such as your name. Make sure your GitHub repo is public.*
 
-*GitHub link:*
+*GitHub link:* https://github.com/lemontea63/reproducible_figures_assignment
 
-*You will be marked on your repo organisation and readability.*
 
 ## b) Share your repo with a partner, download, and try to run their data pipeline.
 
-*Partner's GitHub link:*
+*Partner's GitHub link:* https://github.com/Anonymous-Exam-User/Palmer_Penguin_GitHub 
 
 *You **must** provide this so I can verify there is no plagiarism between you and your partner.*
 
