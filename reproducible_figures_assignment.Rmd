@@ -182,9 +182,9 @@ dev.off()
 
 ```{r chinstrap specific dataset}
 #Subsetting data to only include that on chinstrap penguins.
-chinstrap_data <- penguins_data_clean %>% 
-               filter(species == "Chinstrap") %>% 
-               na.omit()
+chinstrap_data <- penguins_data_clean %>% #Calls clean dataframe
+               filter(species == "Chinstrap") %>% #filters for data including "Chinstrap" in species column
+               na.omit() #Omits NA values from dataset.
 
 #Writing new .csv file for chinstrap dataset to keep this safe in case any accidental changes are made. 
 write.csv(chinstrap_data, here("data","chinstrap_data.csv"))
@@ -210,7 +210,6 @@ ggplot(data = chinstrap_data, aes(x=chinstrap_sqrt_length)) + geom_histogram()
 ```{r Creating exploratory figure for chinstrap penguins in particular}
 #Made exploratory figure to look more closely at one species in particular.
 #Plotted a scatter plot.
-
 #Making a colour blind-friendly palette useful for distinguishing sexes on figures. Specifying this ensures each sex can be consistently represented by the same colours on any graph where sex is shown, making this document more accessible (as it is colour blind friendly) and more reproducible.
 sex_colours <- c("FEMALE" = "purple",
                  "MALE" = "darkorange")
@@ -259,7 +258,7 @@ bill_size_exploratory_depth <- ggplot(data=chinstrap_data,
                          aes(x=culmen_depth_mm, 
                             y=culmen_length_mm)) + 
                          geom_point(aes(color=sex, shape=sex)) + 
-                         geom_jitter(aes(color = sex), alpha = 0.25, position =                                                                 position_jitter(width = 0.4, seed=0)) +
+                         geom_jitter(aes(color = sex), alpha = 0.25, position =                                                                   position_jitter(width = 0.4, seed=0)) +
                          scale_colour_manual(values = sex_colours) + 
                          scale_shape_manual(values = c(16, 17)) +
                          xlab("Culmen Length (mm)") + 
