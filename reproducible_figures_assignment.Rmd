@@ -1,8 +1,8 @@
 ---
 title: "Reproducible Figures Assignment"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 date: "2023-11-29"
 purpose: A script to analyse the Palmer Penguins dataset.
 ---
