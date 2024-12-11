@@ -137,7 +137,11 @@ penguins_data_clean <- read.csv(here("data", "penguins_data_clean.csv"))
 
 ```{r Exploratory figure looking at sexual dimorphism}
 #Decided to look at effects of sexual dimorphism, so encoded separate graph which codes for identification of sex as well as species through different shapes.
-# scale_shape_manual allows specification of shape so different sexes can be designated the      same shapes consistently making the figure more reproducible. 
+#  geom_jitter() shows data points on the plot and also ensures they are a specified width so as to not obscure the graph.
+#  seed ensures the jitter is generated the same way every time, making the figure more reproducible.
+#  scale_colour_manual function allows for different species to be designated the same colours    every time in a colour blind friendly palette, making the figure more accessible and more       reproducible. 
+#     Also allows for more in depth exploration of initial data before statistical analysis          conducted.
+#  scale_shape_manual allows specification of shape so different sexes can be designated the      same shapes consistently making the figure more reproducible. 
 #   Also allows for more in depth exploration of initial data before statistical analysis          conducted.
 #Plotted a scatter plot as comparing two numerical variables (culmen length and depth).
 bill_size_sex_exploratory <- ggplot(data=penguins_data_clean, 
@@ -263,11 +267,11 @@ dev.off()
 
 Effect of sex:
 Null hypothesis: The mean culmen length of each sex will not be significantly different from that of the other.
-Alternative hypothesis: The mean culmen depth of each sex will be significantly different from the other.
+Alternative hypothesis: The mean culmen length of each sex will be significantly different from the other.
 
 ## Statistical Methods
 
-In this analysis, an ANCOVA test will be conducted, to test whether sex affects culmen length, controlling for culmen depth. An ANCOVA is suitable for this analysis as there is a numerical response variable (culmen depth), a categorical explanatory variable (sex) and a couple of covariates which must be controlled for (culmen length and species). It is important to control for culmen depth; the depth of a beak may affect the length of a beak by itself. 
+In this analysis, an ANCOVA test will be conducted, to test whether sex affects culmen length, controlling for culmen depth. An ANCOVA is suitable for this analysis as there is a numerical response variable (culmen length), a categorical explanatory variable (sex) and a numerical covariate which must be controlled for (culmen depth). It is important to control for culmen depth as the depth of a beak may affect the length of a beak by itself. 
 
 Null hypotheses for effect of sex in *P. antarcticus*: 
 1: There is no effect of sex on culmen length. 
@@ -283,7 +287,7 @@ Alternative hypotheses for effect of sex in *P. antarcticus*:
 NB: The analyses presented here are not the same as in any referenced paper.
 
 ```{r Statistics- Gentoos}
-#Creating model looing at effect of sex on culmen depth in chinstraps including interaction term.
+#Creating model looking at effect of sex on culmen depth in chinstraps including interaction term.
 chinstrap_log_bill_model_int <- lm(culmen_length_mm ~ sex * culmen_depth_mm, chinstrap_data)
 
 #Makes plots to ensure assumptions of analysis not violated.
@@ -294,11 +298,11 @@ plot(chinstrap_log_bill_model_int, which = 1)
 #Checking outputs of analysis of model to assess adjusted R-squared and values for slope and intercept of each group.
 summary(chinstrap_log_bill_model_int)
 
-#Conducting an ANOVA of the above gentoo-specific model to assess what the significant effects are.
+#Conducting an ANOVA of the model including interaction to assess what the significant effects are.
 chinstrap_int_anova <- aov(chinstrap_log_bill_model_int)
 summary(chinstrap_int_anova)
 
-##Creating model looing at effect of sex on culmen depth in chinstraps without interaction term.
+##Creating model looking at effect of sex on culmen depth in chinstraps without interaction term.
 chinstrap_log_bill_model_noint <- lm(culmen_length_mm ~ sex + culmen_depth_mm, chinstrap_data)
 
 #Makes plots to ensure assumptions of analysis not violated.
@@ -309,7 +313,7 @@ plot(chinstrap_log_bill_model_noint, which = 1)
 #Checking outputs of analysis of model without interaction to assess adjusted R-squared and values for slope and intercept of each group.
 summary(chinstrap_log_bill_model_noint)
 
-#Conducting an ANOVA of the gentoo-specific model without interaction to assess what the significant effects are.
+#Conducting an ANOVA of the model without interaction to assess what the significant effects are.
 chinstrap_noint_anova <- aov(chinstrap_log_bill_model_noint)
 summary(chinstrap_noint_anova)
 
@@ -323,9 +327,9 @@ chinstrap_test_fit_diff
 
 ```{r}
 #Making results plot, showing relationship between culmen depth, culmen length and sex in gentoos.
-chinstrap_plot_int <- 
+chinstrap_results_plot_int <- 
 ggplot(chinstrap_data, 
-       aes(x=chinstrap_log_length, y=culmen_depth_mm, color = sex)) + 
+       aes(x=culmen_length_mm, y=culmen_depth_mm, color = sex)) + 
   geom_point() + 
   geom_smooth(method = "lm") + 
   scale_colour_manual(values = sex_colours) + 
@@ -333,7 +337,7 @@ ggplot(chinstrap_data,
   ylab("Culmen depth (mm)") + 
   theme_bw()
 
-plot(chinstrap_plot_int)
+plot(chinstrap_results_plot_int)
 
 agg_png("figures/chinstrap_results_plot.png", 
         width = 30,
@@ -342,7 +346,7 @@ agg_png("figures/chinstrap_results_plot.png",
         res = 300,
         scaling = 1.125)
 
-print(chinstrap_plot_int)
+print(chinstrap_results_plot_int)
 dev.off()
 ```
 
