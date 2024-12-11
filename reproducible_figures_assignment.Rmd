@@ -272,7 +272,7 @@ dev.off()
 
 ## Hypotheses
 
-Effect of sex:
+Generic hypotheses on effect of sex:
 Null hypothesis: The mean culmen length of each sex will not be significantly different from that of the other.
 Alternative hypothesis: The mean culmen length of each sex will be significantly different from the other.
 
@@ -280,12 +280,12 @@ Alternative hypothesis: The mean culmen length of each sex will be significantly
 
 In this analysis, an ANCOVA test will be conducted, to test whether sex affects culmen length, controlling for culmen depth. An ANCOVA is suitable for this analysis as there is a numerical response variable (culmen length), a categorical explanatory variable (sex) and a numerical covariate which must be controlled for (culmen depth). It is important to control for culmen depth as the depth of a beak may affect the length of a beak by itself. 
 
-Null hypotheses for effect of sex in *P. antarcticus*: 
+Null hypotheses for ANCOVA on effect of sex in *P. antarcticus*: 
 1: There is no effect of sex on culmen length. 
 2: There is no effect of culmen depth on culmen length. 
 3: There is no interaction between sex and culmen depth.
 
-Alternative hypotheses for effect of sex in *P. antarcticus*: 
+Alternative hypotheses ANCOVA for effect of sex in *P. antarcticus*: 
 1: There is a significant effect of sex on culmen length. 
 2: There is a significant effect of culmen depth on culmen length. 
 3: There is a significant interaction between sex and culmen depth.
@@ -330,6 +330,23 @@ chinstrap_test_fit_diff
 ```
 
 ## Results & Discussion
+Having conducted an ANCOVA analysis to test how sex affects culmen length when controlling for culmen depth, the following has been found:
+The adjusted R-squared for the model including the interaction is 0.4918, therefore 49.18% of variance is explained by the model. Sex has a significant effect on culmen length (p=<6.43*10^-11), and as such the y-intercepts of the regression lines are significantly different. Culmen depth also has a significant effect on culmen length (p=0.0131). There is no interaction between sex and culmen depth (p=0.8927), so the slopes of the regression lines are not significantly different. 
+It is possible to reject the following null hypotheses: 
+1: There is no effect of sex on culmen length. 
+2: There is no effect of culmen depth on culmen length. 
+
+It is not possible to reject the following null hypothesis:
+3: There is no interaction between sex and culmen depth.
+
+This therefore shows that sex does have an effect on culmen length in the chinstrap penguins, and that culmen depth can also has an effect. 
+
+The fact that sex affects culmen length is unsurprising as it has been shown that sex affects bill morphology and *P. antarcticus* does display sexual dimorphism. 
+The fact that culmen depth also affects culmen length is unsurprising as it is likely that increasing beak depth does correlate with increasing beak length, in order to keep beak shape roughly similar between sexes.
+
+The fact that there is no interaction between sex and culmen depth is unsurprising as well, as while both sexes will have differently sized beaks, it is reasonable to assume they would have similar overall beak shapes (a product of the interaction between culmen length and depth) as they are the same species and only display mild dimorphism.
+
+The above can also be seen on the results figure, where the slopes of each regression line are roughly parallel but each sex has a different y-intercept.
 
 
 ```{r}
@@ -340,7 +357,7 @@ ggplot(chinstrap_data,
   geom_point() + 
   geom_smooth(method = "lm") + 
   scale_colour_manual(values = sex_colours) + 
-  xlab("Log Culmen length (mm)") + 
+  xlab("Culmen length (mm)") + 
   ylab("Culmen depth (mm)") + 
   theme_bw()
 
@@ -359,7 +376,17 @@ dev.off()
 
 ## Conclusion
 
+In conclusion, it has been shown that culmen length is affected by both culmen depth and by sex independently, and that there is no interaction between culmen depth and sex in P. antarcticus. These results are unsurprising. This analysis backs up previous research which stated that chinstrap penguins do display sexual dimorphism in their beak morphology. 
+
+Further research should be conducted to clarify why sexual dimorphism has evolved in the chinstrap penguins, and the genus Pygoscelis more widely. Moreover, the trophic ecology of male and female penguins in this genus should be studied to assess whether their trophic ecology differs in a statistically significant manner. 
+
 ##References
+Çakar, B. et al., 2024. Bill shape variation in selected species in birds of prey.. Anatomia, Histologia, Embryologia, 53(4), p. e13085.
+Friedman, N. et al., 2019. Evolution of a multifunctional trait: shared effects of foraging ecology and thermoregulation on beak morphology, with consequences for song evolution.. Proceedings of the Royal Society B, 286(1917), p. 20192474.
+Gorman, K., Williams, T. & Fraser, W., 2014. Ecological Sexual Dimorphism and Environmental Variability within a Community of Antarctic Penguins (Genus Pygoscelis). PloS one, 9(3), p. e90081.
+Polito, M., Clucas, G., Hart, T. & Trivelpiece, W., 2012. A simplified method of determining the sex of Pygoscelis penguins using bill measurements.. Marine Ornithology, Volume 40, pp. 89-94.
+
+
 
 *You will be marked on the following:*
 
