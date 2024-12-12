@@ -128,3 +128,26 @@ agg_png("figures/bill_size_exploratory.png",
 print(bill_size_exploratory)
 dev.off()
 ```
+
+```{r}
+#Creating model looking at effect of sex on culmen length in chinstraps without interaction with body mass.
+chinstrap_log_bill_model_noint <- lm(culmen_length_mm ~ sex + body_mass_g, chinstrap_data)
+
+#Makes plots to ensure assumptions of analysis not violated.
+par(mfrow = c(1,2)) #par() function allows multi-panel figure of the assumptions plots encoded below to be made, allowing assessment of normality and heteroscedascity of model.
+plot(chinstrap_log_bill_model_noint, which = 2) # which=2 specifies QQ plot to compare the data in this model to a theoretical normal dataset, to verify data is normally distributed. As points mostly lie on straight line, can assume this sample is normally distributed.
+plot(chinstrap_log_bill_model_noint, which = 1) # which=1 specifies graph of residual values vs fitted values, to verify population variances are equal between samples. Both groups seem to have equal distribution above and below line, so can assume assumption is not violated.
+
+#Checking outputs of analysis of model without interaction to assess adjusted R-squared and values for slope and y-intercept of males and females.
+summary(chinstrap_log_bill_model_noint)
+
+#Conducting an ANOVA of the model without interaction to assess what the significant effects are.
+chinstrap_noint_anova <- aov(chinstrap_log_bill_model_noint)
+summary(chinstrap_noint_anova)
+
+#Conducting ANOVA to assess if model without interaction is a better fit than model with interaction (i.e ifthere is a significant interaction between sex and culmen length in chinstrap penguins).
+chinstrap_test_fit_diff <- anova(chinstrap_log_bill_model_int, chinstrap_log_bill_model_noint)
+chinstrap_test_fit_diff
+```
+
+Some stats
