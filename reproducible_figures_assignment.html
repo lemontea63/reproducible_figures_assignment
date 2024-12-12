@@ -450,7 +450,7 @@ head(penguins_data_raw)</code></pre>
 ## [10] &quot;Date.Egg&quot;            &quot;Culmen.Length..mm.&quot;  &quot;Culmen.Depth..mm.&quot;  
 ## [13] &quot;Flipper.Length..mm.&quot; &quot;Body.Mass..g.&quot;       &quot;Sex&quot;                
 ## [16] &quot;Delta.15.N..o.oo.&quot;   &quot;Delta.13.C..o.oo.&quot;   &quot;Comments&quot;</code></pre>
-<pre class="r"><code>#Making function to clean column names of raw dataset.
+<pre class="r"><code>#Making function to clean column names of raw dataset. Some code taken from lesson materials provided by Dr Lydia France, University of Oxford, 2024
 cleaning_penguin_data_columns &lt;- function(raw_data){
   print(&quot;Cleaning column names, simplifying species names, removing empty columns and rows and removing unnecessary columns/rows&quot;)
   raw_data %&gt;% 
