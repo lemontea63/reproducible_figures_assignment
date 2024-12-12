@@ -241,7 +241,7 @@ bill_size_sex_exploratory <- ggplot(data=chinstrap_data,
                          geom_jitter(aes(color = sex), alpha = 0.25, position =                                                                   position_jitter(width = 0.4, seed=0)) +
                          scale_colour_manual(values = sex_colours) + 
                          scale_shape_manual(values = c(16, 17)) +
-                         labs(title = "A graph to show how culmen length differs sexes in Chinstrap penguins", x= "Sex", y="Culmen Length (mm)") +
+                         labs(title = "A graph to show how culmen length differs between sexes in Chinstrap penguins", x= "Sex", y="Culmen Length (mm)") +
                          theme_bw()
 
 #plot() function allows graph to be outputted.
@@ -271,19 +271,19 @@ sex_colours <- c("FEMALE" = "purple",
 
 #Plotting scatter plot showing effect of culmen depth on culmen length and how this differs in each sex within chinstrap penguins. 
 # Details of what each line of code does can be found in lines 146-154, in chunk encoding figure exploring effect of species on culmen length. 
-bill_size_depth_exploratory <- ggplot(data=chinstrap_data, 
-                         aes(x=culmen_depth_mm, 
+bill_size_bodymass_sex_exploratory <- ggplot(data=chinstrap_data, 
+                         aes(x=body_mass_g, 
                             y=culmen_length_mm)) + 
                          geom_point(aes(color=sex, shape=sex)) + 
                          geom_jitter(aes(color = sex), alpha = 0.25, position =                                                                   position_jitter(width = 0.4, seed=0)) +
                          scale_colour_manual(values = sex_colours) + 
                          scale_shape_manual(values = c(16, 17)) +
-                        labs(title = "A graph to show the relationship between culmen depth and culmen length, 
-                             and how penguin sex affects this", x= "Culmen Depth (mm)", y="Culmen Length (mm)") +
+                        labs(title = "A graph to show the relationship between body mass and culmen length, 
+                             and how penguin sex affects this", x= "Body Mass (g)", y="Culmen Length (mm)") +
                          theme_bw()
 
 #plot() function allows graph to be outputted.
-plot(bill_size_depth_exploratory)
+plot(bill_size_bodymass_sex_exploratory)
 
 #Saving this figure as .png file in figures folder.
 agg_png("figures/bill_size_depth_exploratory.png", 
@@ -294,7 +294,7 @@ agg_png("figures/bill_size_depth_exploratory.png",
         scaling = 1.125)
 
 #Ensures figure saved in "figures" folder actually has graph encoded within it, as opposed to blank file.
-print(bill_size_depth_exploratory)
+print(bill_size_bodymass_sex_exploratory)
 dev.off()
 
 ```
@@ -307,27 +307,27 @@ Alternative hypothesis: The mean culmen length of each sex will be significantly
 
 ## Statistical Methods
 
-In this analysis, an ANCOVA test will be conducted, to test whether sex affects culmen length, controlling for culmen depth. An ANCOVA is suitable for this analysis as there is a numerical response variable (culmen length), a categorical explanatory variable (sex) and a numerical covariate which must be controlled for (culmen depth). It is important to control for culmen depth as the depth of a beak may affect the length of a beak by itself. 
+In this analysis, an ANCOVA test will be conducted, to test whether sex affects culmen length, controlling for culmen depth. An ANCOVA is suitable for this analysis as there is a numerical response variable (culmen length), a categorical explanatory variable (sex) and a numerical covariate which must be controlled for (body mass). It is important to control for body mass as increasing body mass may be correlated with a longer beak. 
 
 Null hypotheses for ANCOVA on effect of sex in *P. antarcticus*: 
 1: There is no effect of sex on culmen length. 
-2: There is no effect of culmen depth on culmen length. 
-3: There is no interaction between sex and culmen depth.
+2: There is no effect of body mass on culmen length. 
+3: There is no interaction between sex and body mass.
 
 Alternative hypotheses ANCOVA for effect of sex in *P. antarcticus*: 
 1: There is a significant effect of sex on culmen length. 
-2: There is a significant effect of culmen depth on culmen length. 
-3: There is a significant interaction between sex and culmen depth.
+2: There is a significant effect of body mass on culmen length. 
+3: There is a significant interaction between sex and body mass.
 
-A two-sample t-test will also be conducted to assess whether sex affects culmen depth as well as culmen length. 
-Null hypothesis for t-test: There is no difference in mean culmen depth between male and female chinstrap penguins.
-Alternative hypothesis for t-test: There is a statistically significant difference in mean culmen depth between male and female chinstrap penguins.
+A two-sample t-test will also be conducted to assess whether sex affects body mass as well as culmen length. 
+Null hypothesis for t-test: There is no difference in mean body mass between male and female chinstrap penguins.
+Alternative hypothesis for t-test: There is a statistically significant difference in mean body mass between male and female chinstrap penguins.
 
 NB: The analyses presented here are not the same as in any referenced paper.
 
 ```{r Statistics}
-#Creating model looking at effect of sex on culmen length in chinstraps including interaction with culmen depth.
-chinstrap_log_bill_model_int <- lm(culmen_length_mm ~ sex * culmen_depth_mm, chinstrap_data)
+#Creating model looking at effect of sex on culmen length in chinstraps including interaction with body mass.
+chinstrap_log_bill_model_int <- lm(culmen_length_mm ~ sex * body_mass_g, chinstrap_data)
 
 #Makes plots to ensure assumptions of analysis not violated.
 par(mfrow = c(1,2)) #par() function allows multi-panel figure of the assumptions plots encoded below to be made, allowing assessment of normality and heteroscedascity of model.
@@ -341,8 +341,8 @@ summary(chinstrap_log_bill_model_int)
 chinstrap_int_anova <- aov(chinstrap_log_bill_model_int)
 summary(chinstrap_int_anova)
 
-#Creating model looking at effect of sex on culmen length in chinstraps without interaction with culmen depth.
-chinstrap_log_bill_model_noint <- lm(culmen_length_mm ~ sex + culmen_depth_mm, chinstrap_data)
+#Creating model looking at effect of sex on culmen length in chinstraps without interaction with body mass.
+chinstrap_log_bill_model_noint <- lm(culmen_length_mm ~ sex + body_mass_g, chinstrap_data)
 
 #Makes plots to ensure assumptions of analysis not violated.
 par(mfrow = c(1,2)) #par() function allows multi-panel figure of the assumptions plots encoded below to be made, allowing assessment of normality and heteroscedascity of model.
@@ -360,8 +360,8 @@ summary(chinstrap_noint_anova)
 chinstrap_test_fit_diff <- anova(chinstrap_log_bill_model_int, chinstrap_log_bill_model_noint)
 chinstrap_test_fit_diff
 
-#Conducting a t-test analysis to assess whether culmen depth is affected by sex.
-t.test(culmen_depth_mm ~ sex, data = chinstrap_data)
+#Conducting a t-test analysis to assess whether body mass is affected by sex.
+t.test(body_mass_g ~ sex, data = chinstrap_data)
 ```
 
 ## Results & Discussion
