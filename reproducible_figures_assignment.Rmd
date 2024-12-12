@@ -111,6 +111,7 @@ This analysis, using data from the Palmer Penguins dataset, will test the relati
 
 ```{r Data Preparation- taken from lesson materials provided by Lydia France, University of Oxford, 2024}
 #All packages used can be found at the top of the document.
+# Some code taken from lesson materials provided by Dr Lydia France, University of Oxford, 2024
 
 #These lines of code preserve raw data in a separate csv file so it can be easily recovered.
 write.csv(penguins_raw, here("data","penguins_raw.csv"))
