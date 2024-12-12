@@ -158,8 +158,9 @@ penguins_data_clean <- read.csv(here("data", "penguins_data_clean.csv"))
 ```{r Exploratory figure looking at sexual dimorphism}
 #Decided to look at effects of sexual dimorphism, so encoded graph which codes for identification of sex through different shapes as well as species using different colours.
 
-#Making a colour blind-friendly palette useful for distinguishing species on figures. Specifying this ensures each sex can be consistently represented by the same colours on any graph where sex is shown, making this document more accessible (as it is colour blind friendly) and more reproducible.
-species_colours <- c("Adelie" = "darkorange", "Chinstrap" = "magenta2", "Gentoo" = "blue")
+#Making a colour blind-friendly palette useful for distinguishing sexes on figures. Specifying this ensures each sex can be consistently represented by the same colours on any graph where sex is shown, making this document more accessible (as it is colour blind friendly) and more reproducible.
+sex_colours <- c("FEMALE" = "purple",
+                 "MALE" = "darkorange")
 
 #Setting shapes for each sex to make figure more reproducible.
 sex_shapes <- c("MALE" = "+", "FEMALE" = "20")
@@ -177,9 +178,9 @@ sex_shapes <- c("MALE" = "+", "FEMALE" = "20")
 bill_size_species_sex_exploratory <- ggplot(data=penguins_data_clean, 
                          aes(x=species, 
                             y=culmen_length_mm)) + 
-                         geom_point(aes(color=species, shape=sex)) + 
-                         geom_jitter(aes(color = species), alpha = 0.25, position =                                                             position_jitter(width = 0.4, seed=0)) +
-                         scale_colour_manual(values = species_colours) + 
+                         geom_point(aes(color=sex, shape=sex)) + 
+                         geom_jitter(aes(color = sex, shape = sex), alpha = 0.25, position =                                                             position_jitter(width = 0.4, seed=0)) +
+                         scale_colour_manual(values = sex_colours) + 
                          scale_shape_manual(values = c(16, 17)) +
                          labs(title = "A graph to show how culmen length differs between species and sexes", x= "Species", y="Culmen Length (mm)") +
                          theme_bw()
@@ -230,9 +231,6 @@ ggplot(data = chinstrap_data, aes(x=chinstrap_sqrt_length)) + geom_histogram()
 ```{r Creating exploratory figure for chinstrap penguins in particular}
 #Made exploratory figure to look more closely at one species in particular.
 #Plotted a scatter plot.
-#Making a colour blind-friendly palette useful for distinguishing sexes on figures. Specifying this ensures each sex can be consistently represented by the same colours on any graph where sex is shown, making this document more accessible (as it is colour blind friendly) and more reproducible.
-sex_colours <- c("FEMALE" = "purple",
-                 "MALE" = "darkorange")
 
 #Plotting scatter plot showing how culmen length varies with sex. 
 # Details of what each line of code does can be found in lines 146-154, in chunk encoding figure exploring effect of species on culmen length. 
@@ -280,7 +278,8 @@ bill_size_depth_exploratory <- ggplot(data=chinstrap_data,
                          geom_jitter(aes(color = sex), alpha = 0.25, position =                                                                   position_jitter(width = 0.4, seed=0)) +
                          scale_colour_manual(values = sex_colours) + 
                          scale_shape_manual(values = c(16, 17)) +
-                        labs(title = "A graph to show the relationship between culmen depth and culmen length, and how penguin sex affects this", x= "Culmen Depth (mm)", y="Culmen Length (mm)") +
+                        labs(title = "A graph to show the relationship between culmen depth and culmen length, 
+                             and how penguin sex affects this", x= "Culmen Depth (mm)", y="Culmen Length (mm)") +
                          theme_bw()
 
 #plot() function allows graph to be outputted.
@@ -320,6 +319,9 @@ Alternative hypotheses ANCOVA for effect of sex in *P. antarcticus*:
 2: There is a significant effect of culmen depth on culmen length. 
 3: There is a significant interaction between sex and culmen depth.
 
+A two-sample t-test will also be conducted to assess whether sex affects culmen depth as well as culmen length. 
+Null hypothesis for t-test: There is no difference in mean culmen depth between male and female chinstrap penguins.
+Alternative hypothesis for t-test: There is a statistically significant difference in mean culmen depth between male and female chinstrap penguins.
 
 NB: The analyses presented here are not the same as in any referenced paper.
 
@@ -357,24 +359,29 @@ summary(chinstrap_noint_anova)
 #Conducting ANOVA to assess if model without interaction is a better fit than model with interaction (i.e ifthere is a significant interaction between sex and culmen length in chinstrap penguins).
 chinstrap_test_fit_diff <- anova(chinstrap_log_bill_model_int, chinstrap_log_bill_model_noint)
 chinstrap_test_fit_diff
+
+#Conducting a t-test analysis to assess whether culmen depth is affected by sex.
+t.test(culmen_depth_mm ~ sex, data = chinstrap_data)
 ```
 
 ## Results & Discussion
 Having conducted an ANCOVA analysis to test how sex affects culmen length when controlling for culmen depth, the following has been found:
-The adjusted R-squared for the model including the interaction is 0.4918, therefore 49.18% of variance is explained by the model. Sex has a significant effect on culmen length (p=<6.43*10^-11), and as such the y-intercepts of the regression lines are significantly different. Culmen depth also has a significant effect on culmen length (p=0.0131). There is no interaction between sex and culmen depth (p=0.8927), so the slopes of the regression lines are not significantly different. 
+The adjusted R-squared for the model including the interaction is 0.4918, therefore 49.18% of variance is explained by the model. Sex has a significant effect on culmen length (p=<6.43*10^-11), and as such the y-intercepts of the regression lines are significantly different. Culmen depth also has a significant effect on culmen length (p=0.0131). There is no interaction effect between sex and culmen depth (p=0.8927), so the slopes of the regression lines are not significantly different. 
 It is possible to reject the following null hypotheses: 
 1: There is no effect of sex on culmen length. 
 2: There is no effect of culmen depth on culmen length. 
 
 It is not possible to reject the following null hypothesis:
-3: There is no interaction between sex and culmen depth.
+3: There is no interaction effect between sex and culmen depth.
 
-This therefore shows that sex does have an effect on culmen length in the chinstrap penguins, and that culmen depth can also has an effect. 
+It should be stated that sex does also significantly affect culmen depth, as shown using a two-sample t-test (p=6.6*10^-13).
+
+This therefore shows that sex does have an effect on culmen length in the chinstrap penguins, and that culmen depth also has an independent effect. 
 
 The fact that sex affects culmen length is unsurprising as it has been shown that sex affects bill morphology and *P. antarcticus* does display sexual dimorphism. 
 The fact that culmen depth also affects culmen length is unsurprising as it is likely that increasing beak depth does correlate with increasing beak length, in order to keep beak shape roughly similar between sexes.
 
-The fact that there is no interaction between sex and culmen depth is unsurprising as well, as while both sexes will have differently sized beaks, it is reasonable to assume they would have similar overall beak shapes (a product of the interaction between culmen length and depth) as they are the same species and only display mild dimorphism.
+The fact that there is no interaction effecr between sex and culmen depth is unsurprising as well, as while both sexes will have differently sized beaks, it is reasonable to assume they would have similar overall beak shapes (a product of the interaction between culmen length and depth) as they are the same species and only display mild dimorphism.
 
 The above can also be seen on the results figure, where the slopes of each regression line are roughly parallel but each sex has a different y-intercept.
 
@@ -440,6 +447,7 @@ The fact that detailed explanations of code were written above each code chunk a
 My partner’s github repository was also well organised, with clearly labelled folders for things like functions, figures and data.
 
 -   *Did it run? Did you need to fix anything?*
+
 The code ran fine without needing to fix anything. 
 
 -   *What suggestions would you make for improving their code to make it more understandable or reproducible, and why?*
@@ -458,6 +466,7 @@ If I had to alter my partner’s figure using their code, I believe I could acco
 ## d) Reflect on your own code based on your experience with your partner's code and their review of yours. (300-500 words)
 
 -   *What improvements did they suggest, and do you agree?*
+
 My partner suggested I break up code chunks into smaller pieces with annotations written as text above, rather than within the chunk itself. I see the merit of this. Having in-code annotations can make code harder to read, however I wanted to keep to as few code chunks as possible so a user could run a specific chunk and get the desired output instead of running several smaller chunks. I also feel having bigger code chunks makes the document more easily navigated and more easily changed. For example, a user can easily identify my statistics chunk and change the model instead of having to sift through many code chunks to find what they are looking for, which can make my analysis more reproducible. That said, on my partner’s code the use of smaller code chunks did make their document easier to understand and so more reproducible.
 
 They also suggested that annotations should immediately precede code instead of being at the top of a chunk. I agree; it would make my code clearer and therefore more reproducible. This was seen throughout my partner’s code and did help make their code a lot easier to understand.
@@ -471,4 +480,5 @@ They also critiqued having 2 sets of plated normality plots. I disagree with thi
 Finally, my partner said that references were hard to read. I also disagree with this suggestion, as it is still obvious what the references are and they can still be found, so I would say this does not impact reproducibility.
 
 -   *What did you learn about writing code for other people?*
+
 From doing this exercise, I learnt the importance of clear annotation to explain what code does, as well as how to place those annotations within an r script to make code more understandable and therefore more reproducible. I also learnt how purely cosmetic formatting can actually make code harder to read and understand, which negatively impacts code reproducibility. There are many more factors which can impact reproducibility than I thought, and it was interesting trying to balance them all to ensure other people can read and interact with code that I am writing. 
