@@ -181,8 +181,7 @@ bill_size_species_sex_exploratory <- ggplot(data=penguins_data_clean,
                          geom_jitter(aes(color = species), alpha = 0.25, position =                                                             position_jitter(width = 0.4, seed=0)) +
                          scale_colour_manual(values = species_colours) + 
                          scale_shape_manual(values = c(16, 17)) +
-                         xlab("Culmen Length (mm)") + 
-                         ylab("Culmen Depth (mm)") +
+                         labs(title = "A graph to show how culmen length differs between species and sexes", x= "Species", y="Culmen Length (mm)") +
                          theme_bw()
 
 #plot() function allows graph to be outputted.
@@ -237,22 +236,21 @@ sex_colours <- c("FEMALE" = "purple",
 
 #Plotting scatter plot showing how culmen length varies with sex. 
 # Details of what each line of code does can be found in lines 146-154, in chunk encoding figure exploring effect of species on culmen length. 
-bill_size_exploratory_sex <- ggplot(data=chinstrap_data, 
+bill_size_sex_exploratory <- ggplot(data=chinstrap_data, 
                          aes(x=sex, 
                             y=culmen_length_mm)) + 
                          geom_point(aes(color=sex, shape=sex)) + 
                          geom_jitter(aes(color = sex), alpha = 0.25, position =                                                                   position_jitter(width = 0.4, seed=0)) +
                          scale_colour_manual(values = sex_colours) + 
                          scale_shape_manual(values = c(16, 17)) +
-                         xlab("Culmen Length (mm)") + 
-                         ylab("Culmen Depth (mm)") +
+                         labs(title = "A graph to show how culmen length differs sexes in Chinstrap penguins", x= "Sex", y="Culmen Length (mm)") +
                          theme_bw()
 
 #plot() function allows graph to be outputted.
-plot(bill_size_exploratory_sex)
+plot(bill_size_sex_exploratory)
 
 #Saving chinstrap figure as .png file in figures folder.
-agg_png("figures/bill_size_exploratory_sex.png", 
+agg_png("figures/bill_size_sex_exploratory.png", 
         width = 30,
         height = 15,
         units = "cm",
@@ -260,7 +258,7 @@ agg_png("figures/bill_size_exploratory_sex.png",
         scaling = 1.125)
 
 #Ensures figure saved in "figures" folder actually has graph encoded within it, as opposed to blank file.
-print(bill_size_exploratory_sex)
+print(bill_size_sex_exploratory)
 dev.off()
 
 ```
@@ -275,22 +273,21 @@ sex_colours <- c("FEMALE" = "purple",
 
 #Plotting scatter plot showing effect of culmen depth on culmen length and how this differs in each sex within chinstrap penguins. 
 # Details of what each line of code does can be found in lines 146-154, in chunk encoding figure exploring effect of species on culmen length. 
-bill_size_exploratory_depth <- ggplot(data=chinstrap_data, 
+bill_size_depth_exploratory <- ggplot(data=chinstrap_data, 
                          aes(x=culmen_depth_mm, 
                             y=culmen_length_mm)) + 
                          geom_point(aes(color=sex, shape=sex)) + 
                          geom_jitter(aes(color = sex), alpha = 0.25, position =                                                                   position_jitter(width = 0.4, seed=0)) +
                          scale_colour_manual(values = sex_colours) + 
                          scale_shape_manual(values = c(16, 17)) +
-                         xlab("Culmen Length (mm)") + 
-                         ylab("Culmen Depth (mm)") +
+                        labs(title = "A graph to show the relationship between culmen depth and culmen length, and how penguin sex affects this", x= "Culmen Depth (mm)", y="Culmen Length (mm)") +
                          theme_bw()
 
 #plot() function allows graph to be outputted.
-plot(bill_size_exploratory_depth)
+plot(bill_size_depth_exploratory)
 
 #Saving this figure as .png file in figures folder.
-agg_png("figures/bill_size_exploratory_depth.png", 
+agg_png("figures/bill_size_depth_exploratory.png", 
         width = 30,
         height = 15,
         units = "cm",
@@ -298,7 +295,7 @@ agg_png("figures/bill_size_exploratory_depth.png",
         scaling = 1.125)
 
 #Ensures figure saved in "figures" folder actually has graph encoded within it, as opposed to blank file.
-print(bill_size_exploratory_depth)
+print(bill_size_depth_exploratory)
 dev.off()
 
 ```
@@ -387,12 +384,11 @@ The above can also be seen on the results figure, where the slopes of each regre
 # # Details of what each line of code does can be found in lines 146-154, in chunk encoding figure exploring effect of species on culmen length. 
 chinstrap_results_plot_int <- 
 ggplot(chinstrap_data, 
-       aes(x=culmen_length_mm, y=culmen_depth_mm, color = sex)) + 
+       aes(x=culmen_depth_mm, y=culmen_length_mm, color = sex)) + 
   geom_point() + 
   geom_smooth(method = "lm") + 
   scale_colour_manual(values = sex_colours) + 
-  xlab("Culmen length (mm)") + 
-  ylab("Culmen depth (mm)") + 
+  labs(title = "A graph to show the relationship between culmen depth and culmen length, and how penguin sex affects this", x= "Culmen Depth (mm)", y="Culmen Length (mm)") +
   theme_bw()
 
 plot(chinstrap_results_plot_int)
