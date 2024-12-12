@@ -280,14 +280,14 @@ bill_size_bodymass_sex_exploratory <- ggplot(data=chinstrap_data,
                          scale_colour_manual(values = sex_colours) + 
                          scale_shape_manual(values = c(16, 17)) +
                         labs(title = "A graph to show the relationship between body mass and culmen length, 
-                             and how penguin sex affects this", x= "Body Mass (g)", y="Culmen Length (mm)") +
+                             and how sex of penguin affects this", x= "Body Mass (g)", y="Culmen Length (mm)") +
                          theme_bw()
 
 #plot() function allows graph to be outputted.
 plot(bill_size_bodymass_sex_exploratory)
 
 #Saving this figure as .png file in figures folder.
-agg_png("figures/bill_size_depth_exploratory.png", 
+agg_png("figures/bill_size_bodymass_sex_exploratory.png", 
         width = 30,
         height = 15,
         units = "cm",
@@ -382,7 +382,7 @@ ggplot(chinstrap_data,
   geom_smooth(method = "lm") + 
   scale_colour_manual(values = sex_colours) + 
   labs(title = "A graph to show the relationship between body mass and culmen length, 
-       and how penguin sex affects this", x= "Body mass (g)", y="Culmen length (mm)") +
+       and how sex of penguin affects this", x= "Body mass (g)", y="Culmen length (mm)") +
   theme_bw()
 
 plot(chinstrap_results_plot_int)
