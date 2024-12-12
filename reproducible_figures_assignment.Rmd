@@ -132,7 +132,7 @@ penguins_data_raw<-read.csv(here("data","penguins_raw.csv"))
 head(penguins_data_raw)
 colnames(penguins_data_raw)
 
-#Making function to allow cleaning of penguins dataset.
+#Making function to allow cleaning of penguins dataset, as some column names are confusing and unreadable.
 cleaning_penguin_data_columns <- function(raw_data){
   print("Cleaning column names, simplifying species names, removing empty columns and rows and removing unnecessary columns/rows")
   raw_data %>% 
