@@ -253,7 +253,7 @@ dev.off()
 
 ```
 
-```{r Creating exploratory figure for chinstrap penguins in particular}
+```{r Creating exploratory figure for sex in chinstrap penguins}
 #Made exploratory figure to look more closely at possible effect of culmen depth on length, and how sex affects this..
 #Plotted a scatter plot as comparing two numerical variables (culmen length and depth).
 
@@ -370,7 +370,7 @@ The fact that there is no interaction between sex and culmen depth is unsurprisi
 The above can also be seen on the results figure, where the slopes of each regression line are roughly parallel but each sex has a different y-intercept.
 
 
-```{r}
+```{r Results plot}
 #Making results plot, showing relationship between culmen depth, culmen length and sex in chinstraps.
 # # Details of what each line of code does can be found in lines 146-154, in chunk encoding figure exploring effect of species on culmen length. 
 chinstrap_results_plot_int <- 
