@@ -365,8 +365,8 @@ t.test(body_mass_g ~ sex, data = chinstrap_data)
 ```
 
 ## Results & Discussion
-Having conducted an ANCOVA analysis to test how sex affects culmen length when controlling for culmen depth, the following has been found:
-The adjusted R-squared for the model including the interaction is 0.4918, therefore 49.18% of variance is explained by the model. Sex has a significant effect on culmen length (p=<6.43*10^-11), and as such the y-intercepts of the regression lines are significantly different. Culmen depth also has a significant effect on culmen length (p=0.0131). There is no interaction effect between sex and culmen depth (p=0.8927), so the slopes of the regression lines are not significantly different. 
+Having conducted an ANCOVA analysis to test how sex affects culmen length when controlling for body mass, the following has been found:
+The adjusted R-squared for the model including the interaction is 0.4803, therefore 48.03% of variance is explained by the model. Sex has a significant effect on culmen length (p=<6.43*10^-11), and as such the y-intercepts of the regression lines are significantly different. Culmen depth also has a significant effect on culmen length (p=0.0131). There is no interaction effect between sex and culmen depth (p=0.8927), so the slopes of the regression lines are not significantly different. 
 It is possible to reject the following null hypotheses: 
 1: There is no effect of sex on culmen length. 
 2: There is no effect of culmen depth on culmen length. 
