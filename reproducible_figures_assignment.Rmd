@@ -421,20 +421,46 @@ Polito, M., Clucas, G., Hart, T. & Trivelpiece, W., 2012. A simplified method of
 
 *Partner's GitHub link:* https://github.com/Anonymous-Exam-User/Palmer_Penguin_GitHub 
 
-*You **must** provide this so I can verify there is no plagiarism between you and your partner.*
 
 ## c) Reflect on your experience running their code. (300-500 words)
 
 -   *What elements of your partner's code helped you to understand their data pipeline?*
+The formatting of my partner’s code made it clear to see what each code chunk and function in each chunk does, clearly separating different parts to make code more understandable. 
+Steps for data analysis were well-presented such that it was clear how the analysis was structured. The reasons for carrying out certain steps in particular ways were well justified as well, making it clear what alternatives there might be to certain steps and why this person has used the methods they have.
+
+The fact that detailed explanations of code were written above each code chunk also made the pipeline a lot more understandable, as it was very clear what each step was and why it was conducted.
+My partner’s github repository was also well organised, with clearly labelled folders for things like functions, figures and data.
 
 -   *Did it run? Did you need to fix anything?*
+The code ran fine without needing to fix anything. 
 
 -   *What suggestions would you make for improving their code to make it more understandable or reproducible, and why?*
 
+I would suggest that explanations of code could perhaps be more concise, cutting out unnecessary sentences or phrases to make the pipeline easier to understand overall. As it is, explanations are quite long and wordy which can make it more difficult to discern what steps are being taken, and therefore might make their analysis slightly less reproducible.
+
+Some of the code chunks could however do with more annotations within the code itself, for example briefly explaining functions next to the line that they are in, to make it clearer what each part of the code does and why they are included. This would make it clearer why each part of the code is there and allow others to make changes more easily, but this is a minor issue and does not impact the reproducibility of this analysis, only the understanding of it.
+
+They also should have put their cleaning function underneath the section of the cleaning.r file detailing the purpose of the script and the author. This would have made their cleaning file tidier. That said, this is again a minor issue which does not affect reproducibility.
+
 -   *If you needed to alter your partner's figure using their code, do you think that would be easy or difficult, and why?*
+
+If I had to alter my partner’s figure using their code, I believe I could accomplish this very easily. My partner has annotated their code to make their figure very well, such that it is easy to follow what each line does, track down where a change might need to be made and carry out that change accordingly. While I think this could be made easier with more in code annotations, on the whole I think it would be very easy to alter my partner’s figures.
+
 
 ## d) Reflect on your own code based on your experience with your partner's code and their review of yours. (300-500 words)
 
 -   *What improvements did they suggest, and do you agree?*
+My partner suggested I break up code chunks into smaller pieces with annotations written as text above, rather than within the chunk itself. I see the merit of this. Having in-code annotations can make code harder to read, however I wanted to keep to as few code chunks as possible so a user could run a specific chunk and get the desired output instead of running several smaller chunks. I also feel having bigger code chunks makes the document more easily navigated and more easily changed. For example, a user can easily identify my statistics chunk and change the model instead of having to sift through many code chunks to find what they are looking for, which can make my analysis more reproducible. That said, on my partner’s code the use of smaller code chunks did make their document easier to understand and so more reproducible.
+
+They also suggested that annotations should immediately precede code instead of being at the top of a chunk. I agree; it would make my code clearer and therefore more reproducible. This was seen throughout my partner’s code and did help make their code a lot easier to understand.
+
+They suggested having smaller indents. I also agree with this; smaller indents would ensure annotations do not run over a line, which would  make my code clearer and more reproducible. While I had aimed to make my code clearer by formatting it with these indents, I think it had the opposite effect. 
+
+They critiqued me not using na.omit() at start when cleaning data. I see why this has been suggested, however as this does not affect the running of the code or the outputs generated, I would say this does not impact reproducibility.
+
+They also critiqued having 2 sets of plated normality plots. I disagree with this suggestion. As the plots are only there to show that neither model violates the assumptions of the ANCOVA analysis I ran, and not to indicate a difference between the models, I do not believe this affects the reproducibility of my analysis.
+
+Finally, my partner said that references were hard to read. I also disagree with this suggestion, as it is still obvious what the references are and they can still be found, so I would say this does not impact reproducibility.
 
 -   *What did you learn about writing code for other people?*
+From doing this exercise, I learnt the importance of clear annotation to explain what code does, as well as how to place those annotations within an r script to make code more understandable and therefore more reproducible. I also learnt how purely cosmetic formatting can actually make code harder to read and understand, which negatively impacts code reproducibility. There are many more factors which can impact reproducibility than I thought, and it was interesting trying to balance them all to ensure other people can read and interact with code that I am writing. 
