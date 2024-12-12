@@ -36,7 +36,7 @@ colnames(penguins_data_raw)
 ```
 
 ```{r Cleaning data}
-#Making function to clean column names of raw dataset.
+#Making function to clean column names of raw dataset. Some code taken from lesson materials provided by Dr Lydia France, University of Oxford, 2024
 cleaning_penguin_data_columns <- function(raw_data){
   print("Cleaning column names, simplifying species names, removing empty columns and rows and removing unnecessary columns/rows")
   raw_data %>% 
