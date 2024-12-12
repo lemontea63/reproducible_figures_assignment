@@ -1,0 +1,1259 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Reproducible Figures Assignment},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Reproducible Figures Assignment}
+\author{}
+\date{\vspace{-2.5em}2023-11-29}
+
+\begin{document}
+\maketitle
+
+\section{Installing and loading
+packages}\label{installing-and-loading-packages}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Loading packages needed for this project, which should all be in the RENV folder. Also loading functions to clean data from Palmer Penguins dataset, found in a separate folder.}
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## -- Attaching core tidyverse packages ------------------------ tidyverse 2.0.0 --
+## v dplyr     1.1.4     v readr     2.1.5
+## v forcats   1.0.0     v stringr   1.5.1
+## v ggplot2   3.5.1     v tibble    3.2.1
+## v lubridate 1.9.3     v tidyr     1.3.1
+## v purrr     1.0.2     
+## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+## i Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(palmerpenguins)}
+\FunctionTok{library}\NormalTok{(janitor)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Attaching package: 'janitor'
+## 
+## The following objects are masked from 'package:stats':
+## 
+##     chisq.test, fisher.test
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(here)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## here() starts at C:/Users/olive/OneDrive - Nexus365/Year 3/Computing/reproducible_figures_assignment
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\FunctionTok{library}\NormalTok{(patchwork)}
+\FunctionTok{library}\NormalTok{(ragg)}
+\FunctionTok{library}\NormalTok{(svglite)}
+\FunctionTok{library}\NormalTok{(multcomp)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loading required package: mvtnorm
+## Loading required package: survival
+## Loading required package: TH.data
+## Loading required package: MASS
+## 
+## Attaching package: 'MASS'
+## 
+## The following object is masked from 'package:patchwork':
+## 
+##     area
+## 
+## The following object is masked from 'package:dplyr':
+## 
+##     select
+## 
+## 
+## Attaching package: 'TH.data'
+## 
+## The following object is masked from 'package:MASS':
+## 
+##     geyser
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tinytex)}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Data Preparation:}\label{data-preparation}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Preserving and loading raw data in its own .csv file.}
+\FunctionTok{write.csv}\NormalTok{(penguins\_raw, }\FunctionTok{here}\NormalTok{(}\StringTok{"data"}\NormalTok{,}\StringTok{"penguins\_raw.csv"}\NormalTok{))}
+\NormalTok{penguins\_data\_raw}\OtherTok{\textless{}{-}}\FunctionTok{read.csv}\NormalTok{(}\FunctionTok{here}\NormalTok{(}\StringTok{"data"}\NormalTok{,}\StringTok{"penguins\_raw.csv"}\NormalTok{))}
+
+\CommentTok{\#Investigating raw data, including seeing what column names are included.}
+\FunctionTok{head}\NormalTok{(penguins\_data\_raw)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   X studyName Sample.Number                             Species Region
+## 1 1   PAL0708             1 Adelie Penguin (Pygoscelis adeliae) Anvers
+## 2 2   PAL0708             2 Adelie Penguin (Pygoscelis adeliae) Anvers
+## 3 3   PAL0708             3 Adelie Penguin (Pygoscelis adeliae) Anvers
+## 4 4   PAL0708             4 Adelie Penguin (Pygoscelis adeliae) Anvers
+## 5 5   PAL0708             5 Adelie Penguin (Pygoscelis adeliae) Anvers
+## 6 6   PAL0708             6 Adelie Penguin (Pygoscelis adeliae) Anvers
+##      Island              Stage Individual.ID Clutch.Completion   Date.Egg
+## 1 Torgersen Adult, 1 Egg Stage          N1A1               Yes 2007-11-11
+## 2 Torgersen Adult, 1 Egg Stage          N1A2               Yes 2007-11-11
+## 3 Torgersen Adult, 1 Egg Stage          N2A1               Yes 2007-11-16
+## 4 Torgersen Adult, 1 Egg Stage          N2A2               Yes 2007-11-16
+## 5 Torgersen Adult, 1 Egg Stage          N3A1               Yes 2007-11-16
+## 6 Torgersen Adult, 1 Egg Stage          N3A2               Yes 2007-11-16
+##   Culmen.Length..mm. Culmen.Depth..mm. Flipper.Length..mm. Body.Mass..g.    Sex
+## 1               39.1              18.7                 181          3750   MALE
+## 2               39.5              17.4                 186          3800 FEMALE
+## 3               40.3              18.0                 195          3250 FEMALE
+## 4                 NA                NA                  NA            NA   <NA>
+## 5               36.7              19.3                 193          3450 FEMALE
+## 6               39.3              20.6                 190          3650   MALE
+##   Delta.15.N..o.oo. Delta.13.C..o.oo.                       Comments
+## 1                NA                NA Not enough blood for isotopes.
+## 2           8.94956         -24.69454                           <NA>
+## 3           8.36821         -25.33302                           <NA>
+## 4                NA                NA             Adult not sampled.
+## 5           8.76651         -25.32426                           <NA>
+## 6           8.66496         -25.29805                           <NA>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{colnames}\NormalTok{(penguins\_data\_raw)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] "X"                   "studyName"           "Sample.Number"      
+##  [4] "Species"             "Region"              "Island"             
+##  [7] "Stage"               "Individual.ID"       "Clutch.Completion"  
+## [10] "Date.Egg"            "Culmen.Length..mm."  "Culmen.Depth..mm."  
+## [13] "Flipper.Length..mm." "Body.Mass..g."       "Sex"                
+## [16] "Delta.15.N..o.oo."   "Delta.13.C..o.oo."   "Comments"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Making function to clean column names of raw dataset. Some code taken from lesson materials provided by Dr Lydia France, University of Oxford, 2024}
+\NormalTok{cleaning\_penguin\_data\_columns }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(raw\_data)\{}
+  \FunctionTok{print}\NormalTok{(}\StringTok{"Cleaning column names, simplifying species names, removing empty columns and rows and removing unnecessary columns/rows"}\NormalTok{)}
+\NormalTok{  raw\_data }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{clean\_names}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} \CommentTok{\#Cleans names of dataframe to make readable by computer.}
+    \FunctionTok{mutate}\NormalTok{(}\AttributeTok{species =} \FunctionTok{case\_when}\NormalTok{(}
+\NormalTok{      species }\SpecialCharTok{==} \StringTok{"Adelie Penguin (Pygoscelis adeliae)"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Adelie"}\NormalTok{,}
+\NormalTok{      species }\SpecialCharTok{==} \StringTok{"Chinstrap penguin (Pygoscelis antarctica)"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Chinstrap"}\NormalTok{,}
+\NormalTok{      species }\SpecialCharTok{==} \StringTok{"Gentoo penguin (Pygoscelis papua)"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Gentoo"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} \CommentTok{\#mutate() changes name of column.}
+    \FunctionTok{remove\_empty}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"rows"}\NormalTok{, }\StringTok{"cols"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} \CommentTok{\#removes empty rows and columns from dataframe.}
+\NormalTok{    dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(}\SpecialCharTok{{-}}\FunctionTok{starts\_with}\NormalTok{(}\StringTok{"delta"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} \CommentTok{\#removes any column with name starting with delta.}
+\NormalTok{    dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{comments)\} }\CommentTok{\#removes comments column.}
+
+\CommentTok{\#Cleaning raw data to generate a cleaner dataset, using function made above.}
+\NormalTok{penguins\_data\_clean }\OtherTok{\textless{}{-}} \FunctionTok{cleaning\_penguin\_data\_columns}\NormalTok{(penguins\_raw)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Cleaning column names, simplifying species names, removing empty columns and rows and removing unnecessary columns/rows"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{colnames}\NormalTok{(penguins\_data\_clean)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] "study_name"        "sample_number"     "species"          
+##  [4] "region"            "island"            "stage"            
+##  [7] "individual_id"     "clutch_completion" "date_egg"         
+## [10] "culmen_length_mm"  "culmen_depth_mm"   "flipper_length_mm"
+## [13] "body_mass_g"       "sex"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{str}\NormalTok{(penguins\_data\_clean)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## tibble [344 x 14] (S3: tbl_df/tbl/data.frame)
+##  $ study_name       : chr [1:344] "PAL0708" "PAL0708" "PAL0708" "PAL0708" ...
+##  $ sample_number    : num [1:344] 1 2 3 4 5 6 7 8 9 10 ...
+##  $ species          : chr [1:344] "Adelie" "Adelie" "Adelie" "Adelie" ...
+##  $ region           : chr [1:344] "Anvers" "Anvers" "Anvers" "Anvers" ...
+##  $ island           : chr [1:344] "Torgersen" "Torgersen" "Torgersen" "Torgersen" ...
+##  $ stage            : chr [1:344] "Adult, 1 Egg Stage" "Adult, 1 Egg Stage" "Adult, 1 Egg Stage" "Adult, 1 Egg Stage" ...
+##  $ individual_id    : chr [1:344] "N1A1" "N1A2" "N2A1" "N2A2" ...
+##  $ clutch_completion: chr [1:344] "Yes" "Yes" "Yes" "Yes" ...
+##  $ date_egg         : Date[1:344], format: "2007-11-11" "2007-11-11" ...
+##  $ culmen_length_mm : num [1:344] 39.1 39.5 40.3 NA 36.7 39.3 38.9 39.2 34.1 42 ...
+##  $ culmen_depth_mm  : num [1:344] 18.7 17.4 18 NA 19.3 20.6 17.8 19.6 18.1 20.2 ...
+##  $ flipper_length_mm: num [1:344] 181 186 195 NA 193 190 181 195 193 190 ...
+##  $ body_mass_g      : num [1:344] 3750 3800 3250 NA 3450 ...
+##  $ sex              : chr [1:344] "MALE" "FEMALE" "FEMALE" NA ...
+##  - attr(*, "spec")=
+##   .. cols(
+##   ..   studyName = col_character(),
+##   ..   `Sample Number` = col_double(),
+##   ..   Species = col_character(),
+##   ..   Region = col_character(),
+##   ..   Island = col_character(),
+##   ..   Stage = col_character(),
+##   ..   `Individual ID` = col_character(),
+##   ..   `Clutch Completion` = col_character(),
+##   ..   `Date Egg` = col_date(format = ""),
+##   ..   `Culmen Length (mm)` = col_double(),
+##   ..   `Culmen Depth (mm)` = col_double(),
+##   ..   `Flipper Length (mm)` = col_double(),
+##   ..   `Body Mass (g)` = col_double(),
+##   ..   Sex = col_character(),
+##   ..   `Delta 15 N (o/oo)` = col_double(),
+##   ..   `Delta 13 C (o/oo)` = col_double(),
+##   ..   Comments = col_character()
+##   .. )
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Writing and saving new .csv file for cleaned data, which can be found in the "data" folder. }
+\FunctionTok{write.csv}\NormalTok{(penguins\_data\_clean, }\FunctionTok{here}\NormalTok{(}\StringTok{"data"}\NormalTok{,}\StringTok{"penguins\_data\_clean.csv"}\NormalTok{))}
+\NormalTok{penguins\_data\_clean }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\FunctionTok{here}\NormalTok{(}\StringTok{"data"}\NormalTok{, }\StringTok{"penguins\_data\_clean.csv"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\section{QUESTION 1: Data Visualisation for Science
+Communication}\label{question-1-data-visualisation-for-science-communication}
+
+\subsection{a) Creating a bad figure}\label{a-creating-a-bad-figure}
+
+Create a figure using the Palmer Penguin dataset that is correct but
+badly communicates the data. Do not make a boxplot.
+
+\begin{verbatim}
+## Warning: Removed 2 rows containing missing values or values outside the scale range
+## (`geom_col()`).
+\end{verbatim}
+
+\includegraphics{reproducible_figures_assignment_files/figure-latex/bad figure code-1.pdf}
+
+\begin{verbatim}
+## Warning: Removed 2 rows containing missing values or values outside the scale range
+## (`geom_col()`).
+\end{verbatim}
+
+\begin{verbatim}
+## pdf 
+##   2
+\end{verbatim}
+
+\subsection{b) Why is this misleading?}\label{b-why-is-this-misleading}
+
+Write about how your design choices mislead the reader about the
+underlying data (200-300 words). Include references.
+
+My graph is correct, but some design choices mislead the reader.
+
+Firstly, there is no information about each data point, such as the
+species of penguin each sample is a member of. This is misleading;
+penguin species is likely a confounding variable which impacts body
+mass, and the island(s) inhabited. This therefore may mislead a reader
+as the effects of different species are not explicitly shown, so a
+misleading correlation may be represented on my graph.
+
+The lack of error bars is also misleading as it is unclear to a reader
+how much measurements for a certain treatment (in this case each island)
+vary. Therefore, it is unclear whether the samples taken from each
+island are representative of the population on each island or whether
+there is wide variation and improper sampling, or whether the data are
+precise and/or accurate.
+
+On this graph, I also only show a summary of the data, in this case
+maximum body mass in each category (i.e on each island). This is
+misleading because important information may be hidden. For example, the
+maximum body mass for each island might be an outlier. This is also
+represented in the axis labels, which do not state maximum body mass but
+instead state only ``body\_mass\_g''.
+
+Moreover, axis labels as specified in the .png plot are also very small,
+making it hard for a reader to understand what the graph is showing.
+Readers must look very closely at the axis labels to see the variables
+being compared. This is misleading because by not clearly showing your
+axis labels and any units associated with them, readers are more likely
+to miss key details about exactly what is being compared or what
+relationship is suggested by a graph between, which may cause them to
+believe a false correlation is present. There are also no units, which
+means readers cannot assess the magnitude of indicated changes in body
+mass.
+
+Reference: Statistics How To, 2024. Misleading Graphs: Real Life
+Examples. {[}Online{]} Available at:
+\url{https://www.statisticshowto.com/probability-and-statistics/descriptive-statistics/misleading-graphs/}
+{[}Accessed 11th December 2024{]}.
+
+\section{QUESTION 2: Data Pipeline}\label{question-2-data-pipeline}
+
+\subsection{Introduction}\label{introduction}
+
+Many factors can impact beak morphology in birds, including foraging and
+thermoregulation. It has been shown that in many bird families,
+different species which inhabit different niches and have different
+foraging behaviours tend to evolve different bill shapes, which impacts
+variables like culmen length and depth (Friedman, 2019; Çakar, 2024).
+This pattern has been observed and tested in the birds of prey, but not
+in penguins (Çakar, 2024). The different sexes of many bird species also
+often have slightly different foraging behaviours outside of the
+breeding season, which could cause the evolution of different bill
+morphologies between the different sexes as each sex adapts to its
+different food sources (Gorman, 2014). Whether sex affects beak
+morphology is therefore an interesting question. It is known that
+species in the genus Pygoscelis display subtle sexual dimorphism in
+features like body mass, flipper length and bill size, with females
+usually being smaller than males. There is a possibility this will be
+reflected in the bill morphology of these penguins (Gorman, 2014;
+Polito, et al., 2012). To study this in detail and simplify the
+analysis, this analysis will focus on only one penguin species (the
+chinstrap penguin- Pygoscelis antarcicus) to ensure only sex is
+examined, not the effect of species. The chinstrap penguin has been
+chosen as it has been shown that it is the most dimorphic in culmen
+features, so will be an interesting species to study in this analysis.
+
+This analysis, using data from the Palmer Penguins dataset, will test
+the relationship between culmen depth and sex in the chinstrap penguin.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#All packages used can be found at the top of the document.}
+\CommentTok{\# Some code taken from lesson materials provided by Dr Lydia France, University of Oxford, 2024}
+
+\CommentTok{\#These lines of code preserve raw data in a separate csv file so it can be easily recovered.}
+\FunctionTok{write.csv}\NormalTok{(penguins\_raw, }\FunctionTok{here}\NormalTok{(}\StringTok{"data"}\NormalTok{,}\StringTok{"penguins\_raw.csv"}\NormalTok{))}
+\NormalTok{penguins\_data\_raw}\OtherTok{\textless{}{-}}\FunctionTok{read.csv}\NormalTok{(}\FunctionTok{here}\NormalTok{(}\StringTok{"data"}\NormalTok{,}\StringTok{"penguins\_raw.csv"}\NormalTok{))}
+
+\CommentTok{\#Investigating data{-} allows initial analysis of what data were collected and what values have been recorded for each, as well as what the column names look like (using colnames() function).}
+\FunctionTok{head}\NormalTok{(penguins\_data\_raw)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   X studyName Sample.Number                             Species Region
+## 1 1   PAL0708             1 Adelie Penguin (Pygoscelis adeliae) Anvers
+## 2 2   PAL0708             2 Adelie Penguin (Pygoscelis adeliae) Anvers
+## 3 3   PAL0708             3 Adelie Penguin (Pygoscelis adeliae) Anvers
+## 4 4   PAL0708             4 Adelie Penguin (Pygoscelis adeliae) Anvers
+## 5 5   PAL0708             5 Adelie Penguin (Pygoscelis adeliae) Anvers
+## 6 6   PAL0708             6 Adelie Penguin (Pygoscelis adeliae) Anvers
+##      Island              Stage Individual.ID Clutch.Completion   Date.Egg
+## 1 Torgersen Adult, 1 Egg Stage          N1A1               Yes 2007-11-11
+## 2 Torgersen Adult, 1 Egg Stage          N1A2               Yes 2007-11-11
+## 3 Torgersen Adult, 1 Egg Stage          N2A1               Yes 2007-11-16
+## 4 Torgersen Adult, 1 Egg Stage          N2A2               Yes 2007-11-16
+## 5 Torgersen Adult, 1 Egg Stage          N3A1               Yes 2007-11-16
+## 6 Torgersen Adult, 1 Egg Stage          N3A2               Yes 2007-11-16
+##   Culmen.Length..mm. Culmen.Depth..mm. Flipper.Length..mm. Body.Mass..g.    Sex
+## 1               39.1              18.7                 181          3750   MALE
+## 2               39.5              17.4                 186          3800 FEMALE
+## 3               40.3              18.0                 195          3250 FEMALE
+## 4                 NA                NA                  NA            NA   <NA>
+## 5               36.7              19.3                 193          3450 FEMALE
+## 6               39.3              20.6                 190          3650   MALE
+##   Delta.15.N..o.oo. Delta.13.C..o.oo.                       Comments
+## 1                NA                NA Not enough blood for isotopes.
+## 2           8.94956         -24.69454                           <NA>
+## 3           8.36821         -25.33302                           <NA>
+## 4                NA                NA             Adult not sampled.
+## 5           8.76651         -25.32426                           <NA>
+## 6           8.66496         -25.29805                           <NA>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{colnames}\NormalTok{(penguins\_data\_raw)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] "X"                   "studyName"           "Sample.Number"      
+##  [4] "Species"             "Region"              "Island"             
+##  [7] "Stage"               "Individual.ID"       "Clutch.Completion"  
+## [10] "Date.Egg"            "Culmen.Length..mm."  "Culmen.Depth..mm."  
+## [13] "Flipper.Length..mm." "Body.Mass..g."       "Sex"                
+## [16] "Delta.15.N..o.oo."   "Delta.13.C..o.oo."   "Comments"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Making function to allow cleaning of penguins dataset.}
+\NormalTok{cleaning\_penguin\_data\_columns }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(raw\_data)\{}
+  \FunctionTok{print}\NormalTok{(}\StringTok{"Cleaning column names, simplifying species names, removing empty columns and rows and removing unnecessary columns/rows"}\NormalTok{)}
+\NormalTok{  raw\_data }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{clean\_names}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} \CommentTok{\#Cleans names of dataframe to make readable by computer.}
+    \FunctionTok{mutate}\NormalTok{(}\AttributeTok{species =} \FunctionTok{case\_when}\NormalTok{(}
+\NormalTok{      species }\SpecialCharTok{==} \StringTok{"Adelie Penguin (Pygoscelis adeliae)"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Adelie"}\NormalTok{,}
+\NormalTok{      species }\SpecialCharTok{==} \StringTok{"Chinstrap penguin (Pygoscelis antarctica)"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Chinstrap"}\NormalTok{,}
+\NormalTok{      species }\SpecialCharTok{==} \StringTok{"Gentoo penguin (Pygoscelis papua)"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Gentoo"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} \CommentTok{\#mutate() changes name of column.}
+    \FunctionTok{remove\_empty}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"rows"}\NormalTok{, }\StringTok{"cols"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} \CommentTok{\#removes empty rows and columns from dataframe.}
+\NormalTok{    dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(}\SpecialCharTok{{-}}\FunctionTok{starts\_with}\NormalTok{(}\StringTok{"delta"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} \CommentTok{\#removes any column with name starting with delta.}
+\NormalTok{    dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{comments)\} }\CommentTok{\#removes comments column.}
+
+\CommentTok{\#Cleaning raw data to generate a cleaner dataset{-} removing unneeded variables and making data more easily read by R and by humans. Uses the cleaning\_penguin\_columns() function found above.}
+\NormalTok{penguins\_data\_clean}\OtherTok{\textless{}{-}}\FunctionTok{cleaning\_penguin\_data\_columns}\NormalTok{(penguins\_data\_raw)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Cleaning column names, simplifying species names, removing empty columns and rows and removing unnecessary columns/rows"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{colnames}\NormalTok{(penguins\_data\_clean) }\CommentTok{\#Checks column names have been changed as needed.}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] "x"                 "study_name"        "sample_number"    
+##  [4] "species"           "region"            "island"           
+##  [7] "stage"             "individual_id"     "clutch_completion"
+## [10] "date_egg"          "culmen_length_mm"  "culmen_depth_mm"  
+## [13] "flipper_length_mm" "body_mass_g"       "sex"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{str}\NormalTok{(penguins\_data\_clean) }\CommentTok{\#Checks whether each variable is listed as factor, character or numerical data.}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 'data.frame':    344 obs. of  15 variables:
+##  $ x                : int  1 2 3 4 5 6 7 8 9 10 ...
+##  $ study_name       : chr  "PAL0708" "PAL0708" "PAL0708" "PAL0708" ...
+##  $ sample_number    : int  1 2 3 4 5 6 7 8 9 10 ...
+##  $ species          : chr  "Adelie" "Adelie" "Adelie" "Adelie" ...
+##  $ region           : chr  "Anvers" "Anvers" "Anvers" "Anvers" ...
+##  $ island           : chr  "Torgersen" "Torgersen" "Torgersen" "Torgersen" ...
+##  $ stage            : chr  "Adult, 1 Egg Stage" "Adult, 1 Egg Stage" "Adult, 1 Egg Stage" "Adult, 1 Egg Stage" ...
+##  $ individual_id    : chr  "N1A1" "N1A2" "N2A1" "N2A2" ...
+##  $ clutch_completion: chr  "Yes" "Yes" "Yes" "Yes" ...
+##  $ date_egg         : chr  "2007-11-11" "2007-11-11" "2007-11-16" "2007-11-16" ...
+##  $ culmen_length_mm : num  39.1 39.5 40.3 NA 36.7 39.3 38.9 39.2 34.1 42 ...
+##  $ culmen_depth_mm  : num  18.7 17.4 18 NA 19.3 20.6 17.8 19.6 18.1 20.2 ...
+##  $ flipper_length_mm: int  181 186 195 NA 193 190 181 195 193 190 ...
+##  $ body_mass_g      : int  3750 3800 3250 NA 3450 3650 3625 4675 3475 4250 ...
+##  $ sex              : chr  "MALE" "FEMALE" "FEMALE" NA ...
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Writing new .csv file for new, clean dataset (penguins\_data\_clean) to keep this safe in case any accidental changes are made or code breaks, to allow code to be easily recovered. }
+\FunctionTok{write.csv}\NormalTok{(penguins\_data\_clean, }\FunctionTok{here}\NormalTok{(}\StringTok{"data"}\NormalTok{,}\StringTok{"penguins\_data\_clean.csv"}\NormalTok{))}
+\NormalTok{penguins\_data\_clean }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\FunctionTok{here}\NormalTok{(}\StringTok{"data"}\NormalTok{, }\StringTok{"penguins\_data\_clean.csv"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Decided to look at effects of sexual dimorphism, so encoded graph which codes for identification of sex through different shapes as well as species using different colours.}
+
+\CommentTok{\#Making a colour blind{-}friendly palette useful for distinguishing species on figures. Specifying this ensures each sex can be consistently represented by the same colours on any graph where sex is shown, making this document more accessible (as it is colour blind friendly) and more reproducible.}
+\NormalTok{species\_colours }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"Adelie"} \OtherTok{=} \StringTok{"darkorange"}\NormalTok{, }\StringTok{"Chinstrap"} \OtherTok{=} \StringTok{"magenta2"}\NormalTok{, }\StringTok{"Gentoo"} \OtherTok{=} \StringTok{"blue"}\NormalTok{)}
+
+\CommentTok{\#Setting shapes for each sex to make figure more reproducible.}
+\NormalTok{sex\_shapes }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"MALE"} \OtherTok{=} \StringTok{"+"}\NormalTok{, }\StringTok{"FEMALE"} \OtherTok{=} \StringTok{"20"}\NormalTok{)}
+
+\CommentTok{\#Plotting scatter plot showing how culmen length varies with sex.}
+\CommentTok{\#  geom\_point() specifies plotting a scatter graph.}
+\CommentTok{\#  geom\_jitter() shows data points on the plot. }
+\CommentTok{\#   position\_jitter() ensures they are a specified width so as to not obscure the graph and make them fit graph.}
+\CommentTok{\#  seed ensures the jitter is generated the same way every time, making the figure more reproducible.}
+\CommentTok{\#  scale\_colour\_manual function allows for different species to be designated the same colours every time in a colour blind friendly palette, making the figure more accessible and more reproducible. }
+\CommentTok{\#     Also allows for more in depth exploration of initial data before statistical analysis conducted.}
+\CommentTok{\#  scale\_shape\_manual allows specification of shape so different sexes can be designated the same shapes consistently making the figure more reproducible. }
+\CommentTok{\#  xlab () and ylab() allow for creation of own labels for graph.}
+\CommentTok{\#  theme\_bw() specifies want graph with black and white background, without grey background for graph generated by default.}
+\NormalTok{bill\_size\_species\_sex\_exploratory }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{penguins\_data\_clean, }
+                         \FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{species, }
+                            \AttributeTok{y=}\NormalTok{culmen\_length\_mm)) }\SpecialCharTok{+} 
+                         \FunctionTok{geom\_point}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{color=}\NormalTok{species, }\AttributeTok{shape=}\NormalTok{sex)) }\SpecialCharTok{+} 
+                         \FunctionTok{geom\_jitter}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{color =}\NormalTok{ species), }\AttributeTok{alpha =} \FloatTok{0.25}\NormalTok{, }\AttributeTok{position =}                                                             \FunctionTok{position\_jitter}\NormalTok{(}\AttributeTok{width =} \FloatTok{0.4}\NormalTok{, }\AttributeTok{seed=}\DecValTok{0}\NormalTok{)) }\SpecialCharTok{+}
+                         \FunctionTok{scale\_colour\_manual}\NormalTok{(}\AttributeTok{values =}\NormalTok{ species\_colours) }\SpecialCharTok{+} 
+                         \FunctionTok{scale\_shape\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{c}\NormalTok{(}\DecValTok{16}\NormalTok{, }\DecValTok{17}\NormalTok{)) }\SpecialCharTok{+}
+                         \FunctionTok{xlab}\NormalTok{(}\StringTok{"Culmen Length (mm)"}\NormalTok{) }\SpecialCharTok{+} 
+                         \FunctionTok{ylab}\NormalTok{(}\StringTok{"Culmen Depth (mm)"}\NormalTok{) }\SpecialCharTok{+}
+                         \FunctionTok{theme\_bw}\NormalTok{()}
+
+\CommentTok{\#plot() function allows graph to be outputted.}
+\FunctionTok{plot}\NormalTok{(bill\_size\_species\_sex\_exploratory)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Removed 11 rows containing missing values or values outside the scale range
+## (`geom_point()`).
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 2 rows containing missing values or values outside the scale range
+## (`geom_point()`).
+\end{verbatim}
+
+\includegraphics{reproducible_figures_assignment_files/figure-latex/Exploratory figure looking at sexual dimorphism-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Saving this figure as .png file in figures folder.}
+\FunctionTok{agg\_png}\NormalTok{(}\StringTok{"figures/bill\_size\_species\_sex\_exploratory.png"}\NormalTok{, }
+        \AttributeTok{width =} \DecValTok{30}\NormalTok{,}
+        \AttributeTok{height =} \DecValTok{15}\NormalTok{,}
+        \AttributeTok{units =} \StringTok{"cm"}\NormalTok{,}
+        \AttributeTok{res =} \DecValTok{300}\NormalTok{,}
+        \AttributeTok{scaling =} \FloatTok{1.125}\NormalTok{)}
+
+\CommentTok{\#Ensures figure saved in "figures" folder actually has graph encoded within it, as opposed to blank file.}
+\FunctionTok{print}\NormalTok{(bill\_size\_species\_sex\_exploratory)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Removed 11 rows containing missing values or values outside the scale range
+## (`geom_point()`).
+## Removed 2 rows containing missing values or values outside the scale range
+## (`geom_point()`).
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{dev.off}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## pdf 
+##   2
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Subsetting data to only include that on chinstrap penguins.}
+\NormalTok{chinstrap\_data }\OtherTok{\textless{}{-}}\NormalTok{ penguins\_data\_clean }\SpecialCharTok{\%\textgreater{}\%} \CommentTok{\#Calls clean dataframe}
+               \FunctionTok{filter}\NormalTok{(species }\SpecialCharTok{==} \StringTok{"Chinstrap"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} \CommentTok{\#filters for data including "Chinstrap" in species column}
+               \FunctionTok{na.omit}\NormalTok{() }\CommentTok{\#Omits NA values from dataset.}
+
+\CommentTok{\#Writing new .csv file for chinstrap dataset to keep this safe in case any accidental changes are made. }
+\FunctionTok{write.csv}\NormalTok{(chinstrap\_data, }\FunctionTok{here}\NormalTok{(}\StringTok{"data"}\NormalTok{,}\StringTok{"chinstrap\_data.csv"}\NormalTok{))}
+\NormalTok{chinstrap\_data }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\FunctionTok{here}\NormalTok{(}\StringTok{"data"}\NormalTok{, }\StringTok{"chinstrap\_data.csv"}\NormalTok{))}
+
+\CommentTok{\#Creating histograms of data on culmen length in all chinstraps sampled to investigate data and assess distribution of data points, as well as effects of any transformations.}
+\CommentTok{\#geom\_histogram() specifies want a histogram to be graphed.}
+\CommentTok{\#Histogram for untransformed data:}
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{chinstrap\_data, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{culmen\_length\_mm)) }\SpecialCharTok{+} \FunctionTok{geom\_histogram}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+\end{verbatim}
+
+\includegraphics{reproducible_figures_assignment_files/figure-latex/chinstrap specific dataset-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Log transforming culmen\_length\_mm using log10() function, and plotting histogram.}
+\NormalTok{chinstrap\_log\_length }\OtherTok{\textless{}{-}} \FunctionTok{log10}\NormalTok{(chinstrap\_data}\SpecialCharTok{$}\NormalTok{culmen\_length\_mm)}
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{chinstrap\_data, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{chinstrap\_log\_length)) }\SpecialCharTok{+} \FunctionTok{geom\_histogram}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+\end{verbatim}
+
+\includegraphics{reproducible_figures_assignment_files/figure-latex/chinstrap specific dataset-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Square{-}root transforming culmen\_depth\_mm using sqrt() function, and plotting histogram.}
+\NormalTok{chinstrap\_sqrt\_length }\OtherTok{\textless{}{-}} \FunctionTok{sqrt}\NormalTok{(chinstrap\_data}\SpecialCharTok{$}\NormalTok{culmen\_length\_mm)}
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ chinstrap\_data, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{chinstrap\_sqrt\_length)) }\SpecialCharTok{+} \FunctionTok{geom\_histogram}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+\end{verbatim}
+
+\includegraphics{reproducible_figures_assignment_files/figure-latex/chinstrap specific dataset-3.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#No beneficial effect of transforming data, so will use untransformed data for further analysis.}
+\CommentTok{\#Can see clear bimodality, indicating some variable is affecting culmen length in chinstrap penguins.}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Made exploratory figure to look more closely at one species in particular.}
+\CommentTok{\#Plotted a scatter plot.}
+\CommentTok{\#Making a colour blind{-}friendly palette useful for distinguishing sexes on figures. Specifying this ensures each sex can be consistently represented by the same colours on any graph where sex is shown, making this document more accessible (as it is colour blind friendly) and more reproducible.}
+\NormalTok{sex\_colours }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"FEMALE"} \OtherTok{=} \StringTok{"purple"}\NormalTok{,}
+                 \StringTok{"MALE"} \OtherTok{=} \StringTok{"darkorange"}\NormalTok{)}
+
+\CommentTok{\#Plotting scatter plot showing how culmen length varies with sex. }
+\CommentTok{\# Details of what each line of code does can be found in lines 146{-}154, in chunk encoding figure exploring effect of species on culmen length. }
+\NormalTok{bill\_size\_exploratory\_sex }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{chinstrap\_data, }
+                         \FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{sex, }
+                            \AttributeTok{y=}\NormalTok{culmen\_length\_mm)) }\SpecialCharTok{+} 
+                         \FunctionTok{geom\_point}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{color=}\NormalTok{sex, }\AttributeTok{shape=}\NormalTok{sex)) }\SpecialCharTok{+} 
+                         \FunctionTok{geom\_jitter}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{color =}\NormalTok{ sex), }\AttributeTok{alpha =} \FloatTok{0.25}\NormalTok{, }\AttributeTok{position =}                                                                   \FunctionTok{position\_jitter}\NormalTok{(}\AttributeTok{width =} \FloatTok{0.4}\NormalTok{, }\AttributeTok{seed=}\DecValTok{0}\NormalTok{)) }\SpecialCharTok{+}
+                         \FunctionTok{scale\_colour\_manual}\NormalTok{(}\AttributeTok{values =}\NormalTok{ sex\_colours) }\SpecialCharTok{+} 
+                         \FunctionTok{scale\_shape\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{c}\NormalTok{(}\DecValTok{16}\NormalTok{, }\DecValTok{17}\NormalTok{)) }\SpecialCharTok{+}
+                         \FunctionTok{xlab}\NormalTok{(}\StringTok{"Culmen Length (mm)"}\NormalTok{) }\SpecialCharTok{+} 
+                         \FunctionTok{ylab}\NormalTok{(}\StringTok{"Culmen Depth (mm)"}\NormalTok{) }\SpecialCharTok{+}
+                         \FunctionTok{theme\_bw}\NormalTok{()}
+
+\CommentTok{\#plot() function allows graph to be outputted.}
+\FunctionTok{plot}\NormalTok{(bill\_size\_exploratory\_sex)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{reproducible_figures_assignment_files/figure-latex/Creating exploratory figure for chinstrap penguins in particular-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Saving chinstrap figure as .png file in figures folder.}
+\FunctionTok{agg\_png}\NormalTok{(}\StringTok{"figures/bill\_size\_exploratory\_sex.png"}\NormalTok{, }
+        \AttributeTok{width =} \DecValTok{30}\NormalTok{,}
+        \AttributeTok{height =} \DecValTok{15}\NormalTok{,}
+        \AttributeTok{units =} \StringTok{"cm"}\NormalTok{,}
+        \AttributeTok{res =} \DecValTok{300}\NormalTok{,}
+        \AttributeTok{scaling =} \FloatTok{1.125}\NormalTok{)}
+
+\CommentTok{\#Ensures figure saved in "figures" folder actually has graph encoded within it, as opposed to blank file.}
+\FunctionTok{print}\NormalTok{(bill\_size\_exploratory\_sex)}
+\FunctionTok{dev.off}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## pdf 
+##   2
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Made exploratory figure to look more closely at possible effect of culmen depth on length, and how sex affects this..}
+\CommentTok{\#Plotted a scatter plot as comparing two numerical variables (culmen length and depth).}
+
+\CommentTok{\#Making a colour blind{-}friendly palette useful for distinguishing sexes on figures. Specifying this ensures each sex is consistently represented by the same colours on any graph where sex is shown, making this document more accessible (as it is colour blind friendly) and more reproducible.}
+\NormalTok{sex\_colours }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"FEMALE"} \OtherTok{=} \StringTok{"purple"}\NormalTok{,}
+                 \StringTok{"MALE"} \OtherTok{=} \StringTok{"darkorange"}\NormalTok{)}
+
+\CommentTok{\#Plotting scatter plot showing effect of culmen depth on culmen length and how this differs in each sex within chinstrap penguins. }
+\CommentTok{\# Details of what each line of code does can be found in lines 146{-}154, in chunk encoding figure exploring effect of species on culmen length. }
+\NormalTok{bill\_size\_exploratory\_depth }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{chinstrap\_data, }
+                         \FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{culmen\_depth\_mm, }
+                            \AttributeTok{y=}\NormalTok{culmen\_length\_mm)) }\SpecialCharTok{+} 
+                         \FunctionTok{geom\_point}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{color=}\NormalTok{sex, }\AttributeTok{shape=}\NormalTok{sex)) }\SpecialCharTok{+} 
+                         \FunctionTok{geom\_jitter}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{color =}\NormalTok{ sex), }\AttributeTok{alpha =} \FloatTok{0.25}\NormalTok{, }\AttributeTok{position =}                                                                   \FunctionTok{position\_jitter}\NormalTok{(}\AttributeTok{width =} \FloatTok{0.4}\NormalTok{, }\AttributeTok{seed=}\DecValTok{0}\NormalTok{)) }\SpecialCharTok{+}
+                         \FunctionTok{scale\_colour\_manual}\NormalTok{(}\AttributeTok{values =}\NormalTok{ sex\_colours) }\SpecialCharTok{+} 
+                         \FunctionTok{scale\_shape\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{c}\NormalTok{(}\DecValTok{16}\NormalTok{, }\DecValTok{17}\NormalTok{)) }\SpecialCharTok{+}
+                         \FunctionTok{xlab}\NormalTok{(}\StringTok{"Culmen Length (mm)"}\NormalTok{) }\SpecialCharTok{+} 
+                         \FunctionTok{ylab}\NormalTok{(}\StringTok{"Culmen Depth (mm)"}\NormalTok{) }\SpecialCharTok{+}
+                         \FunctionTok{theme\_bw}\NormalTok{()}
+
+\CommentTok{\#plot() function allows graph to be outputted.}
+\FunctionTok{plot}\NormalTok{(bill\_size\_exploratory\_depth)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{reproducible_figures_assignment_files/figure-latex/Creating exploratory figure for sex in chinstrap penguins-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Saving this figure as .png file in figures folder.}
+\FunctionTok{agg\_png}\NormalTok{(}\StringTok{"figures/bill\_size\_exploratory\_depth.png"}\NormalTok{, }
+        \AttributeTok{width =} \DecValTok{30}\NormalTok{,}
+        \AttributeTok{height =} \DecValTok{15}\NormalTok{,}
+        \AttributeTok{units =} \StringTok{"cm"}\NormalTok{,}
+        \AttributeTok{res =} \DecValTok{300}\NormalTok{,}
+        \AttributeTok{scaling =} \FloatTok{1.125}\NormalTok{)}
+
+\CommentTok{\#Ensures figure saved in "figures" folder actually has graph encoded within it, as opposed to blank file.}
+\FunctionTok{print}\NormalTok{(bill\_size\_exploratory\_depth)}
+\FunctionTok{dev.off}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## pdf 
+##   2
+\end{verbatim}
+
+\subsection{Hypotheses}\label{hypotheses}
+
+Generic hypotheses on effect of sex: Null hypothesis: The mean culmen
+length of each sex will not be significantly different from that of the
+other. Alternative hypothesis: The mean culmen length of each sex will
+be significantly different from the other.
+
+\subsection{Statistical Methods}\label{statistical-methods}
+
+In this analysis, an ANCOVA test will be conducted, to test whether sex
+affects culmen length, controlling for culmen depth. An ANCOVA is
+suitable for this analysis as there is a numerical response variable
+(culmen length), a categorical explanatory variable (sex) and a
+numerical covariate which must be controlled for (culmen depth). It is
+important to control for culmen depth as the depth of a beak may affect
+the length of a beak by itself.
+
+Null hypotheses for ANCOVA on effect of sex in \emph{P. antarcticus}: 1:
+There is no effect of sex on culmen length. 2: There is no effect of
+culmen depth on culmen length. 3: There is no interaction between sex
+and culmen depth.
+
+Alternative hypotheses ANCOVA for effect of sex in \emph{P.
+antarcticus}: 1: There is a significant effect of sex on culmen length.
+2: There is a significant effect of culmen depth on culmen length. 3:
+There is a significant interaction between sex and culmen depth.
+
+NB: The analyses presented here are not the same as in any referenced
+paper.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Creating model looking at effect of sex on culmen length in chinstraps including interaction with culmen depth.}
+\NormalTok{chinstrap\_log\_bill\_model\_int }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(culmen\_length\_mm }\SpecialCharTok{\textasciitilde{}}\NormalTok{ sex }\SpecialCharTok{*}\NormalTok{ culmen\_depth\_mm, chinstrap\_data)}
+
+\CommentTok{\#Makes plots to ensure assumptions of analysis not violated.}
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{)) }\CommentTok{\#par() function allows multi{-}panel figure of the assumptions plots encoded below to be made, allowing assessment of normality and heteroscedascity of model.}
+\FunctionTok{plot}\NormalTok{(chinstrap\_log\_bill\_model\_int, }\AttributeTok{which =} \DecValTok{2}\NormalTok{) }\CommentTok{\# which=2 specifies QQ plot to compare the data in this model to a theoretical normal dataset, to verify data is normally distributed. As points mostly lie on straight line, can assume this sample is normally distributed.}
+\FunctionTok{plot}\NormalTok{(chinstrap\_log\_bill\_model\_int, }\AttributeTok{which =} \DecValTok{1}\NormalTok{) }\CommentTok{\# which=1 specifies graph of residual values vs fitted values, to verify population variances are equal between samples. Both groups seem to have equal distribution above and below line, so can assume assumption is not violated.}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{reproducible_figures_assignment_files/figure-latex/Statistics-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Checking outputs of analysis of model to assess adjusted R{-}squared of model and values for slope and y{-}intercept for males and females, as well as if slope of regression line is different between them.}
+\FunctionTok{summary}\NormalTok{(chinstrap\_log\_bill\_model\_int)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = culmen_length_mm ~ sex * culmen_depth_mm, data = chinstrap_data)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -4.665 -1.125 -0.319  1.113 11.210 
+## 
+## Coefficients:
+##                         Estimate Std. Error t value Pr(>|t|)   
+## (Intercept)              28.6323     9.3392   3.066  0.00318 **
+## sexMALE                   4.8036    14.0432   0.342  0.73343   
+## culmen_depth_mm           1.0201     0.5305   1.923  0.05894 . 
+## sexMALE:culmen_depth_mm  -0.1029     0.7601  -0.135  0.89273   
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 2.38 on 64 degrees of freedom
+## Multiple R-squared:  0.5146, Adjusted R-squared:  0.4918 
+## F-statistic: 22.62 on 3 and 64 DF,  p-value: 4.24e-10
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Conducting an ANOVA of the model including interaction to assess what the significant effects are.}
+\NormalTok{chinstrap\_int\_anova }\OtherTok{\textless{}{-}} \FunctionTok{aov}\NormalTok{(chinstrap\_log\_bill\_model\_int)}
+\FunctionTok{summary}\NormalTok{(chinstrap\_int\_anova)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                     Df Sum Sq Mean Sq F value   Pr(>F)    
+## sex                  1  347.4   347.4  61.311 6.43e-11 ***
+## culmen_depth_mm      1   36.9    36.9   6.518   0.0131 *  
+## sex:culmen_depth_mm  1    0.1     0.1   0.018   0.8927    
+## Residuals           64  362.6     5.7                     
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Creating model looking at effect of sex on culmen length in chinstraps without interaction with culmen depth.}
+\NormalTok{chinstrap\_log\_bill\_model\_noint }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(culmen\_length\_mm }\SpecialCharTok{\textasciitilde{}}\NormalTok{ sex }\SpecialCharTok{+}\NormalTok{ culmen\_depth\_mm, chinstrap\_data)}
+
+\CommentTok{\#Makes plots to ensure assumptions of analysis not violated.}
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{)) }\CommentTok{\#par() function allows multi{-}panel figure of the assumptions plots encoded below to be made, allowing assessment of normality and heteroscedascity of model.}
+\FunctionTok{plot}\NormalTok{(chinstrap\_log\_bill\_model\_noint, }\AttributeTok{which =} \DecValTok{2}\NormalTok{) }\CommentTok{\# which=2 specifies QQ plot to compare the data in this model to a theoretical normal dataset, to verify data is normally distributed. As points mostly lie on straight line, can assume this sample is normally distributed.}
+\FunctionTok{plot}\NormalTok{(chinstrap\_log\_bill\_model\_noint, }\AttributeTok{which =} \DecValTok{1}\NormalTok{) }\CommentTok{\# which=1 specifies graph of residual values vs fitted values, to verify population variances are equal between samples. Both groups seem to have equal distribution above and below line, so can assume assumption is not violated.}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{reproducible_figures_assignment_files/figure-latex/Statistics-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Checking outputs of analysis of model without interaction to assess adjusted R{-}squared and values for slope and y{-}intercept of males and females.}
+\FunctionTok{summary}\NormalTok{(chinstrap\_log\_bill\_model\_noint)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = culmen_length_mm ~ sex + culmen_depth_mm, data = chinstrap_data)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -4.7150 -1.0889 -0.3394  1.0943 11.2211 
+## 
+## Coefficients:
+##                 Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)      29.5139     6.6436   4.442 3.54e-05 ***
+## sexMALE           2.9059     0.8498   3.419  0.00109 ** 
+## culmen_depth_mm   0.9699     0.3770   2.573  0.01239 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 2.362 on 65 degrees of freedom
+## Multiple R-squared:  0.5145, Adjusted R-squared:  0.4995 
+## F-statistic: 34.43 on 2 and 65 DF,  p-value: 6.347e-11
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Conducting an ANOVA of the model without interaction to assess what the significant effects are.}
+\NormalTok{chinstrap\_noint\_anova }\OtherTok{\textless{}{-}} \FunctionTok{aov}\NormalTok{(chinstrap\_log\_bill\_model\_noint)}
+\FunctionTok{summary}\NormalTok{(chinstrap\_noint\_anova)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                 Df Sum Sq Mean Sq F value   Pr(>F)    
+## sex              1  347.4   347.4  62.251 4.58e-11 ***
+## culmen_depth_mm  1   36.9    36.9   6.618   0.0124 *  
+## Residuals       65  362.7     5.6                     
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Conducting ANOVA to assess if model without interaction is a better fit than model with interaction (i.e ifthere is a significant interaction between sex and culmen length in chinstrap penguins).}
+\NormalTok{chinstrap\_test\_fit\_diff }\OtherTok{\textless{}{-}} \FunctionTok{anova}\NormalTok{(chinstrap\_log\_bill\_model\_int, chinstrap\_log\_bill\_model\_noint)}
+\NormalTok{chinstrap\_test\_fit\_diff}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Analysis of Variance Table
+## 
+## Model 1: culmen_length_mm ~ sex * culmen_depth_mm
+## Model 2: culmen_length_mm ~ sex + culmen_depth_mm
+##   Res.Df    RSS Df Sum of Sq      F Pr(>F)
+## 1     64 362.65                           
+## 2     65 362.75 -1  -0.10386 0.0183 0.8927
+\end{verbatim}
+
+\subsection{Results \& Discussion}\label{results-discussion}
+
+Having conducted an ANCOVA analysis to test how sex affects culmen
+length when controlling for culmen depth, the following has been found:
+The adjusted R-squared for the model including the interaction is
+0.4918, therefore 49.18\% of variance is explained by the model. Sex has
+a significant effect on culmen length (p=\textless6.43*10\^{}-11), and
+as such the y-intercepts of the regression lines are significantly
+different. Culmen depth also has a significant effect on culmen length
+(p=0.0131). There is no interaction between sex and culmen depth
+(p=0.8927), so the slopes of the regression lines are not significantly
+different. It is possible to reject the following null hypotheses: 1:
+There is no effect of sex on culmen length. 2: There is no effect of
+culmen depth on culmen length.
+
+It is not possible to reject the following null hypothesis: 3: There is
+no interaction between sex and culmen depth.
+
+This therefore shows that sex does have an effect on culmen length in
+the chinstrap penguins, and that culmen depth can also has an effect.
+
+The fact that sex affects culmen length is unsurprising as it has been
+shown that sex affects bill morphology and \emph{P. antarcticus} does
+display sexual dimorphism. The fact that culmen depth also affects
+culmen length is unsurprising as it is likely that increasing beak depth
+does correlate with increasing beak length, in order to keep beak shape
+roughly similar between sexes.
+
+The fact that there is no interaction between sex and culmen depth is
+unsurprising as well, as while both sexes will have differently sized
+beaks, it is reasonable to assume they would have similar overall beak
+shapes (a product of the interaction between culmen length and depth) as
+they are the same species and only display mild dimorphism.
+
+The above can also be seen on the results figure, where the slopes of
+each regression line are roughly parallel but each sex has a different
+y-intercept.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Making results plot, showing relationship between culmen depth, culmen length and sex in chinstraps.}
+\CommentTok{\# \# Details of what each line of code does can be found in lines 146{-}154, in chunk encoding figure exploring effect of species on culmen length. }
+\NormalTok{chinstrap\_results\_plot\_int }\OtherTok{\textless{}{-}} 
+\FunctionTok{ggplot}\NormalTok{(chinstrap\_data, }
+       \FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{culmen\_length\_mm, }\AttributeTok{y=}\NormalTok{culmen\_depth\_mm, }\AttributeTok{color =}\NormalTok{ sex)) }\SpecialCharTok{+} 
+  \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+} 
+  \FunctionTok{geom\_smooth}\NormalTok{(}\AttributeTok{method =} \StringTok{"lm"}\NormalTok{) }\SpecialCharTok{+} 
+  \FunctionTok{scale\_colour\_manual}\NormalTok{(}\AttributeTok{values =}\NormalTok{ sex\_colours) }\SpecialCharTok{+} 
+  \FunctionTok{xlab}\NormalTok{(}\StringTok{"Culmen length (mm)"}\NormalTok{) }\SpecialCharTok{+} 
+  \FunctionTok{ylab}\NormalTok{(}\StringTok{"Culmen depth (mm)"}\NormalTok{) }\SpecialCharTok{+} 
+  \FunctionTok{theme\_bw}\NormalTok{()}
+
+\FunctionTok{plot}\NormalTok{(chinstrap\_results\_plot\_int)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `geom_smooth()` using formula = 'y ~ x'
+\end{verbatim}
+
+\includegraphics{reproducible_figures_assignment_files/figure-latex/Results plot-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{agg\_png}\NormalTok{(}\StringTok{"figures/chinstrap\_results\_plot.png"}\NormalTok{, }
+        \AttributeTok{width =} \DecValTok{30}\NormalTok{,}
+        \AttributeTok{height =} \DecValTok{15}\NormalTok{,}
+        \AttributeTok{units =} \StringTok{"cm"}\NormalTok{,}
+        \AttributeTok{res =} \DecValTok{300}\NormalTok{,}
+        \AttributeTok{scaling =} \FloatTok{1.125}\NormalTok{)}
+
+\FunctionTok{print}\NormalTok{(chinstrap\_results\_plot\_int)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `geom_smooth()` using formula = 'y ~ x'
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{dev.off}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## pdf 
+##   2
+\end{verbatim}
+
+\subsection{Conclusion}\label{conclusion}
+
+In conclusion, it has been shown that culmen length is affected by both
+culmen depth and by sex independently, and that there is no interaction
+between culmen depth and sex in P. antarcticus. These results are
+unsurprising. This analysis backs up previous research which stated that
+chinstrap penguins do display sexual dimorphism in their beak
+morphology.
+
+Further research should be conducted to clarify why sexual dimorphism
+has evolved in the chinstrap penguins, and the genus Pygoscelis more
+widely. Moreover, the trophic ecology of male and female penguins in
+this genus should be studied to assess whether their trophic ecology
+differs in a statistically significant manner.
+
+\#\#References Çakar, B. et al., 2024. Bill shape variation in selected
+species in birds of prey.. Anatomia, Histologia, Embryologia, 53(4),
+p.~e13085. Friedman, N. et al., 2019. Evolution of a multifunctional
+trait: shared effects of foraging ecology and thermoregulation on beak
+morphology, with consequences for song evolution.. Proceedings of the
+Royal Society B, 286(1917), p.~20192474. Gorman, K., Williams, T. \&
+Fraser, W., 2014. Ecological Sexual Dimorphism and Environmental
+Variability within a Community of Antarctic Penguins (Genus Pygoscelis).
+PloS one, 9(3), p.~e90081. Polito, M., Clucas, G., Hart, T. \&
+Trivelpiece, W., 2012. A simplified method of determining the sex of
+Pygoscelis penguins using bill measurements.. Marine Ornithology, Volume
+40, pp.~89-94.
+
+\section{QUESTION 3: Open Science}\label{question-3-open-science}
+
+\subsection{a) GitHub}\label{a-github}
+
+\emph{Upload your RProject you created for \textbf{Question 2} and any
+files and subfolders used to GitHub. Do not include any identifiers such
+as your name. Make sure your GitHub repo is public.}
+
+\emph{GitHub link:}
+\url{https://github.com/lemontea63/reproducible_figures_assignment}
+
+\subsection{b) Share your repo with a partner, download, and try to run
+their data
+pipeline.}\label{b-share-your-repo-with-a-partner-download-and-try-to-run-their-data-pipeline.}
+
+\emph{Partner's GitHub link:}
+\url{https://github.com/Anonymous-Exam-User/Palmer_Penguin_GitHub}
+
+\subsection{c) Reflect on your experience running their code. (300-500
+words)}\label{c-reflect-on-your-experience-running-their-code.-300-500-words}
+
+\begin{itemize}
+\tightlist
+\item
+  \emph{What elements of your partner's code helped you to understand
+  their data pipeline?} The formatting of my partner's code made it
+  clear to see what each code chunk and function in each chunk does,
+  clearly separating different parts to make code more understandable.
+  Steps for data analysis were well-presented such that it was clear how
+  the analysis was structured. The reasons for carrying out certain
+  steps in particular ways were well justified as well, making it clear
+  what alternatives there might be to certain steps and why this person
+  has used the methods they have.
+\end{itemize}
+
+The fact that detailed explanations of code were written above each code
+chunk also made the pipeline a lot more understandable, as it was very
+clear what each step was and why it was conducted. My partner's github
+repository was also well organised, with clearly labelled folders for
+things like functions, figures and data.
+
+\begin{itemize}
+\item
+  \emph{Did it run? Did you need to fix anything?} The code ran fine
+  without needing to fix anything.
+\item
+  \emph{What suggestions would you make for improving their code to make
+  it more understandable or reproducible, and why?}
+\end{itemize}
+
+I would suggest that explanations of code could perhaps be more concise,
+cutting out unnecessary sentences or phrases to make the pipeline easier
+to understand overall. As it is, explanations are quite long and wordy
+which can make it more difficult to discern what steps are being taken,
+and therefore might make their analysis slightly less reproducible.
+
+Some of the code chunks could however do with more annotations within
+the code itself, for example briefly explaining functions next to the
+line that they are in, to make it clearer what each part of the code
+does and why they are included. This would make it clearer why each part
+of the code is there and allow others to make changes more easily, but
+this is a minor issue and does not impact the reproducibility of this
+analysis, only the understanding of it.
+
+They also should have put their cleaning function underneath the section
+of the cleaning.r file detailing the purpose of the script and the
+author. This would have made their cleaning file tidier. That said, this
+is again a minor issue which does not affect reproducibility.
+
+\begin{itemize}
+\tightlist
+\item
+  \emph{If you needed to alter your partner's figure using their code,
+  do you think that would be easy or difficult, and why?}
+\end{itemize}
+
+If I had to alter my partner's figure using their code, I believe I
+could accomplish this very easily. My partner has annotated their code
+to make their figure very well, such that it is easy to follow what each
+line does, track down where a change might need to be made and carry out
+that change accordingly. While I think this could be made easier with
+more in code annotations, on the whole I think it would be very easy to
+alter my partner's figures.
+
+\subsection{d) Reflect on your own code based on your experience with
+your partner's code and their review of yours. (300-500
+words)}\label{d-reflect-on-your-own-code-based-on-your-experience-with-your-partners-code-and-their-review-of-yours.-300-500-words}
+
+\begin{itemize}
+\tightlist
+\item
+  \emph{What improvements did they suggest, and do you agree?} My
+  partner suggested I break up code chunks into smaller pieces with
+  annotations written as text above, rather than within the chunk
+  itself. I see the merit of this. Having in-code annotations can make
+  code harder to read, however I wanted to keep to as few code chunks as
+  possible so a user could run a specific chunk and get the desired
+  output instead of running several smaller chunks. I also feel having
+  bigger code chunks makes the document more easily navigated and more
+  easily changed. For example, a user can easily identify my statistics
+  chunk and change the model instead of having to sift through many code
+  chunks to find what they are looking for, which can make my analysis
+  more reproducible. That said, on my partner's code the use of smaller
+  code chunks did make their document easier to understand and so more
+  reproducible.
+\end{itemize}
+
+They also suggested that annotations should immediately precede code
+instead of being at the top of a chunk. I agree; it would make my code
+clearer and therefore more reproducible. This was seen throughout my
+partner's code and did help make their code a lot easier to understand.
+
+They suggested having smaller indents. I also agree with this; smaller
+indents would ensure annotations do not run over a line, which would
+make my code clearer and more reproducible. While I had aimed to make my
+code clearer by formatting it with these indents, I think it had the
+opposite effect.
+
+They critiqued me not using na.omit() at start when cleaning data. I see
+why this has been suggested, however as this does not affect the running
+of the code or the outputs generated, I would say this does not impact
+reproducibility.
+
+They also critiqued having 2 sets of plated normality plots. I disagree
+with this suggestion. As the plots are only there to show that neither
+model violates the assumptions of the ANCOVA analysis I ran, and not to
+indicate a difference between the models, I do not believe this affects
+the reproducibility of my analysis.
+
+Finally, my partner said that references were hard to read. I also
+disagree with this suggestion, as it is still obvious what the
+references are and they can still be found, so I would say this does not
+impact reproducibility.
+
+\begin{itemize}
+\tightlist
+\item
+  \emph{What did you learn about writing code for other people?} From
+  doing this exercise, I learnt the importance of clear annotation to
+  explain what code does, as well as how to place those annotations
+  within an r script to make code more understandable and therefore more
+  reproducible. I also learnt how purely cosmetic formatting can
+  actually make code harder to read and understand, which negatively
+  impacts code reproducibility. There are many more factors which can
+  impact reproducibility than I thought, and it was interesting trying
+  to balance them all to ensure other people can read and interact with
+  code that I am writing.
+\end{itemize}
+
+\end{document}

@@ -1,8 +1,8 @@
 ---
 title: "Reproducible Figures Assignment"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 date: "2023-11-29"
 purpose: A script to analyse the Palmer Penguins dataset.
 ---
@@ -66,8 +66,13 @@ Create a figure using the Palmer Penguin dataset that is correct but badly commu
 
 ```{r bad figure code, echo=FALSE}
 #Creating a bad bar graph showing how body mass differs between islands to answer question 1 of assessment.
+bad_island_colours <- c("Biscoe" = "red", "Dream" = "brown", "Torgersen" = "green")
+
 bad_bargraph_island_png <- ggplot(penguins_data_clean) +
-                           geom_col(aes(x=island, y=body_mass_g))  #geom_col specifies bar chart with chosen y-axis.
+                           geom_col(aes(x=island, y=body_mass_g, colour = island)) +  
+                           scale_colour_manual(values = bad_island_colours) +
+                           ylim(4000, NA)
+
 plot(bad_bargraph_island_png)
 
 #Saving the misleading plot as a .png file in the "figures" folder using agg_png() function.
@@ -87,17 +92,23 @@ Write about how your design choices mislead the reader about the underlying data
 
 My graph is correct, but some design choices mislead the reader.
 
-Firstly, there is no information about each data point, such as the species of penguin each sample is a member of. This is misleading; penguin species is likely a confounding variable which impacts body mass, and the island(s) inhabited. This therefore may mislead a reader as the effects of different species are not explicitly shown, so a misleading correlation may be represented on my graph.
+Firstly, there is no information presented about confounding variables, like species. This is misleading; penguin species is likely a confounding variable which impacts body mass, and the island(s) inhabited. This therefore may mislead a reader as the effects of different species are not explicitly shown, so a misleading correlation may be represented on my graph. 
 
-The lack of error bars is also misleading as it is unclear to a reader how much measurements for a certain treatment (in this case each island) vary. Therefore, it is unclear whether the samples taken from each island are representative of the population on each island or whether there is wide variation and improper sampling, or whether the data are precise and/or accurate.
+On this graph, I also only show a summary of the data, in this case maximum body mass in each category (i.e on each island). This is misleading because important information may be hidden. For example, the maximum body mass for each island might be an outlier. This is also represented in the axis labels, which do not state maximum body mass but instead state only "body_mass_g". 
 
-On this graph, I also only show a summary of the data, in this case maximum body mass in each category (i.e on each island). This is misleading because important information may be hidden. For example, the maximum body mass for each island might be an outlier. This is also represented in the axis labels, which do not state maximum body mass but instead state only "body_mass_g".
+The y-axis does not start from 0, but instead at 4000g, which is misleading as it makes differences in body mass between islands look bigger than they actually are.
 
-Moreover, axis labels as specified in the .png plot are also very small, making it hard for a reader to understand what the graph is showing. Readers must look very closely at the axis labels to see the variables being compared. This is misleading because by not clearly showing your axis labels and any units associated with them, readers are more likely to miss key details about exactly what is being compared or what relationship is suggested by a graph between, which may cause them to believe a false correlation is present. There are also no units, which means readers cannot assess the magnitude of indicated changes in body mass.
+Moreover, axis labels as specified in the .png plot are also very small, making it hard for a reader to understand what the graph is showing. Readers must look very closely at the axis labels to see the variables being compared. This is misleading because by not clearly showing your axis labels and any units associated with them, readers are more likely to miss key details about exactly what is being compared or what relationship is suggested by a graph between, which may cause them to believe a false correlation is present.
 
-Reference: Statistics How To, 2024. Misleading Graphs: Real Life Examples. [Online] 
+Finally, the colourscheme used is not at all accessible, using a red-green colourscheme which is not colour blind friendly. This means it is not easy to see what each colour represents for a colour blind reader, and therefore makes my graph more misleading.
+
+References: 
+Statistics How To, 2024. Misleading Graphs: Real Life Examples. [Online] 
 Available at: https://www.statisticshowto.com/probability-and-statistics/descriptive-statistics/misleading-graphs/
 [Accessed 11th December 2024].
+Glen, S., 2020. Misleading Graphs Part 1: Avoid These Common Mistakes. [Online] 
+Available at: https://www.datasciencecentral.com/misleading-graphs/
+[Accessed 11 December 2024].
 
 
 # QUESTION 2: Data Pipeline
