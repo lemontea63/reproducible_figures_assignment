@@ -117,9 +117,12 @@ Available at: https://www.datasciencecentral.com/misleading-graphs/
 
 ## Introduction
 
-Many factors can impact beak morphology in birds, including foraging and thermoregulation. It has been shown that in many bird families, different species which inhabit different niches and have different foraging behaviours tend to evolve different bill shapes, which impacts variables like culmen length and depth (Friedman, 2019; Çakar, 2024). This pattern has been observed and tested in the birds of prey, but not in penguins (Çakar, 2024). The different sexes of many bird species also often have slightly different foraging behaviours outside of the breeding season, which could cause the evolution of different bill morphologies between the different sexes as each sex adapts to its different food sources (Gorman, 2014). Whether sex affects beak morphology is therefore an interesting question. It is known that species in the genus Pygoscelis display subtle sexual dimorphism in features like body mass, flipper length and bill size, with females usually being smaller than males. There is a possibility this will be reflected in the bill morphology of these penguins (Gorman, 2014; Polito, et al., 2012). To study this in detail and simplify the analysis, this analysis will focus on only one penguin species (the chinstrap penguin- Pygoscelis antarcicus) to ensure only sex is examined, not the effect of species. The chinstrap penguin has been chosen as it has been shown that it is the most dimorphic in culmen features, so will be an interesting species to study in this analysis.
+Many factors can impact beak morphology in birds, including foraging and thermoregulation. It has been shown that in many bird families, different species which inhabit different niches and have different foraging behaviours tend to evolve different bill shapes, which impacts variables like culmen length and depth (Friedman, 2019; Çakar, 2024). This pattern has been observed and tested in the birds of prey, but not in penguins (Çakar, 2024). The different sexes of many bird species also often have slightly different foraging behaviours outside of the breeding season, which could cause the evolution of different bill morphologies between the different sexes as each sex adapts to its different food sources (Gorman, 2014). Whether sex affects beak morphology is therefore an interesting question. It is known that species in the genus *Pygoscelis* display subtle sexual dimorphism in features like body mass, flipper length and bill size, with females usually being smaller than males. There is a possibility this will be reflected in the bill morphology of these penguins (Gorman, 2014; Polito, et al., 2012). 
 
-This analysis, using data from the Palmer Penguins dataset, will test the relationship between culmen depth and sex in the chinstrap penguin.
+This analysis will use data from the Palmer Penguins dataset. This dataset contains data on 3 penguin species in the genus *Pygoscelis* (adelie, chinstrap and gentoo penguins) on a number of variables including body mass, culmen length, culmen depth, sex and clutch completion.
+
+To study sexual dimorphism in beak shape in detail and simplify the analysis, this analysis will focus on only one penguin species (the chinstrap penguin- *Pygoscelis antarctica*) to ensure only sex is examined. The chinstrap penguin has been chosen as it has been shown that it is the most dimorphic in culmen features, so will be an interesting species to study. It is hoped that findings from P. antarcticus can be extrapolated to other species within this genus, if not penguins as a whole.
+
 
 
 ```{r Data Preparation- taken from lesson materials provided by Lydia France, University of Oxford, 2024}
@@ -226,8 +229,22 @@ ggplot(data=chinstrap_data, aes(x=chinstrap_log_length)) + geom_histogram()
 chinstrap_sqrt_length <- sqrt(chinstrap_data$culmen_length_mm)
 ggplot(data = chinstrap_data, aes(x=chinstrap_sqrt_length)) + geom_histogram()
 
-#No beneficial effect of transforming data, so will use untransformed data for further analysis.
+#No beneficial effect of transforming culmen length data, so will use untransformed data for further analysis.
 #Can see clear bimodality, indicating some variable is affecting culmen length in chinstrap penguins.
+
+#Creating histograms of data on body mass in all chinstraps sampled to investigate data and assess distribution of data points, as well as effects of any transformations.
+#geom_histogram() specifies want a histogram to be graphed.
+#Histogram for untransformed data:
+ggplot(data=chinstrap_data, aes(x=body_mass_g)) + geom_histogram()
+
+#Log transforming culmen_length_mm using log10() function, and plotting histogram.
+chinstrap_log_mass <- log10(chinstrap_data$body_mass_g)
+ggplot(data=chinstrap_data, aes(x=chinstrap_log_mass)) + geom_histogram()
+
+#Square-root transforming culmen_depth_mm using sqrt() function, and plotting histogram.
+chinstrap_sqrt_mass <- sqrt(chinstrap_data$body_mass_g)
+ggplot(data = chinstrap_data, aes(x=chinstrap_sqrt_mass)) + geom_histogram()
+#Again, no beneficial effect of transforming culmen length data, so will use untransformed data for further analysis.
 ```
 
 ```{r Creating exploratory figure for chinstrap penguins in particular}
@@ -309,7 +326,7 @@ Alternative hypothesis: The mean culmen length of each sex will be significantly
 
 ## Statistical Methods
 
-In this analysis, an ANCOVA test will be conducted, to test whether sex affects culmen length, controlling for culmen depth. An ANCOVA is suitable for this analysis as there is a numerical response variable (culmen length), a categorical explanatory variable (sex) and a numerical covariate which must be controlled for (body mass). It is important to control for body mass as increasing body mass may be correlated with a longer beak. 
+In this analysis, an ANCOVA test will be conducted, to test whether sex affects culmen length, controlling for body mass. An ANCOVA is suitable for this analysis as there is a numerical response variable (culmen length), a categorical explanatory variable (sex) and a numerical covariate which must be controlled for (body mass). It is important to control for body mass as increasing body mass may be correlated with a longer beak. 
 
 Null hypotheses for ANCOVA on effect of sex in *P. antarcticus*: 
 1: There is no effect of sex on culmen length. 
@@ -343,33 +360,57 @@ summary(chinstrap_log_bill_model_int)
 chinstrap_int_anova <- aov(chinstrap_log_bill_model_int)
 summary(chinstrap_int_anova)
 
+#Creating model looking at effect of sex on culmen length in chinstraps without interaction with body mass.
+chinstrap_log_bill_model_noint <- lm(culmen_length_mm ~ sex + body_mass_g, chinstrap_data)
+
+#Makes plots to ensure assumptions of analysis not violated.
+par(mfrow = c(1,2)) #par() function allows multi-panel figure of the assumptions plots encoded below to be made, allowing assessment of normality and heteroscedascity of model.
+plot(chinstrap_log_bill_model_noint, which = 2) # which=2 specifies QQ plot to compare the data in this model to a theoretical normal dataset, to verify data is normally distributed. As points mostly lie on straight line, can assume this sample is normally distributed.
+plot(chinstrap_log_bill_model_noint, which = 1) # which=1 specifies graph of residual values vs fitted values, to verify population variances are equal between samples. Both groups seem to have equal distribution above and below line, so can assume assumption is not violated.
+
+#Checking outputs of analysis of model without interaction to assess adjusted R-squared and values for slope and y-intercept of males and females.
+summary(chinstrap_log_bill_model_noint)
+
+#Conducting an ANOVA of the model without interaction to assess what the significant effects are.
+chinstrap_noint_anova <- aov(chinstrap_log_bill_model_noint)
+summary(chinstrap_noint_anova)
+
+#Conducting ANOVA to assess if model without interaction is a better fit than model with interaction (i.e ifthere is a significant interaction between sex and culmen length in chinstrap penguins).
+chinstrap_test_fit_diff <- anova(chinstrap_log_bill_model_int, chinstrap_log_bill_model_noint)
+chinstrap_test_fit_diff
+
 #Conducting a t-test analysis to assess whether body mass is affected by sex.
 t.test(body_mass_g ~ sex, data = chinstrap_data)
 ```
 
 ## Results & Discussion
+
 Having conducted an ANCOVA analysis to test how sex affects culmen length when controlling for body mass, some interesting results were obtained.
 
-The adjusted R-squared for the model used (including the interaction term) is 0.4803, therefore 48.03% of variance is explained by the model. Sex has a significant effect on culmen length (p=<9.16*10^-11), and as such the y-intercepts of the regression lines are significantly different. Body mass does not seem to have a significant effect on culmen length (p=0.0540). There is no interaction effect between sex and body mass (p=0.2953), so the slopes of the regression lines are not significantly different. 
-It is possible to reject the following null hypotheses: 
+The adjusted R-squared for the model including the interaction term is 0.4803, therefore 48.03% of variance is explained by the model. Sex has a significant effect on culmen length (p=<9.16*10^-11), and as such the y-intercepts of the regression lines are significantly different. Body mass does seem to have a significant effect on culmen length (p=0.0450). There is no interaction effect between sex and body mass (p=0.2953), so the slopes of the regression lines are not significantly different. 
+
+Excluding the interaction term in the model, the adjusted R-squared for the model including the interaction term is 0.4794, therefore 47.94% of variance is explained by the model. Sex has a significant effect on culmen length (p=<8.6*10^-11), and as such the y-intercepts of the regression lines are significantly different. Body mass does not seem to have a significant effect on culmen length (p=0.0540). 
+
+The difference between the models is minimal, but when the models are compared, the model without the interaction term has a marginally better fit (F=1.1136). Therefore, the findings from this model will be used to reject or not reject null hypotheses and draw conclusions from.
+
+Using the results obtained from the model excluding the interaction term, it is possible to reject the following null hypotheses: 
 1: There is no effect of sex on culmen length. 
-2: There is no effect of culmen depth on culmen length. 
 
 It is not possible to reject the following null hypothesis:
-3: There is no interaction effect between sex and culmen depth.
+2: There is no effect of body mass on culmen length.
+3: There is no interaction effect between sex and body mass.
 
 It should be stated that sex does also significantly affect body mass, as shown using a two-sample t-test (p=2.264*10-6).
 
-This therefore shows that sex does have an effect on culmen length in the chinstrap penguins, and that culmen depth also has an independent effect. 
+This therefore shows that sex does have an effect on culmen length in the chinstrap penguins, but body mass does not.
 
 The fact that sex affects culmen length is unsurprising as it has been shown that sex affects bill morphology and *P. antarcticus* does display sexual dimorphism. 
-The fact that culmen depth also affects culmen length is unsurprising as it is likely that increasing beak depth does correlate with increasing beak length, in order to keep beak shape roughly similar between sexes.
 
-The fact that there is no interaction effect between sex and culmen depth is unsurprising as well, as while both sexes will have differently sized beaks, it is reasonable to assume they would have similar overall beak shapes (a product of the interaction between culmen length and depth) as they are the same species and only display mild dimorphism.
+The fact that body mass does not also significantly affect culmen length is surprising as it is plausible that larger penguins would have longer culmens. While the effect was nearly significant, it was not less than the p < 0.05 cut off necessary to consider it significant. This may be because food is limited in the Antarctic ecosystem, so beaks are under some evolutionary constraint to ensure prey can still be caught, but this would require further research to verify.
+It is unsurprising that sex affects body mass in this species independently, as this species has been shown to be dimorphic in body mass (Gorman, et al., 2014).
 
-It is unsurprising that sex affects body mass in this species independently, as *P. antarcticus* has been shown to be dimorphic in body mass (Gorman, et al., 2014).
+The above can also be seen on the results figure, where the slopes of each regression line are roughly parallel but each sex has a different y-intercept. It can also be seen that there are two distinct groups on the x-axis, with females generally having smaller body mass than males, but there is a large amount of overlap between the two groups.
 
-The above can also be seen on the results figure, where the slopes of each regression line are roughly parallel but each sex has a different y-intercept.
 
 
 
@@ -401,9 +442,10 @@ dev.off()
 
 ## Conclusion
 
-In conclusion, it has been shown that culmen length is affected by both body mass and by sex independently, and that there is no interaction effect between body mass and sex in P. antarcticus. These results are unsurprising. This analysis reaffirms the findings of previous research which stated that chinstrap penguins do display sexual dimorphism in their beak morphology. 
+In conclusion, it has been shown that culmen length is affected by sex, but not by body mass, and that there is no interaction effect between body mass and sex in *P. antarcticus*. Some of these results are surprising for reasons discussed above. This analysis does however still reaffirm the findings of previous research which stated that chinstrap penguins do display sexual dimorphism in their beak morphology (using culmen length as a proxy) and in their body mass. 
 
-Further research should be conducted to clarify why sexual dimorphism has evolved in the chinstrap penguins, and the genus Pygoscelis more widely. Moreover, the trophic ecology of male and female penguins in this genus should be studied to assess whether their trophic ecology differs greatly, and whether this can explain the variation in beak length and so beak morphology or whether some other factor has caused the evolution of sexual dimorphism. 
+Further research should be conducted to clarify why sexual dimorphism has evolved in the chinstrap penguins, and the genus *Pygoscelis* more widely. Moreover, the trophic ecology of male and female penguins in this genus should be studied to assess whether their trophic ecology differs greatly, and whether this can explain the variation in beak length and so beak morphology or whether some other factor has caused the evolution of sexual dimorphism. It would also be interesting to understand whether there is an evolutionary constraint which seems to make beak size consistent across chinstrap penguins regardless of body size. Lastly, it would be interesting to discover whether the findings of this analysis hold up in other penguin species or birds more widely.
+
  
 
 ##References
