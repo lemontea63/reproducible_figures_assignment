@@ -1,15 +1,15 @@
 ---
 title: "Reproducible Figures Assignment"
 output:
-  html_document: default
   pdf_document: default
-date: "2023-13-12"
+  html_document: default
+date: "2023-11-29"
 purpose: A script to analyse the Palmer Penguins dataset.
 ---
 
 # Installing and loading packages
 
-```{r Loading packages}
+```{r}
 #Loading packages needed for this project, which should all be in the RENV folder. Also loading functions to clean data from Palmer Penguins dataset, found in a separate folder.
 library(tidyverse)
 library(palmerpenguins)
@@ -25,7 +25,7 @@ library(tinytex)
 
 # Data Preparation:
 
-```{r Cleaning data for q1}
+```{r echo=FALSE}
 #Preserving and loading raw data in its own .csv file.
 write.csv(penguins_raw, here("data","penguins_raw.csv"))
 penguins_data_raw<-read.csv(here("data","penguins_raw.csv"))
@@ -35,8 +35,8 @@ head(penguins_data_raw)
 colnames(penguins_data_raw)
 ```
 
-```{r Cleaning data}
-#Making function to clean column names of raw dataset. Some code taken from lesson materials provided by Dr Lydia France, University of Oxford, 2024
+```{r}
+#Making function to clean column names of raw dataset.
 cleaning_penguin_data_columns <- function(raw_data){
   print("Cleaning column names, simplifying species names, removing empty columns and rows and removing unnecessary columns/rows")
   raw_data %>% 
@@ -66,14 +66,8 @@ Create a figure using the Palmer Penguin dataset that is correct but badly commu
 
 ```{r bad figure code, echo=FALSE}
 #Creating a bad bar graph showing how body mass differs between islands to answer question 1 of assessment.
-bad_island_colours <- c("Biscoe" = "red", "Dream" = "brown", "Torgersen" = "green")
-
 bad_bargraph_island_png <- ggplot(penguins_data_clean) +
-                           geom_col(aes(x=island, y=body_mass_g, colour = island)) +  
-                           scale_colour_manual(values = bad_island_colours) +
-                           labs(x="Island", y="Body mass")
-                           ylim(4000, NA)
-
+                           geom_col(aes(x=island, y=body_mass_g)) #geom_col specifies bar chart with chosen y-axis.
 plot(bad_bargraph_island_png)
 
 #Saving the misleading plot as a .png file in the "figures" folder using agg_png() function.
@@ -93,51 +87,36 @@ Write about how your design choices mislead the reader about the underlying data
 
 My graph is correct, but some design choices mislead the reader.
 
-Firstly, there is no information presented about confounding variables like species. This is misleading; penguin species is likely a confounding variable which impacts body mass, and the island(s) inhabited. This therefore may mislead a reader as the effects of different species are not explicitly shown, so a misleading correlation may be represented on my graph. 
+Firstly, there is no information about each data point, such as the species of penguin each sample is a member of. This is misleading; penguin species is likely a confounding variable which impacts body mass, and the island(s) inhabited. This therefore may mislead a reader as the effects of different species are not explicitly shown, so a misleading correlation may be represented on my graph.
 
-The y-axis does not start from 0, but instead at 4000g, which is misleading as it makes differences in body mass between islands look bigger than they actually are.
+The lack of error bars is also misleading as it is unclear to a reader how much measurements for a certain treatment (in this case each island) vary. Therefore, it is unclear whether the samples taken from each island are representative of the population on each island or whether there is wide variation and improper sampling, or whether the data are precise and/or accurate.
 
-On this graph, I also only show a summary of the data, in this case maximum body mass in each category (i.e. on each island). This is misleading because important information may be hidden. For example, the maximum body mass for each island might be an outlier. This is also represented in the axis labels, which do not state maximum body mass but instead state only "body mass". 
+On this graph, I also only show a summary of the data, in this case maximum body mass in each category (i.e on each island). This is misleading because important information may be hidden. For example, the maximum body mass for each island might be an outlier. This is also represented in the axis labels, which do not state maximum body mass but instead state only "body_mass_g".
 
-Moreover, axis labels as specified in the .png plot are also very small, making it hard for a reader to understand what the graph is showing. Readers must look very closely at the axis labels to see the variables being compared. This is misleading because by not clearly showing your axis labels and any units associated with them, readers are more likely to miss key details about exactly what is being compared or what relationship is suggested by a graph, which may cause them to believe a false correlation is present.
-
-Finally, the colour scheme used is not at all accessible, using a red-green colour scheme which is not colour blind friendly. This means it is not easy to see what each colour represents for a colour-blind reader, and therefore makes my graph more misleading.
-
-
-References: 
-Statistics How To, 2024. Misleading Graphs: Real Life Examples. [Online] 
-Available at: https://www.statisticshowto.com/probability-and-statistics/descriptive-statistics/misleading-graphs/
-[Accessed 11th December 2024].
-Glen, S., 2020. Misleading Graphs Part 1: Avoid These Common Mistakes. [Online] 
-Available at: https://www.datasciencecentral.com/misleading-graphs/
-[Accessed 11 December 2024].
-
+Moreover, axis labels as specified in the .png plot are also very small, making it hard for a reader to understand what the graph is showing. Readers must look very closely at the axis labels to see the variables being compared. This is misleading because by not clearly showing your axis labels and any units associated with them, readers are more likely to miss key details about exactly what is being compared or what relationship is suggested by a graph between, which may cause them to believe a false correlation is present.
 
 # QUESTION 2: Data Pipeline
 
 ## Introduction
 
-Many factors can impact beak morphology in birds, including foraging and thermoregulation. It has been shown that in many bird families, different species which inhabit different niches and have different foraging behaviours tend to evolve different bill shapes, which impacts variables like culmen length and depth (Friedman, 2019; Çakar, 2024). This pattern has been observed and tested in the birds of prey, but not in penguins (Çakar, 2024). The different sexes of many bird species also often have slightly different foraging behaviours outside of the breeding season, which could cause the evolution of different bill morphologies between the different sexes as each sex adapts to its different food sources (Gorman, 2014). Whether sex affects beak morphology is therefore an interesting question. It is known that species in the genus *Pygoscelis* display subtle sexual dimorphism in features like body mass, flipper length and bill size, with females usually being smaller than males. There is a possibility this will be reflected in the bill morphology of these penguins (Gorman, 2014; Polito, et al., 2012). 
+Many factors can impact beak morphology in birds, including foraging and thermoregulation. It has been shown that in many bird families, different species which inhabit different niches and have different foraging behaviours tend to evolve different bill shapes, which impacts variables like culmen length and depth (Friedman, 2019; Çakar, 2024). This pattern has been observed and tested in the birds of prey, but not in penguins (Çakar, 2024). The different sexes of many bird species also often have slightly different foraging behaviours outside of the breeding season, which could cause the evolution of different bill morphologies between the different sexes as each sex adapts to its different food sources (Gorman, 2014). Whether sex affects beak morphology is therefore an interesting question. It is known that species in the genus Pygoscelis display subtle sexual dimorphism in features like body mass, flipper length and bill size, with females usually being smaller than males. There is a possibility this will be reflected in the bill morphology of these penguins (Gorman, 2014; Polito, et al., 2012). To study this in detail and simplify the analysis, this analysis will focus on only one penguin species (the chinstrap penguin- Pygoscelis antarcicus) to ensure only sex is examined, not the effect of species. The chinstrap penguin has been chosen as it has been shown that it is the most dimorphic in culmen features, so will be an interesting species to study in this analysis.
 
-This analysis will use data from the Palmer Penguins dataset. This dataset contains data on 3 penguin species in the genus *Pygoscelis* (adelie, chinstrap and gentoo penguins) on a number of variables including body mass, culmen length, culmen depth, sex and clutch completion.
-
-To study sexual dimorphism in beak shape in detail and simplify the analysis, this analysis will focus on only one penguin species (the chinstrap penguin- *Pygoscelis antarctica*) to ensure only sex is examined. The chinstrap penguin has been chosen as it has been shown that it is the most dimorphic in culmen features, so will be an interesting species to study. It is hoped that findings from P. antarcticus can be extrapolated to other species within this genus, if not penguins as a whole.
-
+This analysis, using data from the Palmer Penguins dataset, will test the relationship between culmen depth and sex in the chinstrap penguin.
 
 
 ```{r Data Preparation- taken from lesson materials provided by Lydia France, University of Oxford, 2024}
 #All packages used can be found at the top of the document.
-# Some code taken from lesson materials provided by Dr Lydia France, University of Oxford, 2024
 
 #These lines of code preserve raw data in a separate csv file so it can be easily recovered.
 write.csv(penguins_raw, here("data","penguins_raw.csv"))
 penguins_data_raw<-read.csv(here("data","penguins_raw.csv"))
 
+
 #Investigating data- allows initial analysis of what data were collected and what values have been recorded for each, as well as what the column names look like (using colnames() function).
 head(penguins_data_raw)
 colnames(penguins_data_raw)
 
-#Making function to allow cleaning of penguins dataset, as some column names are confusing and unreadable.
+#Making function to clean column names of raw dataset.
 cleaning_penguin_data_columns <- function(raw_data){
   print("Cleaning column names, simplifying species names, removing empty columns and rows and removing unnecessary columns/rows")
   raw_data %>% 
@@ -150,7 +129,7 @@ cleaning_penguin_data_columns <- function(raw_data){
     dplyr::select(-starts_with("delta")) %>% #removes any column with name starting with delta.
     dplyr::select(-comments)} #removes comments column.
 
-#Cleaning raw data to generate a cleaner dataset- removing unneeded variables and making data more easily read by R and by humans. Uses the cleaning_penguin_columns() function found above.
+#Cleaning raw data to generate a cleaner dataset- removing unneeded variables and making data more easily read by R and by humans. Uses the cleaning_penguin_columns() function made above.
 penguins_data_clean<-cleaning_penguin_data_columns(penguins_data_raw)
 colnames(penguins_data_clean) #Checks column names have been changed as needed.
 str(penguins_data_clean) #Checks whether each variable is listed as factor, character or numerical data.
@@ -163,9 +142,8 @@ penguins_data_clean <- read.csv(here("data", "penguins_data_clean.csv"))
 ```{r Exploratory figure looking at sexual dimorphism}
 #Decided to look at effects of sexual dimorphism, so encoded graph which codes for identification of sex through different shapes as well as species using different colours.
 
-#Making a colour blind-friendly palette useful for distinguishing sexes on figures. Specifying this ensures each sex can be consistently represented by the same colours on any graph where sex is shown, making this document more accessible (as it is colour blind friendly) and more reproducible.
-sex_colours <- c("FEMALE" = "purple",
-                 "MALE" = "darkorange")
+#S#Making a colour blind-friendly palette useful for distinguishing species on figures. Specifying this ensures each sex can be consistently represented by the same colours on any graph where sex is shown, making this document more accessible (as it is colour blind friendly) and more reproducible.
+species_colours <- c("Adelie" = "darkorange", "Chinstrap" = "magenta2", "Gentoo" = "blue")
 
 #Setting shapes for each sex to make figure more reproducible.
 sex_shapes <- c("MALE" = "+", "FEMALE" = "20")
@@ -183,11 +161,12 @@ sex_shapes <- c("MALE" = "+", "FEMALE" = "20")
 bill_size_species_sex_exploratory <- ggplot(data=penguins_data_clean, 
                          aes(x=species, 
                             y=culmen_length_mm)) + 
-                         geom_point(aes(color=sex, shape=sex)) + 
-                         geom_jitter(aes(color = sex, shape = sex), alpha = 0.25, position =                                                             position_jitter(width = 0.4, seed=0)) +
-                         scale_colour_manual(values = sex_colours) + 
+                         geom_point(aes(color=species, shape=sex)) + 
+                         geom_jitter(aes(color = species), alpha = 0.25, position =                                                             position_jitter(width = 0.4, seed=0)) +
+                         scale_colour_manual(values = species_colours) + 
                          scale_shape_manual(values = c(16, 17)) +
-                         labs(title = "A graph to show how culmen length differs between species and sexes", x= "Species", y="Culmen Length (mm)") +
+                         xlab("Culmen Length (mm)") + 
+                         ylab("Culmen Depth (mm)") +
                          theme_bw()
 
 #plot() function allows graph to be outputted.
@@ -208,9 +187,9 @@ dev.off()
 
 ```{r chinstrap specific dataset}
 #Subsetting data to only include that on chinstrap penguins.
-chinstrap_data <- penguins_data_clean %>% #Calls clean dataframe
-               filter(species == "Chinstrap") %>% #filters for data including "Chinstrap" in species column
-               na.omit() #Omits NA values from dataset.
+chinstrap_data <- penguins_data_clean %>% 
+               filter(species == "Chinstrap") %>% 
+               na.omit()
 
 #Writing new .csv file for chinstrap dataset to keep this safe in case any accidental changes are made. 
 write.csv(chinstrap_data, here("data","chinstrap_data.csv"))
@@ -229,45 +208,36 @@ ggplot(data=chinstrap_data, aes(x=chinstrap_log_length)) + geom_histogram()
 chinstrap_sqrt_length <- sqrt(chinstrap_data$culmen_length_mm)
 ggplot(data = chinstrap_data, aes(x=chinstrap_sqrt_length)) + geom_histogram()
 
-#No beneficial effect of transforming culmen length data, so will use untransformed data for further analysis.
+#No beneficial effect of transforming data, so will use untransformed data for further analysis.
 #Can see clear bimodality, indicating some variable is affecting culmen length in chinstrap penguins.
-
-#Creating histograms of data on body mass in all chinstraps sampled to investigate data and assess distribution of data points, as well as effects of any transformations.
-#geom_histogram() specifies want a histogram to be graphed.
-#Histogram for untransformed data:
-ggplot(data=chinstrap_data, aes(x=body_mass_g)) + geom_histogram()
-
-#Log transforming culmen_length_mm using log10() function, and plotting histogram.
-chinstrap_log_mass <- log10(chinstrap_data$body_mass_g)
-ggplot(data=chinstrap_data, aes(x=chinstrap_log_mass)) + geom_histogram()
-
-#Square-root transforming culmen_depth_mm using sqrt() function, and plotting histogram.
-chinstrap_sqrt_mass <- sqrt(chinstrap_data$body_mass_g)
-ggplot(data = chinstrap_data, aes(x=chinstrap_sqrt_mass)) + geom_histogram()
-#Again, no beneficial effect of transforming culmen length data, so will use untransformed data for further analysis.
 ```
 
 ```{r Creating exploratory figure for chinstrap penguins in particular}
 #Made exploratory figure to look more closely at one species in particular.
 #Plotted a scatter plot.
 
+#Making a colour blind-friendly palette useful for distinguishing sexes on figures. Specifying this ensures each sex can be consistently represented by the same colours on any graph where sex is shown, making this document more accessible (as it is colour blind friendly) and more reproducible.
+sex_colours <- c("FEMALE" = "purple",
+                 "MALE" = "darkorange")
+
 #Plotting scatter plot showing how culmen length varies with sex. 
-# Details of what each line of code does can be found in lines 146-154, in chunk encoding figure exploring effect of species on culmen length. 
-bill_size_sex_exploratory <- ggplot(data=chinstrap_data, 
+# Details of what each line of code does can be found in lines 151-159, in chunk encoding figure exploring effect of species on culmen length. 
+bill_size_exploratory_sex <- ggplot(data=chinstrap_data, 
                          aes(x=sex, 
                             y=culmen_length_mm)) + 
                          geom_point(aes(color=sex, shape=sex)) + 
-                         geom_jitter(aes(color = sex), alpha = 0.25, position =                                                                   position_jitter(width = 0.4, seed=0)) +
+                         geom_jitter(aes(color = sex), alpha = 0.25, position =                                                                 position_jitter(width = 0.4, seed=0)) +
                          scale_colour_manual(values = sex_colours) + 
                          scale_shape_manual(values = c(16, 17)) +
-                         labs(title = "A graph to show how culmen length differs between sexes in Chinstrap penguins", x= "Sex", y="Culmen Length (mm)") +
+                         xlab("Culmen Length (mm)") + 
+                         ylab("Culmen Depth (mm)") +
                          theme_bw()
 
 #plot() function allows graph to be outputted.
-plot(bill_size_sex_exploratory)
+plot(bill_size_exploratory_sex)
 
 #Saving chinstrap figure as .png file in figures folder.
-agg_png("figures/bill_size_sex_exploratory.png", 
+agg_png("figures/bill_size_exploratory_sex.png", 
         width = 30,
         height = 15,
         units = "cm",
@@ -275,12 +245,12 @@ agg_png("figures/bill_size_sex_exploratory.png",
         scaling = 1.125)
 
 #Ensures figure saved in "figures" folder actually has graph encoded within it, as opposed to blank file.
-print(bill_size_sex_exploratory)
+print(bill_size_exploratory_sex)
 dev.off()
 
 ```
 
-```{r Creating exploratory figure for sex in chinstrap penguins}
+```{r Creating exploratory figure for chinstrap penguins in particular}
 #Made exploratory figure to look more closely at possible effect of culmen depth on length, and how sex affects this..
 #Plotted a scatter plot as comparing two numerical variables (culmen length and depth).
 
@@ -289,23 +259,23 @@ sex_colours <- c("FEMALE" = "purple",
                  "MALE" = "darkorange")
 
 #Plotting scatter plot showing effect of culmen depth on culmen length and how this differs in each sex within chinstrap penguins. 
-# Details of what each line of code does can be found in lines 146-154, in chunk encoding figure exploring effect of species on culmen length. 
-bill_size_bodymass_sex_exploratory <- ggplot(data=chinstrap_data, 
-                         aes(x=body_mass_g, 
+# Details of what each line of code does can be found in lines 151-159, in chunk encoding figure exploring effect of species on culmen length. 
+bill_size_exploratory_depth <- ggplot(data=chinstrap_data, 
+                         aes(x=culmen_depth_mm, 
                             y=culmen_length_mm)) + 
                          geom_point(aes(color=sex, shape=sex)) + 
-                         geom_jitter(aes(color = sex), alpha = 0.25, position =                                                                   position_jitter(width = 0.4, seed=0)) +
+                         geom_jitter(aes(color = sex), alpha = 0.25, position =                                                                 position_jitter(width = 0.4, seed=0)) +
                          scale_colour_manual(values = sex_colours) + 
                          scale_shape_manual(values = c(16, 17)) +
-                        labs(title = "A graph to show the relationship between body mass and culmen length, 
-                             and how sex of penguin affects this", x= "Body Mass (g)", y="Culmen Length (mm)") +
+                         xlab("Culmen Length (mm)") + 
+                         ylab("Culmen Depth (mm)") +
                          theme_bw()
 
 #plot() function allows graph to be outputted.
-plot(bill_size_bodymass_sex_exploratory)
+plot(bill_size_exploratory_depth)
 
 #Saving this figure as .png file in figures folder.
-agg_png("figures/bill_size_bodymass_sex_exploratory.png", 
+agg_png("figures/bill_size_exploratory_depth.png", 
         width = 30,
         height = 15,
         units = "cm",
@@ -313,7 +283,7 @@ agg_png("figures/bill_size_bodymass_sex_exploratory.png",
         scaling = 1.125)
 
 #Ensures figure saved in "figures" folder actually has graph encoded within it, as opposed to blank file.
-print(bill_size_bodymass_sex_exploratory)
+print(bill_size_exploratory_depth)
 dev.off()
 
 ```
@@ -326,27 +296,24 @@ Alternative hypothesis: The mean culmen length of each sex will be significantly
 
 ## Statistical Methods
 
-In this analysis, an ANCOVA test will be conducted, to test whether sex affects culmen length, controlling for body mass. An ANCOVA is suitable for this analysis as there is a numerical response variable (culmen length), a categorical explanatory variable (sex) and a numerical covariate which must be controlled for (body mass). It is important to control for body mass as increasing body mass may be correlated with a longer beak. 
+In this analysis, an ANCOVA test will be conducted, to test whether sex affects culmen length, controlling for culmen depth. An ANCOVA is suitable for this analysis as there is a numerical response variable (culmen length), a categorical explanatory variable (sex) and a numerical covariate which must be controlled for (culmen depth). It is important to control for culmen depth as the depth of a beak may affect the length of a beak by itself. 
 
 Null hypotheses for ANCOVA on effect of sex in *P. antarcticus*: 
 1: There is no effect of sex on culmen length. 
-2: There is no effect of body mass on culmen length. 
-3: There is no interaction between sex and body mass.
+2: There is no effect of culmen depth on culmen length. 
+3: There is no interaction between sex and culmen depth.
 
 Alternative hypotheses ANCOVA for effect of sex in *P. antarcticus*: 
 1: There is a significant effect of sex on culmen length. 
-2: There is a significant effect of body mass on culmen length. 
-3: There is a significant interaction between sex and body mass.
+2: There is a significant effect of culmen depth on culmen length. 
+3: There is a significant interaction between sex and culmen depth.
 
-A two-sample t-test will also be conducted to assess whether sex affects body mass as well as culmen length. 
-Null hypothesis for t-test: There is no difference in mean body mass between male and female chinstrap penguins.
-Alternative hypothesis for t-test: There is a statistically significant difference in mean body mass between male and female chinstrap penguins.
 
 NB: The analyses presented here are not the same as in any referenced paper.
 
-```{r Statistics}
-#Creating model looking at effect of sex on culmen length in chinstraps including interaction with body mass.
-chinstrap_log_bill_model_int <- lm(culmen_length_mm ~ sex * body_mass_g, chinstrap_data)
+```{r Statistics- Gentoos}
+#Creating model looking at effect of sex on culmen length in chinstraps including interaction with culmen depth.
+chinstrap_log_bill_model_int <- lm(culmen_length_mm ~ sex * culmen_depth_mm, chinstrap_data)
 
 #Makes plots to ensure assumptions of analysis not violated.
 par(mfrow = c(1,2)) #par() function allows multi-panel figure of the assumptions plots encoded below to be made, allowing assessment of normality and heteroscedascity of model.
@@ -360,8 +327,8 @@ summary(chinstrap_log_bill_model_int)
 chinstrap_int_anova <- aov(chinstrap_log_bill_model_int)
 summary(chinstrap_int_anova)
 
-#Creating model looking at effect of sex on culmen length in chinstraps without interaction with body mass.
-chinstrap_log_bill_model_noint <- lm(culmen_length_mm ~ sex + body_mass_g, chinstrap_data)
+#Creating model looking at effect of sex on culmen length in chinstraps without interaction with culmen depth.
+chinstrap_log_bill_model_noint <- lm(culmen_length_mm ~ sex + culmen_depth_mm, chinstrap_data)
 
 #Makes plots to ensure assumptions of analysis not violated.
 par(mfrow = c(1,2)) #par() function allows multi-panel figure of the assumptions plots encoded below to be made, allowing assessment of normality and heteroscedascity of model.
@@ -378,53 +345,39 @@ summary(chinstrap_noint_anova)
 #Conducting ANOVA to assess if model without interaction is a better fit than model with interaction (i.e ifthere is a significant interaction between sex and culmen length in chinstrap penguins).
 chinstrap_test_fit_diff <- anova(chinstrap_log_bill_model_int, chinstrap_log_bill_model_noint)
 chinstrap_test_fit_diff
-
-#Conducting a t-test analysis to assess whether body mass is affected by sex.
-t.test(body_mass_g ~ sex, data = chinstrap_data)
 ```
 
 ## Results & Discussion
-
-Having conducted an ANCOVA analysis to test how sex affects culmen length when controlling for body mass, some interesting results were obtained.
-
-The adjusted R-squared for the model including the interaction term is 0.4803, therefore 48.03% of variance is explained by the model. Sex has a significant effect on culmen length (p=<9.16*10^-11), and as such the y-intercepts of the regression lines are significantly different. Body mass does seem to have a significant effect on culmen length (p=0.0450). There is no interaction effect between sex and body mass (p=0.2953), so the slopes of the regression lines are not significantly different. 
-
-Excluding the interaction term in the model, the adjusted R-squared for the model including the interaction term is 0.4794, therefore 47.94% of variance is explained by the model. Sex has a significant effect on culmen length (p=<8.6*10^-11), and as such the y-intercepts of the regression lines are significantly different. Body mass does not seem to have a significant effect on culmen length (p=0.0540). 
-
-The difference between the models is minimal, but when the models are compared, the model without the interaction term has a marginally better fit (F=1.1136). Therefore, the findings from this model will be used to reject or not reject null hypotheses and draw conclusions from.
-
-Using the results obtained from the model excluding the interaction term, it is possible to reject the following null hypotheses: 
+Having conducted an ANCOVA analysis to test how sex affects culmen length when controlling for culmen depth, the following has been found:
+The adjusted R-squared for the model including the interaction is 0.4918, therefore 49.18% of variance is explained by the model. Sex has a significant effect on culmen length (p=<6.43*10^-11), and as such the y-intercepts of the regression lines are significantly different. Culmen depth also has a significant effect on culmen length (p=0.0131). There is no interaction between sex and culmen depth (p=0.8927), so the slopes of the regression lines are not significantly different. 
+It is possible to reject the following null hypotheses: 
 1: There is no effect of sex on culmen length. 
+2: There is no effect of culmen depth on culmen length. 
 
 It is not possible to reject the following null hypothesis:
-2: There is no effect of body mass on culmen length.
-3: There is no interaction effect between sex and body mass.
+3: There is no interaction between sex and culmen depth.
 
-It should be stated that sex does also significantly affect body mass, as shown using a two-sample t-test (p=2.264*10-6).
-
-This therefore shows that sex does have an effect on culmen length in the chinstrap penguins, but body mass does not.
+This therefore shows that sex does have an effect on culmen length in the chinstrap penguins, and that culmen depth can also has an effect. 
 
 The fact that sex affects culmen length is unsurprising as it has been shown that sex affects bill morphology and *P. antarcticus* does display sexual dimorphism. 
+The fact that culmen depth also affects culmen length is unsurprising as it is likely that increasing beak depth does correlate with increasing beak length, in order to keep beak shape roughly similar between sexes.
 
-The fact that body mass does not also significantly affect culmen length is surprising as it is plausible that larger penguins would have longer culmens. While the effect was nearly significant, it was not less than the p < 0.05 cut off necessary to consider it significant. This may be because food is limited in the Antarctic ecosystem, so beaks are under some evolutionary constraint to ensure prey can still be caught, but this would require further research to verify.
-It is unsurprising that sex affects body mass in this species independently, as this species has been shown to be dimorphic in body mass (Gorman, et al., 2014).
+The fact that there is no interaction between sex and culmen depth is unsurprising as well, as while both sexes will have differently sized beaks, it is reasonable to assume they would have similar overall beak shapes (a product of the interaction between culmen length and depth) as they are the same species and only display mild dimorphism.
 
-The above can also be seen on the results figure, where the slopes of each regression line are roughly parallel but each sex has a different y-intercept. It can also be seen that there are two distinct groups on the x-axis, with females generally having smaller body mass than males, but there is a large amount of overlap between the two groups.
-
-
+The above can also be seen on the results figure, where the slopes of each regression line are roughly parallel but each sex has a different y-intercept.
 
 
-```{r Results plot}
-#Making results plot, showing relationship between culmen depth, culmen length and sex in chinstraps.
-# # Details of what each line of code does can be found in lines 146-154, in chunk encoding figure exploring effect of species on culmen length. 
+```{r}
+#Making results plot, showing relationship between culmen depth, culmen length and sex in gentoos.
+# # Details of what each line of code does can be found in lines 151-159, in chunk encoding figure exploring effect of species on culmen length. 
 chinstrap_results_plot_int <- 
 ggplot(chinstrap_data, 
-       aes(x=body_mass_g, y=culmen_length_mm, color = sex)) + 
+       aes(x=culmen_length_mm, y=culmen_depth_mm, color = sex)) + 
   geom_point() + 
   geom_smooth(method = "lm") + 
   scale_colour_manual(values = sex_colours) + 
-  labs(title = "A graph to show the relationship between body mass and culmen length, 
-       and how sex of penguin affects this", x= "Body mass (g)", y="Culmen length (mm)") +
+  xlab("Culmen length (mm)") + 
+  ylab("Culmen depth (mm)") + 
   theme_bw()
 
 plot(chinstrap_results_plot_int)
@@ -442,11 +395,9 @@ dev.off()
 
 ## Conclusion
 
-In conclusion, it has been shown that culmen length is affected by sex, but not by body mass, and that there is no interaction effect between body mass and sex in *P. antarcticus*. Some of these results are surprising for reasons discussed above. This analysis does however still reaffirm the findings of previous research which stated that chinstrap penguins do display sexual dimorphism in their beak morphology (using culmen length as a proxy) and in their body mass. 
+In conclusion, it has been shown that culmen length is affected by both culmen depth and by sex independently, and that there is no interaction between culmen depth and sex in P. antarcticus. These results are unsurprising. This analysis backs up previous research which stated that chinstrap penguins do display sexual dimorphism in their beak morphology. 
 
-Further research should be conducted to clarify why sexual dimorphism has evolved in the chinstrap penguins, and the genus *Pygoscelis* more widely. Moreover, the trophic ecology of male and female penguins in this genus should be studied to assess whether their trophic ecology differs greatly, and whether this can explain the variation in beak length and so beak morphology or whether some other factor has caused the evolution of sexual dimorphism. It would also be interesting to understand whether there is an evolutionary constraint which seems to make beak size consistent across chinstrap penguins regardless of body size. Lastly, it would be interesting to discover whether the findings of this analysis hold up in other penguin species or birds more widely.
-
- 
+Further research should be conducted to clarify why sexual dimorphism has evolved in the chinstrap penguins, and the genus Pygoscelis more widely. Moreover, the trophic ecology of male and female penguins in this genus should be studied to assess whether their trophic ecology differs in a statistically significant manner. 
 
 ##References
 Çakar, B. et al., 2024. Bill shape variation in selected species in birds of prey.. Anatomia, Histologia, Embryologia, 53(4), p. e13085.
@@ -467,49 +418,20 @@ Polito, M., Clucas, G., Hart, T. & Trivelpiece, W., 2012. A simplified method of
 
 *Partner's GitHub link:* https://github.com/Anonymous-Exam-User/Palmer_Penguin_GitHub 
 
+*You **must** provide this so I can verify there is no plagiarism between you and your partner.*
 
 ## c) Reflect on your experience running their code. (300-500 words)
 
 -   *What elements of your partner's code helped you to understand their data pipeline?*
-The formatting of my partner’s code made it clear to see what each code chunk and function in each chunk does, clearly separating different parts to make code more understandable. 
-Steps for data analysis were well-presented such that it was clear how the analysis was structured. The reasons for carrying out certain steps in particular ways were well justified as well, making it clear what alternatives there might be to certain steps and why this person has used the methods they have.
-
-The fact that detailed explanations of code were written above each code chunk also made the pipeline a lot more understandable, as it was very clear what each step was and why it was conducted.
-My partner’s github repository was also well organised, with clearly labelled folders for things like functions, figures and data.
 
 -   *Did it run? Did you need to fix anything?*
 
-The code ran fine without needing to fix anything. 
-
 -   *What suggestions would you make for improving their code to make it more understandable or reproducible, and why?*
 
-I would suggest that explanations of code could perhaps be more concise, cutting out unnecessary sentences or phrases to make the pipeline easier to understand overall. As it is, explanations are quite long and wordy which can make it more difficult to discern what steps are being taken, and therefore might make their analysis slightly less reproducible.
-
-Some of the code chunks could however do with more annotations within the code itself, for example briefly explaining functions next to the line that they are in, to make it clearer what each part of the code does and why they are included. This would make it clearer why each part of the code is there and allow others to make changes more easily, but this is a minor issue and does not impact the reproducibility of this analysis, only the understanding of it.
-
-They also should have put their cleaning function underneath the section of the cleaning.r file detailing the purpose of the script and the author. This would have made their cleaning file tidier. That said, this is again a minor issue which does not affect reproducibility.
-
 -   *If you needed to alter your partner's figure using their code, do you think that would be easy or difficult, and why?*
-
-If I had to alter my partner’s figure using their code, I believe I could accomplish this very easily. My partner has annotated their code to make their figure very well, such that it is easy to follow what each line does, track down where a change might need to be made and carry out that change accordingly. While I think this could be made easier with more in code annotations, on the whole I think it would be very easy to alter my partner’s figures.
-
 
 ## d) Reflect on your own code based on your experience with your partner's code and their review of yours. (300-500 words)
 
 -   *What improvements did they suggest, and do you agree?*
 
-My partner suggested I break up code chunks into smaller pieces with annotations written as text above, rather than within the chunk itself. I see the merit of this. Having in-code annotations can make code harder to read, however I wanted to keep to as few code chunks as possible so a user could run a specific chunk and get the desired output instead of running several smaller chunks. I also feel having bigger code chunks makes the document more easily navigated and more easily changed. For example, a user can easily identify my statistics chunk and change the model instead of having to sift through many code chunks to find what they are looking for, which can make my analysis more reproducible. That said, on my partner’s code the use of smaller code chunks did make their document easier to understand and so more reproducible.
-
-They also suggested that annotations should immediately precede code instead of being at the top of a chunk. I agree; it would make my code clearer and therefore more reproducible. This was seen throughout my partner’s code and did help make their code a lot easier to understand.
-
-They suggested having smaller indents. I also agree with this; smaller indents would ensure annotations do not run over a line, which would  make my code clearer and more reproducible. While I had aimed to make my code clearer by formatting it with these indents, I think it had the opposite effect. 
-
-They critiqued me not using na.omit() at start when cleaning data. I see why this has been suggested, however as this does not affect the running of the code or the outputs generated, I would say this does not impact reproducibility.
-
-They also critiqued having 2 sets of plated normality plots. I disagree with this suggestion. As the plots are only there to show that neither model violates the assumptions of the ANCOVA analysis I ran, and not to indicate a difference between the models, I do not believe this affects the reproducibility of my analysis.
-
-Finally, my partner said that references were hard to read. I also disagree with this suggestion, as it is still obvious what the references are and they can still be found, so I would say this does not impact reproducibility.
-
 -   *What did you learn about writing code for other people?*
-
-From doing this exercise, I learnt the importance of clear annotation to explain what code does, as well as how to place those annotations within an r script to make code more understandable and therefore more reproducible. I also learnt how purely cosmetic formatting can actually make code harder to read and understand, which negatively impacts code reproducibility. There are many more factors which can impact reproducibility than I thought, and it was interesting trying to balance them all to ensure other people can read and interact with code that I am writing. 

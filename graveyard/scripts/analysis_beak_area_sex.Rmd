@@ -1,0 +1,26 @@
+```{r}
+#Data transformations in gentoo dataset
+ggplot(data=gentoo_data, aes(x=culmen_length_mm)) + geom_histogram()
+gentoo_log_length <- log10(gentoo_data$culmen_length_mm)
+ggplot(data=gentoo_data, aes(x=gentoo_log_length)) + geom_histogram()
+gentoo_sqrt_length <- sqrt(gentoo_data$culmen_length_mm)
+ggplot(data = gentoo_data, aes(x=gentoo_sqrt_length)) + geom_histogram()
+
+#Creating model including interaction term.
+gentoo_log_bill_model_int <- lm(culmen_depth_mm ~ sex * gentoo_log_length, gentoo_data)
+
+#Makes plots to ensure assumptions of analysis not violated.
+plot(gentoo_log_bill_model_int, which = 2)
+plot(gentoo_log_bill_model_int, which = 1)
+
+#Checking outputs of analysis of model.
+summary(gentoo_log_bill_model_int)
+
+anova(gentoo_log_bill_model_int)
+
+#Making results plot, showing relationship between culmen depth, culmen length and species.
+gentoo_plot_int <- ggplot(gentoo_data, aes(x=gentoo_log_length, y=culmen_depth_mm, color = sex)) + geom_point() + geom_smooth(method = "lm") + scale_colour_manual(values = sex_colours) + xlab("Log Culmen length (mm)") + ylab("Culmen depth (mm)") + theme_bw()
+
+gentoo_plot_int
+
+```
